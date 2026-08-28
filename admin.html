@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="VIE Group website maintenance console.">
+    <title>VIE Admin | Website Maintenance</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <script defer src="assets/js/admin.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">VIE</span>
+        <span>
+          <strong>Website Admin</strong>
+          <small>GitHub-backed static maintenance</small>
+        </span>
+      </a>
+      <nav class="site-nav admin-nav" aria-label="Admin navigation">
+        <a href="index.html">Public Site</a>
+        <a href="#publication">Publications</a>
+        <a href="#seminar">Seminar</a>
+        <a href="https://github.com/vie-group/vie-group.github.io/blob/main/docs/maintenance.md">Guide</a>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <section class="admin-hero">
+        <div>
+          <p class="eyebrow">VIE Website</p>
+          <h1>Content Console</h1>
+          <p>用 GitHub 账号直接维护论文与组会材料，所有修改会生成真实 commit。</p>
+        </div>
+      </section>
+
+      <section class="admin-panel">
+        <div class="panel-head">
+          <h2>Repository</h2>
+          <button id="load-data" class="primary" type="button">Load Data</button>
+        </div>
+        <div class="form-grid four">
+          <label>
+            <span>Owner</span>
+            <input id="repo-owner" value="vie-group" autocomplete="off">
+          </label>
+          <label>
+            <span>Repo</span>
+            <input id="repo-name" value="vie-group.github.io" autocomplete="off">
+          </label>
+          <label>
+            <span>Branch</span>
+            <input id="repo-branch" value="main" autocomplete="off">
+          </label>
+          <label>
+            <span>GitHub Token</span>
+            <input id="github-token" type="password" autocomplete="off" placeholder="fine-grained token">
+          </label>
+        </div>
+        <label class="check-row">
+          <input id="remember-token" type="checkbox">
+          <span>Keep token in this browser tab</span>
+        </label>
+        <div id="status" class="status" role="status">Ready.</div>
+      </section>
+
+      <section id="publication" class="admin-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Teacher</p>
+            <h2>Publications</h2>
+          </div>
+          <div class="tools">
+            <button id="new-publication" type="button">New</button>
+            <button id="delete-publication" type="button">Delete</button>
+            <button id="commit-publications" class="primary" type="button">Commit Publications</button>
+          </div>
+        </div>
+        <div class="form-grid two">
+          <label>
+            <span>Select</span>
+            <select id="publication-select"></select>
+          </label>
+          <label>
+            <span>ID</span>
+            <input id="pub-id" placeholder="2024-author-short-title">
+          </label>
+          <label>
+            <span>Title</span>
+            <input id="pub-title">
+          </label>
+          <label>
+            <span>Authors</span>
+            <input id="pub-authors">
+          </label>
+          <label>
+            <span>Venue</span>
+            <input id="pub-venue">
+          </label>
+          <label>
+            <span>Year</span>
+            <input id="pub-year" type="number" min="1990" max="2100">
+          </label>
+          <label>
+            <span>Type</span>
+            <select id="pub-type">
+              <option value="conference">conference</option>
+              <option value="journal">journal</option>
+              <option value="dataset">dataset</option>
+            </select>
+          </label>
+          <label>
+            <span>Tags</span>
+            <input id="pub-tags" placeholder="IQA, medical image">
+          </label>
+          <label class="span-two">
+            <span>Note</span>
+            <textarea id="pub-note" rows="2"></textarea>
+          </label>
+          <label class="span-two">
+            <span>Links JSON</span>
+            <textarea id="pub-links" rows="4" spellcheck="false">{}</textarea>
+          </label>
+        </div>
+        <div class="tools form-actions">
+          <button id="save-publication" type="button">Save Draft</button>
+          <a class="button" href="https://github.com/vie-group/vie-group.github.io/edit/main/data/publications.json">GitHub Editor</a>
+        </div>
+      </section>
+
+      <section id="seminar" class="admin-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Students</p>
+            <h2>Seminar Upload</h2>
+          </div>
+          <button id="commit-seminar" class="primary" type="button">Commit Seminar</button>
+        </div>
+        <div class="form-grid two">
+          <label>
+            <span>Date</span>
+            <input id="seminar-date" type="date">
+          </label>
+          <label>
+            <span>Speaker</span>
+            <input id="seminar-speaker">
+          </label>
+          <label class="span-two">
+            <span>Title</span>
+            <input id="seminar-title">
+          </label>
+          <label class="span-two">
+            <span>Abstract</span>
+            <textarea id="seminar-abstract" rows="3"></textarea>
+          </label>
+          <label>
+            <span>Paper URL</span>
+            <input id="seminar-paper-url" placeholder="https://arxiv.org/pdf/...">
+          </label>
+          <label>
+            <span>Slides URL</span>
+            <input id="seminar-slides-url" placeholder="optional external link">
+          </label>
+          <label>
+            <span>Paper File</span>
+            <input id="seminar-paper-file" type="file" accept=".pdf">
+          </label>
+          <label>
+            <span>Slides File</span>
+            <input id="seminar-slides-file" type="file" accept=".pdf,.ppt,.pptx,.key">
+          </label>
+          <label>
+            <span>Supplement File</span>
+            <input id="seminar-extra-file" type="file">
+          </label>
+          <label>
+            <span>Tags</span>
+            <input id="seminar-tags" placeholder="diffusion, IQA">
+          </label>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Direct website admin
+    url: https://vie-group.github.io/admin.html
+    about: Use this if you have repository write access and a GitHub token.

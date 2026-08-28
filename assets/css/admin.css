@@ -1,0 +1,169 @@
+.admin-main {
+  background: var(--wash);
+  min-height: 100vh;
+}
+
+.admin-hero {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 72px 32px 24px;
+}
+
+.admin-hero h1 {
+  margin-bottom: 10px;
+  color: var(--ink);
+  font-size: 48px;
+}
+
+.admin-hero p:last-child {
+  max-width: 720px;
+  color: var(--muted);
+}
+
+.admin-panel {
+  max-width: 1180px;
+  margin: 20px auto;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.panel-head h2 {
+  font-size: 28px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.form-grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-grid.four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.form-grid label {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.form-grid label > span,
+.check-row span {
+  color: #344054;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.span-two {
+  grid-column: span 2;
+}
+
+textarea {
+  min-height: 92px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+.check-row {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.check-row input {
+  width: 18px;
+  min-height: 18px;
+}
+
+.status {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border: 1px solid #d2eadf;
+  border-radius: 8px;
+  background: #f0faf5;
+  color: #245b3c;
+  font-weight: 700;
+}
+
+.status.error {
+  border-color: #f2c9bd;
+  background: #fff4f0;
+  color: #8d3322;
+}
+
+.status.pending {
+  border-color: #e7d7aa;
+  background: #fff9e8;
+  color: #704d13;
+}
+
+.form-actions {
+  margin-top: 18px;
+}
+
+.admin-nav {
+  position: static;
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.admin-nav a {
+  width: auto;
+}
+
+@media (max-width: 900px) {
+  .admin-nav {
+    position: static;
+    display: flex;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .admin-nav a {
+    width: auto;
+  }
+
+  .admin-hero,
+  .admin-panel {
+    margin-left: 18px;
+    margin-right: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .admin-hero h1 {
+    font-size: 38px;
+  }
+
+  .form-grid.two,
+  .form-grid.four,
+  .span-two {
+    grid-template-columns: 1fr;
+    grid-column: auto;
+  }
+
+  .panel-head {
+    display: grid;
+    align-items: start;
+  }
+}

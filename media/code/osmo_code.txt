@@ -1,0 +1,2 @@
+Please download the code of "OSMO: Online Specific Models for Occlusion in Multiple Object Tracking under Surveillance Scene" from the website:
+https://github.com/gaoxu1024/osmo

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="VIE Group, Visual Inference & Evaluation, Peking University.">
+    <title>VIE Group | Visual Inference & Evaluation</title>
+    <link rel="alternate" type="application/rss+xml" title="VIE Group RSS" href="rss.xml">
+    <link rel="preload" href="assets/css/styles.css" as="style">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script defer src="assets/js/site.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="VIE Group home">
+        <span class="brand-mark">VIE</span>
+        <span>
+          <strong>VIE Group</strong>
+          <small>Visual Inference & Evaluation</small>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+        <a href="#research">Research</a>
+        <a href="#news">News</a>
+        <a href="#publications">Publications</a>
+        <a href="#seminars">Seminar</a>
+        <a href="#team">Team</a>
+        <a href="#activity">Activity</a>
+        <a href="rss.xml">RSS</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="hero">
+        <div class="hero-content">
+          <div class="lab-ribbon">
+            <span>C'est La VIE</span>
+            <span>PKU EECS</span>
+            <span>Recovered from vie.group</span>
+          </div>
+          <h1>Visual Inference & Evaluation Group</h1>
+          <p class="hero-copy" data-site-field="description">
+            Computer vision and image/video quality assessment at Peking University.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#publications">Browse Publications</a>
+            <a class="button" href="#seminars">Seminar Materials</a>
+          </div>
+          <div class="hero-strip" aria-label="Research summary">
+            <span data-stat="publications">-- publications</span>
+            <span data-stat="seminars">-- seminars</span>
+            <span data-stat="members">-- members</span>
+          </div>
+        </div>
+        <aside class="instrument-panel" aria-label="VIE research board">
+          <div class="instrument-bar">
+            <span>VIE / VISUAL INFERENCE BOARD</span>
+            <span>LIVE DATA</span>
+          </div>
+          <div class="vision-canvas" aria-hidden="true">
+            <span class="scan-line"></span>
+            <span class="bbox bbox-a">IQA</span>
+            <span class="bbox bbox-b">MASK</span>
+            <span class="bbox bbox-c">ACTION</span>
+            <span class="node node-a"></span>
+            <span class="node node-b"></span>
+            <span class="node node-c"></span>
+          </div>
+          <div class="metric-grid">
+            <div>
+              <span>Axis 01</span>
+              <strong>Quality</strong>
+            </div>
+            <div>
+              <span>Axis 02</span>
+              <strong>Amodal</strong>
+            </div>
+            <div>
+              <span>Axis 03</span>
+              <strong>Action</strong>
+            </div>
+            <div>
+              <span>Axis 04</span>
+              <strong>Bio-EM</strong>
+            </div>
+          </div>
+          <div class="hero-feed">
+            <div>
+              <span>Latest publication</span>
+              <strong data-hero-field="latestPublication">Loading...</strong>
+              <small data-hero-field="latestPublicationMeta"></small>
+            </div>
+            <div>
+              <span>Latest seminar</span>
+              <strong data-hero-field="latestSeminar">Loading...</strong>
+              <small data-hero-field="latestSeminarMeta"></small>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="research" class="section">
+        <div class="section-head">
+          <p class="eyebrow">Research</p>
+          <h2>What We Study</h2>
+        </div>
+        <div id="research-list" class="research-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="news" class="section split-section">
+        <div class="section-head">
+          <p class="eyebrow">Updates</p>
+          <h2>News</h2>
+        </div>
+        <div id="news-list" class="timeline compact" aria-live="polite"></div>
+      </section>
+
+      <section id="publications" class="section">
+        <div class="section-head with-tools">
+          <div>
+            <p class="eyebrow">Output</p>
+            <h2>Publications</h2>
+          </div>
+          <div class="tools">
+            <input id="publication-search" type="search" placeholder="Search title, author, venue">
+            <div class="segmented" aria-label="Publication type filter">
+              <button class="active" type="button" data-filter="all">All</button>
+              <button type="button" data-filter="conference">Conference</button>
+              <button type="button" data-filter="journal">Journal</button>
+            </div>
+          </div>
+        </div>
+        <div id="publication-list" class="publication-list" aria-live="polite"></div>
+      </section>
+
+      <section id="seminars" class="section band">
+        <div class="section-head with-tools">
+          <div>
+            <p class="eyebrow">Seminar</p>
+            <h2>Group Meeting Materials</h2>
+          </div>
+          <div class="tools">
+            <a class="button primary" href="admin.html#seminar">Upload Materials</a>
+            <a class="button" href="https://github.com/vie-group/vie-group.github.io/issues/new?template=seminar-submission.yml">Submit Issue</a>
+            <a class="button" href="https://github.com/vie-group/vie-group.github.io/actions/workflows/add-seminar.yml">Run Workflow</a>
+          </div>
+        </div>
+        <div id="seminar-list" class="seminar-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="team" class="section">
+        <div class="section-head">
+          <p class="eyebrow">People</p>
+          <h2>Team</h2>
+        </div>
+        <div id="faculty-list" class="people-feature"></div>
+        <div id="current-list" class="people-grid"></div>
+        <div class="section-subhead">
+          <h3>Alumni</h3>
+        </div>
+        <div id="alumni-list" class="alumni-list"></div>
+      </section>
+
+      <section id="activity" class="section band">
+        <div class="section-head">
+          <p class="eyebrow">Life</p>
+          <h2>Activity Archive</h2>
+        </div>
+        <div id="activity-list" class="timeline" aria-live="polite"></div>
+      </section>
+
+      <section id="maintain" class="section maintain">
+        <div class="section-head">
+          <p class="eyebrow">Maintain</p>
+          <h2>Website Operations</h2>
+        </div>
+        <div class="operation-grid">
+          <a class="operation" href="admin.html#publication">
+            <span>01</span>
+            <strong>Edit Publications</strong>
+            <small>Update records and commit to GitHub from the browser.</small>
+          </a>
+          <a class="operation" href="admin.html#seminar">
+            <span>02</span>
+            <strong>Upload Seminar</strong>
+            <small>Commit PPT/PDF files and metadata in one change.</small>
+          </a>
+          <a class="operation" href="https://github.com/vie-group/vie-group.github.io/blob/main/docs/maintenance.md">
+            <span>03</span>
+            <strong>Maintenance Guide</strong>
+            <small>Repository layout, token scope, and fallback workflows.</small>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>VIE Group</strong>
+        <span data-site-field="institution">Peking University</span>
+      </div>
+      <div class="footer-links">
+        <a href="rss.xml">RSS</a>
+        <a href="https://beian.miit.gov.cn/" rel="noreferrer">京ICP备2022030672号-1</a>
+      </div>
+    </footer>
+  </body>
+</html>

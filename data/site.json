@@ -1,0 +1,22 @@
+{
+  "name": "VIE Group",
+  "fullName": "Visual Inference & Evaluation Group",
+  "url": "https://www.vie.group",
+  "tagline": "C'est La VIE",
+  "description": "VIE focuses on computer vision and image/video quality assessment. Current topics include visual inference, visual quality evaluation, medical image analysis, amodal perception, action understanding, and robust learning.",
+  "institution": "School of Electronics Engineering and Computer Science, Peking University",
+  "address": "Room 2641, No.2 Science Building, Peking University, Beijing, China",
+  "email": "ttjiang at pku.edu.cn",
+  "repository": {
+    "owner": "vie-group",
+    "repo": "vie-group.github.io",
+    "branch": "main"
+  },
+  "researchHighlights": [
+    "Image and video quality assessment",
+    "Medical image analysis and biomedical segmentation",
+    "Amodal perception and 3D-aware visual reasoning",
+    "Action understanding, surgical skill assessment, and temporal segmentation",
+    "Robust visual representation learning"
+  ]
+}
