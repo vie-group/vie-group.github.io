@@ -36,6 +36,10 @@
     node.classList.toggle("pending", tone === "pending");
   }
 
+  function applyRouteMode() {
+    document.body.classList.toggle("seminar-focus", window.location.hash === "#seminar");
+  }
+
   function config() {
     return {
       owner: $("repo-owner").value.trim(),
@@ -892,6 +896,7 @@
 
   async function commitSeminar() {
     setStatus("Preparing seminar commit...", "pending");
+    if (!state.site) await loadData();
     const title = $("seminar-title").value.trim();
     const speaker = $("seminar-speaker").value.trim();
     const date = $("seminar-date").value;
@@ -977,6 +982,9 @@
   }
 
   function bind() {
+    applyRouteMode();
+    window.addEventListener("hashchange", applyRouteMode);
+
     fields.pubSelect = $("publication-select");
     fields.pubId = $("pub-id");
     fields.pubTitle = $("pub-title");

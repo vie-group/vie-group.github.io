@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="VIE Group website maintenance console.">
     <title>VIE Admin | Website Maintenance</title>
-    <link rel="stylesheet" href="assets/css/styles.css?v=20260828-admin-editor">
-    <link rel="stylesheet" href="assets/css/admin.css?v=20260828-admin-editor">
-    <script defer src="assets/js/admin.js?v=20260828-admin-editor"></script>
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260902-seminar-simple">
+    <link rel="stylesheet" href="assets/css/admin.css?v=20260902-seminar-simple">
+    <script defer src="assets/js/admin.js?v=20260902-seminar-simple"></script>
   </head>
   <body>
     <header class="site-header">
@@ -36,25 +36,25 @@
         </div>
       </section>
 
-      <section class="admin-panel">
+      <section class="admin-panel repo-panel">
         <div class="panel-head">
           <h2>Repository</h2>
           <button id="load-data" class="primary" type="button">Load Data</button>
         </div>
         <div class="form-grid four">
-          <label>
+          <label class="repo-default-field">
             <span>Owner</span>
             <input id="repo-owner" value="vie-group" autocomplete="off">
           </label>
-          <label>
+          <label class="repo-default-field">
             <span>Repo</span>
             <input id="repo-name" value="vie-group.github.io" autocomplete="off">
           </label>
-          <label>
+          <label class="repo-default-field">
             <span>Branch</span>
             <input id="repo-branch" value="main" autocomplete="off">
           </label>
-          <label>
+          <label class="repo-token-field">
             <span>GitHub Token</span>
             <input id="github-token" type="password" autocomplete="off" placeholder="fine-grained token">
           </label>
@@ -148,7 +148,7 @@
         </div>
       </section>
 
-      <section id="seminar" class="admin-panel">
+      <section id="seminar" class="admin-panel seminar-panel">
         <div class="panel-head">
           <div>
             <p class="eyebrow">Students</p>
@@ -156,7 +156,7 @@
           </div>
           <button id="commit-seminar" class="primary" type="button">Commit Seminar</button>
         </div>
-        <div class="form-grid two">
+        <div class="form-grid two seminar-basic-fields">
           <label>
             <span>Date</span>
             <input id="seminar-date" type="date">
@@ -169,18 +169,6 @@
             <span>Title</span>
             <input id="seminar-title">
           </label>
-          <label class="span-two">
-            <span>Abstract</span>
-            <textarea id="seminar-abstract" rows="3"></textarea>
-          </label>
-          <label>
-            <span>Paper URL</span>
-            <input id="seminar-paper-url" placeholder="https://arxiv.org/pdf/...">
-          </label>
-          <label>
-            <span>Slides URL</span>
-            <input id="seminar-slides-url" placeholder="optional external link">
-          </label>
           <label>
             <span>Paper File</span>
             <input id="seminar-paper-file" type="file" accept=".pdf">
@@ -189,15 +177,32 @@
             <span>Slides File</span>
             <input id="seminar-slides-file" type="file" accept=".pdf,.ppt,.pptx,.key">
           </label>
-          <label>
-            <span>Supplement File</span>
-            <input id="seminar-extra-file" type="file">
-          </label>
-          <label>
-            <span>Tags</span>
-            <input id="seminar-tags" placeholder="diffusion, IQA">
-          </label>
         </div>
+        <details class="optional-fields">
+          <summary>Optional fields</summary>
+          <div class="form-grid two">
+            <label>
+              <span>Paper URL</span>
+              <input id="seminar-paper-url" placeholder="https://arxiv.org/pdf/...">
+            </label>
+            <label>
+              <span>Slides URL</span>
+              <input id="seminar-slides-url" placeholder="optional external link">
+            </label>
+            <label>
+              <span>Supplement File</span>
+              <input id="seminar-extra-file" type="file">
+            </label>
+            <label>
+              <span>Tags</span>
+              <input id="seminar-tags" placeholder="diffusion, IQA">
+            </label>
+            <label class="span-two">
+              <span>Abstract</span>
+              <textarea id="seminar-abstract" rows="3"></textarea>
+            </label>
+          </div>
+        </details>
       </section>
     </main>
   </body>

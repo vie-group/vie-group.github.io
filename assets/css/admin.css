@@ -115,6 +115,51 @@ textarea {
   margin-top: 18px;
 }
 
+.optional-fields {
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.optional-fields summary {
+  width: fit-content;
+  cursor: pointer;
+  color: var(--blue);
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.optional-fields .form-grid {
+  margin-top: 14px;
+}
+
+body.seminar-focus .admin-hero,
+body.seminar-focus #visual,
+body.seminar-focus #publication {
+  display: none;
+}
+
+body.seminar-focus .repo-panel .panel-head {
+  margin-bottom: 12px;
+}
+
+body.seminar-focus .repo-panel .panel-head h2 {
+  font-size: 20px;
+}
+
+body.seminar-focus .repo-panel .repo-default-field {
+  display: none;
+}
+
+body.seminar-focus .repo-panel .form-grid.four {
+  grid-template-columns: minmax(260px, 520px);
+}
+
+body.seminar-focus .repo-panel {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 .panel-note,
 .draft-note {
   margin: -8px 0 18px;
