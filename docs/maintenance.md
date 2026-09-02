@@ -12,6 +12,12 @@
 
 说明：组会 PPT/PDF 这类二进制文件上传仍使用下方 `Seminar Upload`；Visual Editor 负责编辑页面显示的文字、日期、链接和元数据。
 
+## 老师单独增加 News
+
+1. 打开 Actions -> `Add News Record` -> `Run workflow`。
+2. 填写 `date` 和 `text`。
+3. workflow 会更新 `data/news.json`，重新生成 `rss.xml`，通过校验后自动提交到 `main`。
+
 ## 老师修改 Publications
 
 1. 打开 `https://vie-group.github.io/admin.html#publication`。
@@ -106,6 +112,7 @@ Seminar:
 
 - `Validate Site Data`: push / pull request 时校验所有 `data/*.json` 的结构。
 - `Deploy GitHub Pages`: main 分支变更后发布静态站。
+- `Add News Record`: 手动追加 News，并同步更新 RSS。
 - `Add Seminar Record`: 手动追加组会记录，适合已有文件链接时使用。
 - `Add Publication Record`: 手动追加论文记录。
 - `Seminar Issue to Pull Request`: 把同学提交的 `seminar-submission` issue 自动转成 PR。

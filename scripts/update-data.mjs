@@ -75,6 +75,21 @@ async function addSeminar() {
   console.log(`Added seminar: ${record.id}`);
 }
 
+async function addNews() {
+  const date = required("NEWS_DATE");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error("NEWS_DATE must use YYYY-MM-DD.");
+  const text = required("NEWS_TEXT");
+  const record = { date, text };
+
+  const path = "data/news.json";
+  const items = await readJson(path);
+  const next = [record, ...items.filter((item) => item.date !== record.date || item.text !== record.text)].sort((a, b) =>
+    String(b.date).localeCompare(String(a.date))
+  );
+  await writeJson(path, next);
+  console.log(`Added news: ${date}`);
+}
+
 async function addPublication() {
   const title = required("PUBLICATION_TITLE");
   const year = Number(required("PUBLICATION_YEAR"));
@@ -110,8 +125,10 @@ async function addPublication() {
 
 if (command === "add-seminar") {
   await addSeminar();
+} else if (command === "add-news") {
+  await addNews();
 } else if (command === "add-publication") {
   await addPublication();
 } else {
-  throw new Error("Usage: node scripts/update-data.mjs <add-seminar|add-publication>");
+  throw new Error("Usage: node scripts/update-data.mjs <add-news|add-seminar|add-publication>");
 }
