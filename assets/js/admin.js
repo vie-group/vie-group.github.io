@@ -345,6 +345,8 @@
       ["Hero link: Team", "heroTeamLink"],
       ["Hero link: RSS", "heroRssLink"],
       ["Home news title", "homeNewsTitle"],
+      ["Home news expand", "homeNewsExpand"],
+      ["Home news collapse", "homeNewsCollapse"],
       ["Archive note label", "archiveNoteLabel"],
       ["Archive note text", "archiveNoteText", true],
       ["Latest publication label", "latestPublicationLabel"],

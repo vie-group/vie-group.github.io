@@ -41,6 +41,8 @@
     "heroTeamLink": "Team",
     "heroRssLink": "RSS Feed",
     "homeNewsTitle": "News",
+    "homeNewsExpand": "Show all news",
+    "homeNewsCollapse": "Show less",
     "archiveNoteLabel": "Archive note.",
     "archiveNoteText": "The old VIE site has been recovered into a static GitHub Pages archive. Papers and seminar files are served locally from this repository.",
     "latestPublicationLabel": "Latest publication",

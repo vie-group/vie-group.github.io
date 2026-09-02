@@ -12,6 +12,7 @@
     filter: "all",
     query: "",
     publications: [],
+    homeNewsExpanded: false,
     theme: "classic",
     copy: {}
   };
@@ -158,21 +159,44 @@
     });
   }
 
+  function renderHomeNews(news) {
+    const homeRoot = document.querySelector("#home-news-list");
+    if (!homeRoot) return;
+
+    const limit = 3;
+    const toggle = document.querySelector("#home-news-toggle");
+    const box = homeRoot.closest(".home-news-box");
+    const visibleItems = state.homeNewsExpanded ? news : news.slice(0, limit);
+
+    clear(homeRoot);
+    visibleItems.forEach((item) => {
+      const row = el("article", "home-news-item");
+      row.appendChild(el("time", "", formatDate(item.date)));
+      row.appendChild(el("p", "", item.text));
+      homeRoot.appendChild(row);
+    });
+
+    if (box) box.classList.toggle("expanded", state.homeNewsExpanded);
+    if (toggle) {
+      const hasMore = news.length > limit;
+      toggle.hidden = !hasMore;
+      toggle.textContent = state.homeNewsExpanded
+        ? state.copy.homeNewsCollapse || "Show less"
+        : state.copy.homeNewsExpand || "Show all news";
+      toggle.setAttribute("aria-expanded", String(state.homeNewsExpanded));
+      toggle.onclick = () => {
+        state.homeNewsExpanded = !state.homeNewsExpanded;
+        renderHomeNews(news);
+      };
+    }
+  }
+
   function renderNews(news) {
     const root = document.querySelector("#news-list");
-    const homeRoot = document.querySelector("#home-news-list");
     clear(root);
     const sorted = news.slice().sort(byDateDesc);
 
-    if (homeRoot) {
-      clear(homeRoot);
-      sorted.slice(0, 3).forEach((item) => {
-        const row = el("article", "home-news-item");
-        row.appendChild(el("time", "", formatDate(item.date)));
-        row.appendChild(el("p", "", item.text));
-        homeRoot.appendChild(row);
-      });
-    }
+    renderHomeNews(sorted);
 
     sorted.forEach((item) => {
       const row = el("article", "timeline-item");

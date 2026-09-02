@@ -1512,6 +1512,12 @@ textarea {
   gap: 10px;
 }
 
+.home-news-box.expanded .home-news-list {
+  max-height: min(360px, 58vh);
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
 .home-news-item {
   display: grid;
   gap: 2px;
@@ -1527,6 +1533,39 @@ textarea {
 
 .home-news-item p {
   margin: 0;
+  font-size: 13px;
+}
+
+.home-news-toggle {
+  margin-top: 10px;
+}
+
+.home-news-toggle[hidden] {
+  display: none !important;
+}
+
+.classic-site .home-news-box .home-news-toggle {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #0645ad;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.classic-site .home-news-box .home-news-toggle:hover {
+  background: transparent;
+  color: #000;
+}
+
+.modern-site .home-news-toggle {
+  min-height: 32px;
+  padding: 6px 10px;
+  border-color: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
   font-size: 13px;
 }
 
@@ -1854,6 +1893,12 @@ textarea {
   .classic-site .home-news-box {
     border-top: 1px solid #b8b8b8;
     border-left: 0;
+  }
+
+  .home-news-box.expanded .home-news-list {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
 
   .classic-site .people-grid,
