@@ -166,7 +166,7 @@
 
     if (homeRoot) {
       clear(homeRoot);
-      sorted.slice(0, 6).forEach((item) => {
+      sorted.slice(0, 3).forEach((item) => {
         const row = el("article", "home-news-item");
         row.appendChild(el("time", "", formatDate(item.date)));
         row.appendChild(el("p", "", item.text));
