@@ -11,8 +11,12 @@
   const state = {
     filter: "all",
     query: "",
-    publications: []
+    publications: [],
+    theme: "classic",
+    copy: {}
   };
+
+  const themeKey = "vie-site-theme";
 
   const monthFormat = new Intl.DateTimeFormat("en", {
     month: "short",
@@ -101,12 +105,54 @@
     }
   }
 
+  function renderArchiveTimeline(publications) {
+    const root = document.querySelector("#archive-year-bars");
+    if (!root) return;
+    clear(root);
+
+    const years = publications
+      .map((item) => Number(item.year))
+      .filter((year) => Number.isFinite(year) && year > 1900);
+
+    if (!years.length) return;
+
+    const start = Math.min(...years);
+    const end = Math.max(...years);
+    const counts = new Map();
+    years.forEach((year) => counts.set(year, (counts.get(year) || 0) + 1));
+    const maxCount = Math.max(...counts.values(), 1);
+
+    for (let year = start; year <= end; year += 1) {
+      const count = counts.get(year) || 0;
+      const isRecent = year >= end - 3;
+      const bar = count
+        ? el("i", `archive-year-bar${isRecent ? " recent" : ""}`)
+        : el("i", "archive-year-gap");
+      if (count) {
+        bar.style.height = `${Math.max(8, Math.round((count / maxCount) * 42) + 6)}px`;
+        bar.title = `${year}: ${count} publication${count === 1 ? "" : "s"}`;
+        bar.setAttribute("aria-label", bar.title);
+      } else {
+        bar.setAttribute("aria-hidden", "true");
+      }
+      root.appendChild(bar);
+    }
+
+    const range = `${start}-${end}`;
+    const rangeNode = document.querySelector("[data-archive-field='range']");
+    const startNode = document.querySelector("[data-archive-field='start']");
+    const endNode = document.querySelector("[data-archive-field='end']");
+    if (rangeNode) rangeNode.textContent = range;
+    if (startNode) startNode.textContent = String(start);
+    if (endNode) endNode.textContent = String(end);
+  }
+
   function renderResearch(items) {
     const root = document.querySelector("#research-list");
     clear(root);
     items.forEach((item, index) => {
       const card = el("article", "research-item");
-      card.appendChild(el("span", "axis-index", `Axis ${String(index + 1).padStart(2, "0")}`));
+      card.appendChild(el("span", "axis-index", `${state.copy.researchAxisPrefix || "Axis"} ${String(index + 1).padStart(2, "0")}`));
       card.appendChild(el("h3", "", item));
       root.appendChild(card);
     });
@@ -114,8 +160,21 @@
 
   function renderNews(news) {
     const root = document.querySelector("#news-list");
+    const homeRoot = document.querySelector("#home-news-list");
     clear(root);
-    news.sort(byDateDesc).forEach((item) => {
+    const sorted = news.slice().sort(byDateDesc);
+
+    if (homeRoot) {
+      clear(homeRoot);
+      sorted.slice(0, 6).forEach((item) => {
+        const row = el("article", "home-news-item");
+        row.appendChild(el("time", "", formatDate(item.date)));
+        row.appendChild(el("p", "", item.text));
+        homeRoot.appendChild(row);
+      });
+    }
+
+    sorted.forEach((item) => {
       const row = el("article", "timeline-item");
       row.appendChild(el("time", "activity-date", formatDate(item.date)));
       row.appendChild(el("div", "", item.text));
@@ -139,7 +198,7 @@
       .sort((a, b) => byYearDesc(a, b) || String(a.title).localeCompare(String(b.title)));
 
     if (!items.length) {
-      root.appendChild(el("div", "empty", "No publication matches the current filter."));
+      root.appendChild(el("div", "empty", state.copy.publicationEmptyText || "No publication matches the current filter."));
       return;
     }
 
@@ -165,7 +224,7 @@
     seminars.sort(byDateDesc).slice(0, 12).forEach((item) => {
       const card = el("article", "seminar-card");
       card.appendChild(el("div", "seminar-date", formatDate(item.date)));
-      card.appendChild(el("div", "seminar-track", "Group Seminar"));
+      card.appendChild(el("div", "seminar-track", state.copy.seminarTrackLabel || "Group Seminar"));
       card.appendChild(el("div", "seminar-title", item.title));
       card.appendChild(el("div", "card-meta", item.speaker || ""));
       card.appendChild(renderLinks(item.links));
@@ -224,7 +283,41 @@
     });
   }
 
+  function applyTheme(theme) {
+    const nextTheme = theme === "modern" ? "modern" : "classic";
+    state.theme = nextTheme;
+    document.body.classList.toggle("classic-site", nextTheme === "classic");
+    document.body.classList.toggle("modern-site", nextTheme === "modern");
+
+    const button = document.querySelector("#theme-toggle");
+    if (button) {
+      button.textContent = nextTheme === "classic" ? state.copy.themeModern || "Modern" : state.copy.themeOldSchool || "Old-school";
+      button.setAttribute("aria-pressed", String(nextTheme === "modern"));
+      button.title = nextTheme === "classic"
+        ? state.copy.themeModernTitle || "Switch to modern theme"
+        : state.copy.themeOldSchoolTitle || "Switch to old-school theme";
+    }
+  }
+
+  function getStoredTheme() {
+    try {
+      return localStorage.getItem(themeKey);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function storeTheme(theme) {
+    try {
+      localStorage.setItem(themeKey, theme);
+    } catch (error) {
+      // Theme switching should still work for the current page when storage is unavailable.
+    }
+  }
+
   function bindControls() {
+    applyTheme(getStoredTheme() || "classic");
+
     const toggle = document.querySelector(".nav-toggle");
     const nav = document.querySelector(".site-nav");
     toggle.addEventListener("click", () => {
@@ -232,6 +325,15 @@
       toggle.setAttribute("aria-expanded", String(open));
     });
     nav.addEventListener("click", () => nav.classList.remove("open"));
+
+    const themeToggle = document.querySelector("#theme-toggle");
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        const nextTheme = state.theme === "classic" ? "modern" : "classic";
+        storeTheme(nextTheme);
+        applyTheme(nextTheme);
+      });
+    }
 
     const search = document.querySelector("#publication-search");
     search.addEventListener("input", (event) => {
@@ -268,6 +370,18 @@
     return response.json();
   }
 
+  function applySiteCopy(copy) {
+    const values = copy || {};
+    document.querySelectorAll("[data-copy]").forEach((node) => {
+      const value = values[node.dataset.copy];
+      if (value) node.textContent = value;
+    });
+    document.querySelectorAll("[data-copy-placeholder]").forEach((node) => {
+      const value = values[node.dataset.copyPlaceholder];
+      if (value) node.placeholder = value;
+    });
+  }
+
   async function boot() {
     bindControls();
     try {
@@ -280,19 +394,19 @@
         const value = site[node.dataset.siteField];
         if (value) node.textContent = value;
       });
+      state.copy = site.copy || {};
+      applySiteCopy(site.copy);
+      applyTheme(state.theme);
 
       state.publications = publications;
       renderResearch(site.researchHighlights || []);
       renderHeroSnapshot(publications, seminars);
+      renderArchiveTimeline(publications);
       renderNews(news);
       renderPublications();
       renderSeminars(seminars);
       renderTeam(team);
       renderActivities(activities);
-
-      document.querySelector("[data-stat='publications']").textContent = `${publications.length} publications`;
-      document.querySelector("[data-stat='seminars']").textContent = `${seminars.length} seminars`;
-      document.querySelector("[data-stat='members']").textContent = `${(team.current || []).length + (team.faculty || []).length} members`;
     } catch (error) {
       document.querySelector("main").prepend(el("div", "empty", `Failed to load site data: ${error.message}`));
     }

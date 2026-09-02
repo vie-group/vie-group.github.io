@@ -2,6 +2,16 @@
 
 这套站点是纯静态 GitHub Pages：页面读取 `data/*.json`，不需要后端、不需要数据库。
 
+## 老师可视化修改全站内容
+
+1. 打开 `https://vie-group.github.io/admin.html#visual`。
+2. 在 Repository 区域填写仓库信息，并粘贴有本仓库 `Contents: Read and write` 权限的 GitHub fine-grained token。
+3. 点击 `Load Data`。
+4. 在 `Visual Editor` 中直接点击文字块编辑。它覆盖首页基础文案、研究方向、News、Team、Activity、Publications、Seminars。
+5. 点击 `Commit All Website Content`，后台会把修改写回对应的 `data/*.json` 并生成 commit。
+
+说明：组会 PPT/PDF 这类二进制文件上传仍使用下方 `Seminar Upload`；Visual Editor 负责编辑页面显示的文字、日期、链接和元数据。
+
 ## 老师修改 Publications
 
 1. 打开 `https://vie-group.github.io/admin.html#publication`。

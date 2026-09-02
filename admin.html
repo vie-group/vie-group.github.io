@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="VIE Group website maintenance console.">
     <title>VIE Admin | Website Maintenance</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/admin.css">
-    <script defer src="assets/js/admin.js"></script>
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260828-admin-editor">
+    <link rel="stylesheet" href="assets/css/admin.css?v=20260828-admin-editor">
+    <script defer src="assets/js/admin.js?v=20260828-admin-editor"></script>
   </head>
   <body>
     <header class="site-header">
@@ -20,6 +20,7 @@
       </a>
       <nav class="site-nav admin-nav" aria-label="Admin navigation">
         <a href="index.html">Public Site</a>
+        <a href="#visual">Visual Editor</a>
         <a href="#publication">Publications</a>
         <a href="#seminar">Seminar</a>
         <a href="https://github.com/vie-group/vie-group.github.io/blob/main/docs/maintenance.md">Guide</a>
@@ -63,6 +64,24 @@
           <span>Keep token in this browser tab</span>
         </label>
         <div id="status" class="status" role="status">Ready.</div>
+      </section>
+
+      <section id="visual" class="admin-panel visual-admin">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">WYSIWYG</p>
+            <h2>Visual Editor</h2>
+          </div>
+          <div class="tools">
+            <button id="rerender-visual" type="button">Refresh Preview</button>
+            <button id="commit-visual" class="primary" type="button">Commit All Website Content</button>
+          </div>
+        </div>
+        <p class="panel-note">
+          这里覆盖首页文字、研究方向、News、Team、Activity、Publications、Seminars。点击文本即可编辑；涉及文件上传的组会材料仍使用下方 Seminar Upload。
+        </p>
+        <div id="visual-dirty" class="draft-note">Load data to start editing.</div>
+        <div id="visual-editor-root" class="visual-editor-root"></div>
       </section>
 
       <section id="publication" class="admin-panel">
