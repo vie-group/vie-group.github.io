@@ -1,0 +1,82 @@
+/*
+Template name: Freshmade Software
+Template URI: http://templates.arcsin.se/freshmade-software-website-template/
+Release date: 2009-06-21
+Last updated: 2009-08-10
+Description: A software company styled template in light colors of white, orange and brown.
+Author: Viktor Persson
+Author URI: http://arcsin.se/
+
+This template is licensed under a Creative Commons Attribution 2.5 License:
+http://templates.arcsin.se/license/
+*/
+
+
+.cols_left {width: 50%; float: left;display: block;}
+.cols_right {width: 50%; float: right;display: block;}
+
+.cols_content
+{
+	width: 500px;
+	border: 0;
+}
+
+.cols_content td
+{
+	padding: 8px;
+}
+
+.separator-vertical
+{
+	background: url('../pics/separator-vertical.gif') repeat-y center top;
+	margin: 0px;
+	width: 1000px;
+	display: block;
+}
+
+.clear,.clearer {clear: both;}
+.clearer {
+	display: block;
+	font-size: 0;
+	line-height: 0;
+}
+
+
+.separator-vertical p
+{
+	padding: 0px;
+}
+
+.separator-vertical table
+{
+	margin: 10px 0 0px 0;
+}
+
+.project_main
+{
+	background: #FFF;
+	width: 1000px;
+	display: block;
+	overflow: hidden;
+	margin: 20px auto 20px auto;
+	padding: 0 0 20px 0;
+	  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px;
+  border: 1px solid #eee;
+  border-radius: 15px 15px 15px 15px;
+  -moz-border-radius: 15px 15px 15px 15px;
+  -webkit-border: 15px 15px 15px 15px;
+    padding: 10px 10px 10px 10px;
+}
+
+.archive-separator {
+	background: #EEE;
+	clear: both;
+	color: #FFE;
+	display: block;
+	font-size: 0;
+	height: 1px;
+	line-height: 0;
+	margin: 2px 0 2px;
+}

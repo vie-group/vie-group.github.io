@@ -1,0 +1,1 @@
+/* Optional menu easing plugin placeholder for the archived static site. */
