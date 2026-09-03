@@ -1,0 +1,106 @@
+.legacy-upload {
+  padding: 28px 26px 34px;
+  font-family: Calibri, Arial, sans-serif;
+}
+
+.legacy-upload .upload-note {
+  color: #666;
+  font-size: 14px;
+}
+
+.legacy-upload form {
+  max-width: 760px;
+}
+
+.legacy-upload label {
+  display: block;
+  margin: 0 0 16px;
+  color: #444;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.legacy-upload label span {
+  display: block;
+  margin: 0 0 5px;
+}
+
+.legacy-upload input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #BBB;
+  padding: 7px 8px;
+  color: #333;
+  font: normal 14px Calibri, Arial, sans-serif;
+  background: #FFF;
+}
+
+.legacy-upload input[type="file"] {
+  padding: 5px;
+}
+
+.legacy-upload .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.legacy-upload details {
+  margin: 6px 0 18px;
+  border-top: 1px solid #DDD;
+  padding-top: 12px;
+}
+
+.legacy-upload summary {
+  width: fit-content;
+  cursor: pointer;
+  color: #0A73B8;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.legacy-upload details[open] summary {
+  margin-bottom: 14px;
+}
+
+.legacy-upload .upload-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-top: 1px solid #DDD;
+  padding-top: 18px;
+}
+
+.legacy-upload button {
+  border: 1px solid #777;
+  padding: 7px 14px;
+  color: #FFF;
+  background: #555;
+  font: bold 14px Calibri, Arial, sans-serif;
+  cursor: pointer;
+}
+
+.legacy-upload button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.legacy-upload #upload-status {
+  color: #666;
+  font-size: 13px;
+}
+
+.legacy-upload #upload-status.error {
+  color: #B00020;
+}
+
+.legacy-upload #upload-status.ok {
+  color: #087A38;
+}
+
+@media (max-width: 700px) {
+  .legacy-upload .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

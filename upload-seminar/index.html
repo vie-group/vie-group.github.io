@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Upload Seminar - VIE Group</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styleSummary.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/upload-seminar.css"/>
+    <script src="/static/js/upload-seminar.js" defer></script>
+</head>
+
+<body>
+<div>
+    <header>
+        <div id="logo">
+            <div id = "logo_text">
+                <h1><strong><span style="font-family:huati;font-size:19px; color: #09D4FF">C'e s t &nbsp;  L a</span> <a href="/"><span class="logo_colour">V I E</span></a></strong></h1>
+                <p style="color: #09D4FF;font-family:Microsoft YaHei;margin-left:85pt">Visual Inference&Evaluation</p>
+            </div>
+        </div>
+        <nav>
+            <div id="menu_container">
+                <ul class="sf-menu" id="nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/team">Team</a></li>
+                    <li><a href="/publication">Publication</a></li>
+                    <li><a href="/presentation">Seminar</a></li>
+                    <li><a href="/activity">Activity</a></li>
+                    <li><a href="/daily">Daily</a></li>
+                    <li class="selected"><a href="/upload-seminar">Upload Seminar</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="project_main">
+        <div class="legacy-upload">
+            <div class="in-title border_bottom">
+                <h5 class="tit-ch">Upload Seminar</h5>
+            </div>
+            <p class="upload-note">Submit a seminar record and materials directly to GitHub. A token with repository Contents read/write permission is required.</p>
+
+            <form id="seminar-upload-form">
+                <label>
+                    <span>GitHub Token</span>
+                    <input id="github-token" type="password" autocomplete="off" placeholder="fine-grained token">
+                </label>
+
+                <div class="form-row">
+                    <label>
+                        <span>Date</span>
+                        <input id="seminar-date" type="date" required>
+                    </label>
+                    <label>
+                        <span>Speaker</span>
+                        <input id="seminar-speaker" type="text" required>
+                    </label>
+                </div>
+
+                <label>
+                    <span>Title</span>
+                    <input id="seminar-title" type="text" required>
+                </label>
+
+                <div class="form-row">
+                    <label>
+                        <span>Paper File</span>
+                        <input id="seminar-paper-file" type="file" accept=".pdf">
+                    </label>
+                    <label>
+                        <span>Slides File</span>
+                        <input id="seminar-slides-file" type="file" accept=".pdf,.ppt,.pptx,.key">
+                    </label>
+                </div>
+
+                <details>
+                    <summary>Optional fields</summary>
+                    <div class="form-row">
+                        <label>
+                            <span>Paper URL</span>
+                            <input id="seminar-paper-url" type="url" placeholder="https://arxiv.org/pdf/...">
+                        </label>
+                        <label>
+                            <span>Slides URL</span>
+                            <input id="seminar-slides-url" type="url" placeholder="optional external link">
+                        </label>
+                    </div>
+                    <label>
+                        <span>Tags</span>
+                        <input id="seminar-tags" type="text" placeholder="IQA, diffusion">
+                    </label>
+                    <div class="form-row">
+                        <label>
+                            <span>Owner</span>
+                            <input id="repo-owner" type="text" value="vie-group">
+                        </label>
+                        <label>
+                            <span>Repository</span>
+                            <input id="repo-name" type="text" value="vie-group.github.io">
+                        </label>
+                    </div>
+                    <label>
+                        <span>Branch</span>
+                        <input id="repo-branch" type="text" value="main">
+                    </label>
+                </details>
+
+                <div class="upload-actions">
+                    <button id="commit-seminar" type="submit">Commit Seminar</button>
+                    <span id="upload-status">Ready.</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer style="background: #FFFFFF">
+        <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备19020148号-1</a>
+    </footer>
+</div>
+</body>
+</html>
