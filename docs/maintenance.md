@@ -136,6 +136,37 @@ media/code/
 
 站点前端不会再把 `media/...` 链接跳转到 Wayback。新增材料建议放到 `assets/seminars/` 或 `assets/publications/`；旧站恢复材料保留在 `media/`，方便区分来源。
 
+Activity 页面中 `[Detail]` 对应的隐藏正文已经结构化归档到：
+
+```text
+data/activity-details.json
+data/activity-asset-manifest.json
+```
+
+如需重新从 `activity/index.html` 抽取 detail：
+
+```bash
+npm run archive:activity
+```
+
+如需同时尝试从 Wayback 补抓 detail 图片：
+
+```bash
+npm run archive:activity:download
+```
+
+如果本地网络无法访问 Internet Archive，可在 macOS 终端里先设置代理：
+
+```bash
+export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=http://127.0.0.1:7890
+```
+
+默认只尝试 Wayback 原始文件直链；如果需要更彻底但更慢的 CDX 搜索，可运行：
+
+```bash
+node scripts/archive-activity-details.mjs --download --cdx
+```
+
 如果后续需要重新补抓旧站材料，可运行：
 
 ```bash

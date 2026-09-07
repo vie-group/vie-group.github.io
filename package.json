@@ -7,6 +7,8 @@
     "build:rss": "node scripts/generate-rss.mjs",
     "validate": "node scripts/validate-data.mjs",
     "download:wayback": "node scripts/download-wayback-assets.mjs",
+    "archive:activity": "node scripts/archive-activity-details.mjs",
+    "archive:activity:download": "node scripts/archive-activity-details.mjs --download",
     "add:news": "node scripts/update-data.mjs add-news",
     "add:seminar": "node scripts/update-data.mjs add-seminar",
     "add:publication": "node scripts/update-data.mjs add-publication",

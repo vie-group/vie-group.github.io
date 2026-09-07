@@ -6,7 +6,8 @@ const files = [
   "data/team.json",
   "data/publications.json",
   "data/seminars.json",
-  "data/activities.json"
+  "data/activities.json",
+  "data/activity-details.json"
 ];
 
 function fail(message) {
@@ -92,6 +93,16 @@ for (const item of data["data/news.json"]) {
 for (const item of data["data/activities.json"]) {
   if (!isIsoDate(item.date)) fail(`activity item must use YYYY-MM-DD date: ${item.title}`);
   requireString(item, "title", "activity");
+}
+
+const activityDetails = data["data/activity-details.json"];
+checkUnique(activityDetails, "activity detail");
+for (const item of activityDetails) {
+  requireString(item, "legacyId", "activity detail");
+  requireString(item, "title", "activity detail");
+  requireString(item, "detailText", "activity detail");
+  if (!isIsoDate(item.date)) fail(`activity detail ${item.id} must use YYYY-MM-DD date.`);
+  if (!Array.isArray(item.images)) fail(`activity detail ${item.id} images must be an array.`);
 }
 
 const team = data["data/team.json"];
