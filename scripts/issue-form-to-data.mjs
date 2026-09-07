@@ -33,6 +33,11 @@ function cleanValue(value) {
   return cleaned === "_No response_" ? "" : cleaned;
 }
 
+function firstUrl(value) {
+  const match = String(value || "").match(/https?:\/\/[^\s)>\]]+/);
+  return match ? match[0].replace(/[.,;]+$/, "") : "";
+}
+
 function parseIssueForm(body) {
   const fields = {};
   let current = null;
@@ -75,13 +80,13 @@ async function addSeminarFromIssue() {
   const title = field(fields, "Title", true);
   const speaker = field(fields, "Speaker", true);
   const links = {};
-  for (const [key, label] of [
-    ["paper", "Paper URL"],
-    ["slides", "Slides URL"],
+  for (const [key, label, attachmentLabel] of [
+    ["paper", "Paper URL", "Paper Attachment"],
+    ["slides", "Slides URL", "Slides Attachment"],
     ["code", "Code URL"],
     ["video", "Video URL"]
   ]) {
-    const value = field(fields, label);
+    const value = field(fields, label) || firstUrl(field(fields, attachmentLabel));
     if (value) links[key] = value;
   }
 

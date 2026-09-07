@@ -25,7 +25,8 @@
   margin: 0 0 5px;
 }
 
-.legacy-upload input {
+.legacy-upload input,
+.legacy-upload textarea {
   box-sizing: border-box;
   width: 100%;
   border: 1px solid #BBB;
@@ -35,8 +36,9 @@
   background: #FFF;
 }
 
-.legacy-upload input[type="file"] {
-  padding: 5px;
+.legacy-upload textarea {
+  min-height: 110px;
+  resize: vertical;
 }
 
 .legacy-upload .form-row {
@@ -69,6 +71,15 @@
   gap: 14px;
   border-top: 1px solid #DDD;
   padding-top: 18px;
+}
+
+.legacy-upload .upload-attachment-note {
+  margin: 0 0 18px;
+  border-left: 3px solid #CCC;
+  padding: 8px 10px;
+  color: #555;
+  background: #F7F7F7;
+  font-size: 13px;
 }
 
 .legacy-upload button {

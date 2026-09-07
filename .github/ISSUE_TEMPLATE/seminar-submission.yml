@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Fill this form if you do not have direct write access. A workflow will turn the issue into a pull request.
-        If you need to attach local PPT/PDF files, upload them to the issue comment first and paste the generated links below.
+        If you need to attach local PPT/PDF files, drag them into the Paper Attachment or Slides Attachment field below.
   - type: input
     id: date
     attributes:
@@ -42,6 +42,22 @@ body:
     attributes:
       label: Slides URL
       placeholder: "https://github.com/.../slides.pptx"
+    validations:
+      required: false
+  - type: textarea
+    id: paper_attachment
+    attributes:
+      label: Paper Attachment
+      description: Drag or paste the paper PDF here if no Paper URL is available.
+      placeholder: "Drop paper PDF here."
+    validations:
+      required: false
+  - type: textarea
+    id: slides_attachment
+    attributes:
+      label: Slides Attachment
+      description: Drag or paste the slides PDF/PPT here if no Slides URL is available.
+      placeholder: "Drop slides PDF/PPT here."
     validations:
       required: false
   - type: input

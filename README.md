@@ -25,8 +25,8 @@ The public website renders these JSON files directly. No build step is required.
 ## Maintenance
 
 - Teacher publication editor: `admin.html#publication`
-- Student seminar upload: `admin.html#seminar`
-- Student issue submission: `.github/ISSUE_TEMPLATE/seminar-submission.yml` -> `.github/workflows/seminar-issue-to-pr.yml`
+- Student seminar upload without token: `upload-seminar/` -> GitHub issue -> `.github/workflows/seminar-issue-to-pr.yml`
+- Admin direct seminar upload: `admin.html#seminar`
 - Fallback workflows:
   - `.github/workflows/add-publication.yml`
   - `.github/workflows/add-seminar.yml`

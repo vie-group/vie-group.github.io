@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   create-pr:
-    if: contains(github.event.issue.labels.*.name, 'seminar-submission')
+    if: contains(github.event.issue.labels.*.name, 'seminar-submission') || startsWith(github.event.issue.title, '[Seminar]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +29,10 @@ jobs:
         env:
           ISSUE_BODY_PATH: /tmp/seminar-issue.md
         run: node scripts/issue-form-to-data.mjs seminar
+      - name: Update legacy seminar page
+        env:
+          SEMINAR_ID: ${{ steps.seminar.outputs.id }}
+        run: node scripts/update-legacy-presentation.mjs --insert-latest
       - run: npm run build:rss
       - run: npm run validate
       - name: Create or update PR
@@ -44,7 +48,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B "$branch"
-          git add data/seminars.json rss.xml
+          git add data/seminars.json presentation/index.html rss.xml
 
           if git diff --cached --quiet; then
             gh issue comment "$ISSUE_NUMBER" --body "No data change was detected for \`${SEMINAR_ID}\`."

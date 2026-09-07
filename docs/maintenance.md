@@ -33,7 +33,21 @@
 
 ## 同学上传组会 PPT 与 Paper
 
-有写权限同学的首选路径：
+普通同学的首选路径不需要 GitHub token：
+
+1. 打开 `https://vie-group.github.io/upload-seminar/`。
+2. 在站内填写日期、报告人、题目。
+3. 如已有材料外链，可在 `Optional links and notes` 中填写 Paper URL / Slides URL。
+4. 点击 `Submit via GitHub`。
+5. 页面会跳到一个已经填好标题和正文的 GitHub issue。
+6. 如果材料是本地 PPT/PDF，在 GitHub issue 页面把文件拖到 `Paper Attachment` 或 `Slides Attachment` 对应位置。
+7. 点击 `Submit new issue`。
+8. `Seminar Issue to Pull Request` workflow 会自动更新 `data/seminars.json`、`presentation/index.html` 和 `rss.xml`，并开 Pull Request。
+9. 老师或维护者 review 后 merge，Pages 自动部署。
+
+说明：纯 GitHub Pages 不能把站内选择的本地文件直接塞进 GitHub issue 附件；本地文件必须在 GitHub issue 页面拖入一次。这样可以避免要求上传者申请 fine-grained token。
+
+管理员直写路径保留：
 
 1. 打开 `https://vie-group.github.io/admin.html#seminar`。
 2. 粘贴有本仓库 `Contents: Read and write` 权限的 token。
@@ -48,14 +62,6 @@ assets/seminars/<year>/<date-title-slug>/
 ```
 
 并同步追加 `data/seminars.json`。文件和元数据在同一个 commit 里。
-
-无写权限同学的首选路径：
-
-1. 打开 `https://github.com/vie-group/vie-group.github.io/issues/new?template=seminar-submission.yml`。
-2. 填写日期、报告人、题目、paper/slides 链接。
-3. 如果材料是本地文件，先拖到 issue 编辑框或评论框生成 GitHub 附件链接，再粘贴到对应字段。
-4. 提交 issue 后，`Seminar Issue to Pull Request` workflow 会自动更新 `data/seminars.json` 并开 Pull Request。
-5. 老师或维护者 review 后 merge，Pages 自动部署。
 
 备用 workflow 路径：
 
@@ -115,7 +121,7 @@ Seminar:
 - `Add News Record`: 手动追加 News，并同步更新 RSS。
 - `Add Seminar Record`: 手动追加组会记录，适合已有文件链接时使用。
 - `Add Publication Record`: 手动追加论文记录。
-- `Seminar Issue to Pull Request`: 把同学提交的 `seminar-submission` issue 自动转成 PR。
+- `Seminar Issue to Pull Request`: 把同学提交的 `seminar-submission` issue 自动转成 PR，并同步旧站复刻页 `presentation/index.html`。
 
 ## Localized Archived Content
 

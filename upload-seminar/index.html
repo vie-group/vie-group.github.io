@@ -40,14 +40,9 @@
             <div class="in-title border_bottom">
                 <h5 class="tit-ch">Upload Seminar</h5>
             </div>
-            <p class="upload-note">Submit a seminar record and materials directly to GitHub. A token with repository Contents read/write permission is required.</p>
+            <p class="upload-note">Fill the seminar details here, then submit the pre-filled GitHub issue. If you have local PPT/PDF files, drag them into the GitHub issue page before submitting.</p>
 
             <form id="seminar-upload-form">
-                <label>
-                    <span>GitHub Token</span>
-                    <input id="github-token" type="password" autocomplete="off" placeholder="fine-grained token">
-                </label>
-
                 <div class="form-row">
                     <label>
                         <span>Date</span>
@@ -64,51 +59,34 @@
                     <input id="seminar-title" type="text" required>
                 </label>
 
-                <div class="form-row">
-                    <label>
-                        <span>Paper File</span>
-                        <input id="seminar-paper-file" type="file" accept=".pdf">
-                    </label>
-                    <label>
-                        <span>Slides File</span>
-                        <input id="seminar-slides-file" type="file" accept=".pdf,.ppt,.pptx,.key">
-                    </label>
-                </div>
-
                 <details>
-                    <summary>Optional fields</summary>
+                    <summary>Optional links and notes</summary>
                     <div class="form-row">
                         <label>
                             <span>Paper URL</span>
-                            <input id="seminar-paper-url" type="url" placeholder="https://arxiv.org/pdf/...">
+                            <input id="seminar-paper-url" type="text" placeholder="https://arxiv.org/pdf/... or media/pdf/...">
                         </label>
                         <label>
                             <span>Slides URL</span>
-                            <input id="seminar-slides-url" type="url" placeholder="optional external link">
+                            <input id="seminar-slides-url" type="text" placeholder="https://... or media/ppt/...">
                         </label>
                     </div>
                     <label>
                         <span>Tags</span>
                         <input id="seminar-tags" type="text" placeholder="IQA, diffusion">
                     </label>
-                    <div class="form-row">
-                        <label>
-                            <span>Owner</span>
-                            <input id="repo-owner" type="text" value="vie-group">
-                        </label>
-                        <label>
-                            <span>Repository</span>
-                            <input id="repo-name" type="text" value="vie-group.github.io">
-                        </label>
-                    </div>
                     <label>
-                        <span>Branch</span>
-                        <input id="repo-branch" type="text" value="main">
+                        <span>Abstract</span>
+                        <textarea id="seminar-abstract" rows="5" placeholder="Optional short summary"></textarea>
                     </label>
                 </details>
 
+                <div class="upload-attachment-note">
+                    The GitHub issue page will include Paper Attachment and Slides Attachment sections. Drag local files there before clicking Submit new issue.
+                </div>
+
                 <div class="upload-actions">
-                    <button id="commit-seminar" type="submit">Commit Seminar</button>
+                    <button id="commit-seminar" type="submit">Submit via GitHub</button>
                     <span id="upload-status">Ready.</span>
                 </div>
             </form>
