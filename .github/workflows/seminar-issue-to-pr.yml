@@ -52,7 +52,7 @@ jobs:
           git add data/seminars.json presentation/index.html rss.xml
 
           if git diff --cached --quiet; then
-            gh issue comment "$ISSUE_NUMBER" --body "No data change was detected for \`${SEMINAR_ID}\`."
+            gh issue close "$ISSUE_NUMBER" --comment "No data change was detected for \`${SEMINAR_ID}\`; this submission may already have been processed."
             exit 0
           fi
 
@@ -69,4 +69,4 @@ jobs:
             gh pr edit "$pr_url" --title "Add seminar: ${SEMINAR_TITLE}" --body "$body"
           fi
           gh pr merge "$pr_url" --squash --delete-branch
-          gh issue comment "$ISSUE_NUMBER" --body "Created/updated and merged PR: ${pr_url}"
+          gh issue close "$ISSUE_NUMBER" --comment "Created/updated and merged PR: ${pr_url}"
