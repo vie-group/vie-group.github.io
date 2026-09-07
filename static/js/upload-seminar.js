@@ -31,19 +31,20 @@
   }
 
   function issueBody(data) {
-    return [
-      "### How to submit\n1. Keep the seminar metadata below.\n2. If the paper already has a PDF link, leave Paper Attachment unchanged.\n3. To submit a PPT/PDF file, click under Slides Attachment and drag the file into this GitHub issue editor. GitHub will insert an upload link there.\n4. Click Submit new issue.\n",
+    var sections = [
+      "### How to submit\n1. Keep the seminar metadata below.\n2. If a URL is already listed, no upload is needed for that item.\n3. Drag local PPT/PDF files into the attachment section shown below. GitHub will insert an upload link there.\n4. Click Submit new issue.\n",
       field("Date", data.date),
       field("Speaker", data.speaker),
-      field("Title", data.title),
-      field("Paper URL", data.paperUrl),
-      field("Slides URL", data.slidesUrl),
-      field("Paper Attachment", "", "If no Paper URL is available, drag the paper PDF below this line."),
-      field("Slides Attachment", "", "Drag the seminar PPT/PDF below this line."),
-      field("Tags", data.tags),
-      field("Abstract", data.abstract),
-      "### Submission Note\nGenerated from https://www.vie.group/upload-seminar/.\n"
-    ].join("\n");
+      field("Title", data.title)
+    ];
+    if (data.paperUrl) sections.push(field("Paper URL", data.paperUrl));
+    if (data.slidesUrl) sections.push(field("Slides URL", data.slidesUrl));
+    if (!data.paperUrl) sections.push(field("Paper Attachment", "", "If no Paper URL is available, drag the paper PDF below this line."));
+    if (!data.slidesUrl) sections.push(field("Slides Attachment", "", "Drag the seminar PPT/PDF below this line."));
+    if (data.tags) sections.push(field("Tags", data.tags));
+    if (data.abstract) sections.push(field("Abstract", data.abstract));
+    sections.push("### Submission Note\nGenerated from https://www.vie.group/upload-seminar/.\n");
+    return sections.join("\n");
   }
 
   function buildIssueUrl(data) {
