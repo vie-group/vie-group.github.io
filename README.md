@@ -25,7 +25,7 @@ The public website renders these JSON files directly. No build step is required.
 ## Maintenance
 
 - Teacher publication editor: `admin.html#publication`
-- Student seminar upload without token: `upload-seminar/` -> GitHub issue with image/PPT/PDF attachment links -> `.github/workflows/seminar-issue-to-pr.yml`
+- Student seminar upload without token: `upload-seminar/` -> GitHub issue with image/PPT/PDF attachments -> workflow-localized files under `assets/seminars/`
 - Admin direct seminar upload: `admin.html#seminar`
 - Fallback workflows:
   - `.github/workflows/add-publication.yml`

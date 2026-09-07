@@ -1,6 +1,29 @@
-import { readFile, writeFile, appendFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile, appendFile } from "node:fs/promises";
 
 const command = process.argv[2];
+const attachmentContentTypes = new Map([
+  ["application/pdf", ".pdf"],
+  ["application/zip", ".zip"],
+  ["application/x-zip-compressed", ".zip"],
+  ["application/vnd.ms-powerpoint", ".ppt"],
+  ["application/vnd.openxmlformats-officedocument.presentationml.presentation", ".pptx"],
+  ["application/vnd.ms-powerpoint.presentation.macroenabled.12", ".pptm"],
+  ["image/gif", ".gif"],
+  ["image/jpeg", ".jpg"],
+  ["image/png", ".png"],
+  ["image/svg+xml", ".svg"],
+  ["image/webp", ".webp"],
+  ["video/mp4", ".mp4"],
+  ["video/quicktime", ".mov"]
+]);
+
+const defaultAttachmentExtensions = {
+  code: ".zip",
+  image: ".png",
+  paper: ".pdf",
+  slides: ".pptx",
+  video: ".mp4"
+};
 
 function slugify(value) {
   const slug = String(value || "")
@@ -36,6 +59,80 @@ function cleanValue(value) {
 function firstUrl(value) {
   const match = String(value || "").match(/https?:\/\/[^\s)>\]]+/);
   return match ? match[0].replace(/[.,;]+$/, "") : "";
+}
+
+function isGitHubAttachmentUrl(value) {
+  try {
+    const url = new URL(value);
+    return (
+      (url.hostname === "github.com" && url.pathname.startsWith("/user-attachments/")) ||
+      url.hostname === "user-images.githubusercontent.com"
+    );
+  } catch {
+    return false;
+  }
+}
+
+function extensionFromFilename(value) {
+  const decoded = decodeURIComponent(String(value || ""));
+  const match = decoded.match(/\.([a-z0-9]{1,12})$/i);
+  return match ? `.${match[1].toLowerCase()}` : "";
+}
+
+function filenameFromContentDisposition(value) {
+  const header = String(value || "");
+  const encoded = header.match(/filename\*=UTF-8''([^;]+)/i);
+  if (encoded) return decodeURIComponent(encoded[1].replace(/^"|"$/g, ""));
+  const plain = header.match(/filename="?([^";]+)"?/i);
+  return plain ? plain[1] : "";
+}
+
+function attachmentExtension(kind, sourceUrl, contentType, contentDisposition) {
+  const url = new URL(sourceUrl);
+  const pathFilename = url.pathname.split("/").filter(Boolean).pop() || "";
+  return (
+    extensionFromFilename(pathFilename) ||
+    extensionFromFilename(filenameFromContentDisposition(contentDisposition)) ||
+    attachmentContentTypes.get(String(contentType || "").split(";")[0].trim().toLowerCase()) ||
+    defaultAttachmentExtensions[kind] ||
+    ".bin"
+  );
+}
+
+async function downloadGitHubAttachment(kind, sourceUrl, record) {
+  const response = await fetch(sourceUrl, {
+    redirect: "follow",
+    headers: {
+      "User-Agent": "vie-group-seminar-asset-localizer"
+    }
+  });
+  if (!response.ok) {
+    throw new Error(`Could not download ${kind} attachment (${response.status}): ${sourceUrl}`);
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+  if (/^text\/html\b/i.test(contentType)) {
+    throw new Error(`Attachment download returned HTML instead of a file: ${sourceUrl}`);
+  }
+
+  const year = record.date.slice(0, 4);
+  const dir = `assets/seminars/${year}/${record.id}`;
+  const extension = attachmentExtension(kind, sourceUrl, contentType, response.headers.get("content-disposition"));
+  const path = `${dir}/${kind}${extension}`;
+  const bytes = Buffer.from(await response.arrayBuffer());
+
+  await mkdir(dir, { recursive: true });
+  await writeFile(path, bytes);
+  console.log(`Downloaded ${kind} attachment to ${path}`);
+  return path;
+}
+
+async function localizeAttachmentLinks(links, record) {
+  const localized = {};
+  for (const [key, value] of Object.entries(links)) {
+    localized[key] = isGitHubAttachmentUrl(value) ? await downloadGitHubAttachment(key, value, record) : value;
+  }
+  return localized;
 }
 
 function parseIssueForm(body) {
@@ -79,7 +176,7 @@ async function addSeminarFromIssue() {
 
   const title = field(fields, "Title", true);
   const speaker = field(fields, "Speaker", true);
-  const links = {};
+  const rawLinks = {};
   for (const [key, label, attachmentLabel] of [
     ["image", "Image URL", "Image Attachment"],
     ["paper", "Paper URL", "Paper Attachment"],
@@ -88,11 +185,14 @@ async function addSeminarFromIssue() {
     ["video", "Video URL"]
   ]) {
     const value = field(fields, label) || firstUrl(field(fields, attachmentLabel));
-    if (value) links[key] = value;
+    if (value) rawLinks[key] = value;
   }
 
+  const id = `${date}-${slugify(title)}`;
+  const links = await localizeAttachmentLinks(rawLinks, { date, id });
+
   const record = {
-    id: `${date}-${slugify(title)}`,
+    id,
     date,
     speaker,
     title,
@@ -113,8 +213,30 @@ async function addSeminarFromIssue() {
   console.log(`Prepared seminar PR data for ${record.id}`);
 }
 
+async function localizeExistingSeminars() {
+  const path = "data/seminars.json";
+  const items = JSON.parse(await readFile(path, "utf8"));
+  let changed = false;
+  for (const item of items) {
+    if (!item.links || typeof item.links !== "object") continue;
+    const links = await localizeAttachmentLinks(item.links, item);
+    if (JSON.stringify(links) !== JSON.stringify(item.links)) {
+      item.links = links;
+      changed = true;
+    }
+  }
+  if (changed) {
+    await writeFile(path, `${JSON.stringify(items, null, 2)}\n`, "utf8");
+    console.log("Localized existing seminar attachment links.");
+  } else {
+    console.log("No existing seminar attachment links to localize.");
+  }
+}
+
 if (command === "seminar") {
   await addSeminarFromIssue();
+} else if (command === "localize") {
+  await localizeExistingSeminars();
 } else {
-  throw new Error("Usage: node scripts/issue-form-to-data.mjs seminar");
+  throw new Error("Usage: node scripts/issue-form-to-data.mjs seminar|localize");
 }

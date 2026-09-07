@@ -9,7 +9,7 @@ labels: seminar-submission
 1. Keep the seminar metadata below.
 2. If a URL is already listed, no upload is needed for that item.
 3. To submit a cover image, PPT, or PDF file, click under the matching Attachment section and drag the file into this GitHub issue editor. GitHub will insert an upload link there.
-4. Click Submit new issue.
+4. Click Submit new issue. The workflow will copy GitHub attachments into this repository.
 
 ### Date
 

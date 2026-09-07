@@ -42,7 +42,7 @@
 5. 页面会跳到一个已经填好标题和正文的 GitHub issue。
 6. 如果材料是本地图片/PPT/PDF，在 GitHub issue 页面把文件拖到 `Image Attachment`、`Paper Attachment` 或 `Slides Attachment` 对应位置。
 7. 点击 `Submit new issue`。
-8. `Seminar Issue to Pull Request` workflow 会自动更新 `data/seminars.json`、`presentation/index.html` 和 `rss.xml`，并开 Pull Request。
+8. `Seminar Issue to Pull Request` workflow 会把 GitHub issue 附件下载到 `assets/seminars/<year>/<seminar-id>/`，再自动更新 `data/seminars.json`、`presentation/index.html` 和 `rss.xml`，并开 Pull Request。
 9. 老师或维护者 review 后 merge，Pages 自动部署。
 
 说明：纯 GitHub Pages 不能把站内选择的本地文件直接塞进 GitHub issue 附件；本地文件必须在 GitHub issue 页面拖入一次。这样可以避免要求上传者申请 fine-grained token。
@@ -105,7 +105,7 @@ Seminar:
   "links": {
     "paper": "assets/seminars/2024/2024-04-07-paper-title/paper.pdf",
     "slides": "assets/seminars/2024/2024-04-07-paper-title/slides.pptx",
-    "image": "https://github.com/user-attachments/assets/example-image"
+    "image": "assets/seminars/2024/2024-04-07-paper-title/image.png"
   },
   "tags": ["robustness"]
 }

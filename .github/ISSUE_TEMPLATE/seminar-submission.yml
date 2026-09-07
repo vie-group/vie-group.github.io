@@ -9,6 +9,7 @@ body:
         Fill this form if you do not have direct write access. A workflow will turn the issue into a pull request.
         If the paper already has a PDF link, put it in Paper URL.
         To submit a cover image, PPT, or PDF file, click inside the matching Attachment box and drag the file there. GitHub will insert an upload link automatically.
+        The workflow will copy GitHub attachments into this repository before updating the website.
   - type: input
     id: date
     attributes:
