@@ -57,7 +57,7 @@ jobs:
           fi
 
           git commit -m "Add seminar: ${SEMINAR_TITLE}"
-          git push --force-with-lease origin "$branch"
+          git push --force origin "$branch"
 
           pr_url="$(gh pr list --base "$BASE_BRANCH" --head "$branch" --json url --jq '.[0].url')"
           body="Automated seminar submission from ${ISSUE_URL}.
@@ -68,5 +68,5 @@ jobs:
           else
             gh pr edit "$pr_url" --title "Add seminar: ${SEMINAR_TITLE}" --body "$body"
           fi
-          gh pr merge "$pr_url" --squash --auto --delete-branch
-          gh issue comment "$ISSUE_NUMBER" --body "Created/updated PR and enabled auto-merge: ${pr_url}"
+          gh pr merge "$pr_url" --squash --delete-branch
+          gh issue comment "$ISSUE_NUMBER" --body "Created/updated and merged PR: ${pr_url}"
