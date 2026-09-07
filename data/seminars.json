@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-09-04-mopd-multi-teacher-on-policy-distillation-for-capability-integration-in-llm-post",
+    "date": "2026-09-04",
+    "speaker": "Gefei Chen",
+    "title": "MOPD: Multi-Teacher On-Policy Distillation for Capability Integration in LLM Post-Training",
+    "abstract": "",
+    "links": {
+      "paper": "https://arxiv.org/pdf/2606.30406",
+      "slides": "https://github.com/user-attachments/files/31898516/MOPD_dynamic_slides_portable.zip"
+    },
+    "tags": []
+  },
+  {
     "id": "2024-04-07-zero-shot-adversarial-robustness",
     "date": "2024-04-07",
     "speaker": "Xueqing Yu",
