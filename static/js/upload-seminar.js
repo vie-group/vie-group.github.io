@@ -26,22 +26,23 @@
     return /^(https?:\/\/|media\/|assets\/|\/media\/|\/assets\/)/i.test(value);
   }
 
-  function field(label, value) {
-    return "### " + label + "\n" + (clean(value) || "_No response_") + "\n";
+  function field(label, value, placeholder) {
+    return "### " + label + "\n" + (clean(value) || clean(placeholder)) + "\n";
   }
 
   function issueBody(data) {
     return [
+      "### How to submit\n1. Keep the seminar metadata below.\n2. If the paper already has a PDF link, leave Paper Attachment unchanged.\n3. To submit a PPT/PDF file, click under Slides Attachment and drag the file into this GitHub issue editor. GitHub will insert an upload link there.\n4. Click Submit new issue.\n",
       field("Date", data.date),
       field("Speaker", data.speaker),
       field("Title", data.title),
       field("Paper URL", data.paperUrl),
       field("Slides URL", data.slidesUrl),
-      field("Paper Attachment", "Drag or paste the paper PDF here if no Paper URL is available."),
-      field("Slides Attachment", "Drag or paste the slides PDF/PPT here if no Slides URL is available."),
+      field("Paper Attachment", "", "If no Paper URL is available, drag the paper PDF below this line."),
+      field("Slides Attachment", "", "Drag the seminar PPT/PDF below this line."),
       field("Tags", data.tags),
       field("Abstract", data.abstract),
-      "### Submission Note\nGenerated from https://www.vie.group/upload-seminar/. Please attach local files before submitting this issue.\n"
+      "### Submission Note\nGenerated from https://www.vie.group/upload-seminar/.\n"
     ].join("\n");
   }
 

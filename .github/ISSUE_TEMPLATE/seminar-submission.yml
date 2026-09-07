@@ -7,7 +7,8 @@ body:
     attributes:
       value: |
         Fill this form if you do not have direct write access. A workflow will turn the issue into a pull request.
-        If you need to attach local PPT/PDF files, drag them into the Paper Attachment or Slides Attachment field below.
+        If the paper already has a PDF link, put it in Paper URL.
+        To submit a PPT/PDF file, click inside Paper Attachment or Slides Attachment and drag the file into that box. GitHub will insert an upload link automatically.
   - type: input
     id: date
     attributes:
@@ -48,7 +49,7 @@ body:
     id: paper_attachment
     attributes:
       label: Paper Attachment
-      description: Drag or paste the paper PDF here if no Paper URL is available.
+      description: If no Paper URL is available, drag the paper PDF into this box.
       placeholder: "Drop paper PDF here."
     validations:
       required: false
@@ -56,7 +57,7 @@ body:
     id: slides_attachment
     attributes:
       label: Slides Attachment
-      description: Drag or paste the slides PDF/PPT here if no Slides URL is available.
+      description: Drag the seminar PPT/PDF into this box.
       placeholder: "Drop slides PDF/PPT here."
     validations:
       required: false
