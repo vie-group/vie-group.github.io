@@ -68,4 +68,5 @@ jobs:
           else
             gh pr edit "$pr_url" --title "Add seminar: ${SEMINAR_TITLE}" --body "$body"
           fi
-          gh issue comment "$ISSUE_NUMBER" --body "Created/updated PR: ${pr_url}"
+          gh pr merge "$pr_url" --squash --auto --delete-branch
+          gh issue comment "$ISSUE_NUMBER" --body "Created/updated PR and enabled auto-merge: ${pr_url}"
