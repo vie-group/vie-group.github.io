@@ -81,6 +81,7 @@ async function addSeminarFromIssue() {
   const speaker = field(fields, "Speaker", true);
   const links = {};
   for (const [key, label, attachmentLabel] of [
+    ["image", "Image URL", "Image Attachment"],
     ["paper", "Paper URL", "Paper Attachment"],
     ["slides", "Slides URL", "Slides Attachment"],
     ["code", "Code URL"],

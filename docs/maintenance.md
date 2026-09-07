@@ -37,10 +37,10 @@
 
 1. 打开 `https://vie-group.github.io/upload-seminar/`。
 2. 在站内填写日期、报告人、题目。
-3. 如已有材料外链，可在 `Optional links and notes` 中填写 Paper URL / Slides URL。
+3. 如已有材料外链，可在 `Optional links and notes` 中填写 Image URL / Paper URL / Slides URL。
 4. 点击 `Submit via GitHub`。
 5. 页面会跳到一个已经填好标题和正文的 GitHub issue。
-6. 如果材料是本地 PPT/PDF，在 GitHub issue 页面把文件拖到 `Paper Attachment` 或 `Slides Attachment` 对应位置。
+6. 如果材料是本地图片/PPT/PDF，在 GitHub issue 页面把文件拖到 `Image Attachment`、`Paper Attachment` 或 `Slides Attachment` 对应位置。
 7. 点击 `Submit new issue`。
 8. `Seminar Issue to Pull Request` workflow 会自动更新 `data/seminars.json`、`presentation/index.html` 和 `rss.xml`，并开 Pull Request。
 9. 老师或维护者 review 后 merge，Pages 自动部署。
@@ -104,7 +104,8 @@ Seminar:
   "abstract": "Optional short abstract",
   "links": {
     "paper": "assets/seminars/2024/2024-04-07-paper-title/paper.pdf",
-    "slides": "assets/seminars/2024/2024-04-07-paper-title/slides.pptx"
+    "slides": "assets/seminars/2024/2024-04-07-paper-title/slides.pptx",
+    "image": "https://github.com/user-attachments/assets/example-image"
   },
   "tags": ["robustness"]
 }

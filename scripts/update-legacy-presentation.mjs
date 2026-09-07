@@ -33,11 +33,19 @@ function materialLink(label, href) {
   return normalized ? `<a href="${escapeHtml(normalized)}">${label}</a>&nbsp;&nbsp;` : "";
 }
 
+function imageCell(record) {
+  const image = normalizeHref(record.links?.image);
+  if (!image) {
+    return '<span class="archive-missing-image" style="width:160px;min-height:100px">archived image unavailable</span>';
+  }
+  return `<img onerror="archiveMissingImage(this)" src="${escapeHtml(image)}" width="160"/>`;
+}
+
 function seminarRow(record) {
   const links = record.links || {};
   return `
                     <tr data-seminar-id="${escapeHtml(record.id)}">
-                        <td style="width:20%"><span class="archive-missing-image" style="width:160px;min-height:100px">archived image unavailable</span></td>
+                        <td style="width:20%">${imageCell(record)}</td>
                         <td style="width:80%"><p><font size="3"><b>${escapeHtml(record.title)}</b></font><br/>
                             <font size="2">${escapeHtml(record.speaker)}<br/>
                             </font><i>${escapeHtml(displayDate(record.date))}</i></p>
@@ -69,7 +77,15 @@ if (!record) throw new Error(id ? `Seminar not found: ${id}` : "No seminar recor
 
 let html = await readFile(presentationPath, "utf8");
 if (html.includes(`data-seminar-id="${record.id}"`)) {
-  console.log(`Legacy seminar row already exists: ${record.id}`);
+  const escapedId = record.id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const existingRow = new RegExp(
+    `\\n?\\s*<tr data-seminar-id="${escapedId}">[\\s\\S]*?<tr data-seminar-separator="${escapedId}">[\\s\\S]*?</tr>`,
+    "m"
+  );
+  if (!existingRow.test(html)) throw new Error(`Could not replace legacy seminar row: ${record.id}`);
+  html = html.replace(existingRow, `\n${seminarRow(record).trimEnd()}`);
+  await writeFile(presentationPath, html, "utf8");
+  console.log(`Updated legacy seminar row: ${record.id}`);
   process.exit(0);
 }
 

@@ -32,13 +32,15 @@
 
   function issueBody(data) {
     var sections = [
-      "### How to submit\n1. Keep the seminar metadata below.\n2. If a URL is already listed, no upload is needed for that item.\n3. Drag local PPT/PDF files into the attachment section shown below. GitHub will insert an upload link there.\n4. Click Submit new issue.\n",
+      "### How to submit\n1. Keep the seminar metadata below.\n2. If a URL is already listed, no upload is needed for that item.\n3. Drag local image/PPT/PDF files into the attachment section shown below. GitHub will insert an upload link there.\n4. Click Submit new issue.\n",
       field("Date", data.date),
       field("Speaker", data.speaker),
       field("Title", data.title)
     ];
+    if (data.imageUrl) sections.push(field("Image URL", data.imageUrl));
     if (data.paperUrl) sections.push(field("Paper URL", data.paperUrl));
     if (data.slidesUrl) sections.push(field("Slides URL", data.slidesUrl));
+    if (!data.imageUrl) sections.push(field("Image Attachment", "", "Drag the seminar thumbnail image below this line."));
     if (!data.paperUrl) sections.push(field("Paper Attachment", "", "If no Paper URL is available, drag the paper PDF below this line."));
     if (!data.slidesUrl) sections.push(field("Slides Attachment", "", "Drag the seminar PPT/PDF below this line."));
     if (data.tags) sections.push(field("Tags", data.tags));
@@ -61,6 +63,7 @@
       date: clean($("seminar-date").value),
       speaker: clean($("seminar-speaker").value),
       title: clean($("seminar-title").value),
+      imageUrl: clean($("seminar-image-url").value),
       paperUrl: clean($("seminar-paper-url").value),
       slidesUrl: clean($("seminar-slides-url").value),
       tags: clean($("seminar-tags").value),
@@ -75,8 +78,8 @@
       setStatus("Speaker and title are required.", "error");
       return;
     }
-    if (!isValidLink(data.paperUrl) || !isValidLink(data.slidesUrl)) {
-      setStatus("Paper/Slides URL must be http(s) or a repository path under media/ or assets/.", "error");
+    if (!isValidLink(data.imageUrl) || !isValidLink(data.paperUrl) || !isValidLink(data.slidesUrl)) {
+      setStatus("Image/Paper/Slides URL must be http(s) or a repository path under media/ or assets/.", "error");
       return;
     }
 
