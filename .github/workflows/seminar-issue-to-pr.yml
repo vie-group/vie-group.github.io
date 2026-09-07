@@ -49,13 +49,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B "$branch"
-          git add data/seminars.json presentation/index.html rss.xml
 
-          if git diff --cached --quiet; then
+          if git diff --quiet -- data/seminars.json presentation/index.html; then
             gh issue close "$ISSUE_NUMBER" --comment "No data change was detected for \`${SEMINAR_ID}\`; this submission may already have been processed."
             exit 0
           fi
 
+          git add data/seminars.json presentation/index.html rss.xml
           git commit -m "Add seminar: ${SEMINAR_TITLE}"
           git push --force origin "$branch"
 
