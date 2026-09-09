@@ -15,7 +15,7 @@
         <span class="brand-mark">VIE</span>
         <span>
           <strong>Website Admin</strong>
-          <small>GitHub-backed static maintenance</small>
+          <small>GitHub-backed content maintenance</small>
         </span>
       </a>
       <nav class="site-nav admin-nav" aria-label="Admin navigation">
@@ -23,7 +23,7 @@
         <a href="#visual">Visual Editor</a>
         <a href="#publication">Publications</a>
         <a href="#seminar">Seminar</a>
-        <a href="https://github.com/vie-group/vie-group.github.io/blob/main/docs/maintenance.md">Guide</a>
+        <a href="https://github.com/vie-group/vie-group.github.io/blob/wayback-20240414-1to1/docs/maintenance.md">Guide</a>
       </nav>
     </header>
 
@@ -32,7 +32,7 @@
         <div>
           <p class="eyebrow">VIE Website</p>
           <h1>Content Console</h1>
-          <p>用 GitHub 账号直接维护论文与组会材料，所有修改会生成真实 commit。</p>
+        <p>用 GitHub 账号直接维护论文与组会材料，所有修改会提交到内容仓库。</p>
         </div>
       </section>
 
@@ -48,7 +48,7 @@
           </label>
           <label class="repo-default-field">
             <span>Repo</span>
-            <input id="repo-name" value="vie-group.github.io" autocomplete="off">
+            <input id="repo-name" value="vie-group-content" autocomplete="off">
           </label>
           <label class="repo-default-field">
             <span>Branch</span>
@@ -78,7 +78,7 @@
           </div>
         </div>
         <p class="panel-note">
-          这里覆盖首页文字、研究方向、News、Team、Activity、Publications、Seminars。点击文本即可编辑；涉及文件上传的组会材料仍使用下方 Seminar Upload。
+          这里覆盖首页文字、研究方向、News、Team、Activity、Publications、Seminars。点击文本即可编辑；涉及公开投稿的组会材料建议使用 legacy Upload Seminar。
         </p>
         <div id="visual-dirty" class="draft-note">Load data to start editing.</div>
         <div id="visual-editor-root" class="visual-editor-root"></div>
@@ -144,7 +144,7 @@
         </div>
         <div class="tools form-actions">
           <button id="save-publication" type="button">Save Draft</button>
-          <a class="button" href="https://github.com/vie-group/vie-group.github.io/edit/main/data/publications.json">GitHub Editor</a>
+          <a class="button" href="https://github.com/vie-group/vie-group-content/edit/main/data/publications.json">GitHub Editor</a>
         </div>
       </section>
 

@@ -2,6 +2,15 @@ import { readFile, writeFile } from "node:fs/promises";
 
 const seminarsPath = "data/seminars.json";
 const presentationPath = "presentation/index.html";
+const contentSourcePath = "content-source.json";
+
+async function readContentSource() {
+  try {
+    return JSON.parse(await readFile(contentSourcePath, "utf8"));
+  } catch {
+    return {};
+  }
+}
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -15,7 +24,21 @@ function normalizeHref(value) {
   const href = String(value || "").trim();
   if (!href) return "";
   if (/^https?:\/\//i.test(href)) return href;
+  if (/^\/?assets\//i.test(href)) return contentAssetUrl(href.replace(/^\/+/, ""));
   return `/${href.replace(/^\/+/, "")}`;
+}
+
+const contentSource = await readContentSource();
+const contentAssetBaseUrl = (
+  process.env.CONTENT_ASSET_BASE_URL ||
+  contentSource.assetBaseUrl ||
+  contentSource.rawBaseUrl ||
+  ""
+).replace(/\/+$/, "");
+
+function contentAssetUrl(path) {
+  if (!contentAssetBaseUrl) return `/${path}`;
+  return `${contentAssetBaseUrl}/${path}`;
 }
 
 function displayDate(value) {
@@ -70,7 +93,42 @@ function selectedId() {
   return process.env.SEMINAR_ID || (idArg ? idArg.slice("--id=".length) : "");
 }
 
+function isManagedRecord(record) {
+  return record.source?.type === "github-issue";
+}
+
+function removeManagedRows(html) {
+  return html.replace(
+    /\n?\s*<tr data-seminar-id="[^"]+">[\s\S]*?<tr data-seminar-separator="[^"]+">[\s\S]*?<\/tr>/gm,
+    ""
+  );
+}
+
+async function syncManagedRows(seminars) {
+  const marker = '<table class="proj_content">';
+  let html = await readFile(presentationPath, "utf8");
+  html = removeManagedRows(html);
+  const index = html.indexOf(marker);
+  if (index === -1) throw new Error(`Could not find ${marker} in ${presentationPath}.`);
+
+  const rows = seminars
+    .filter(isManagedRecord)
+    .sort((a, b) => String(b.date).localeCompare(String(a.date)))
+    .map(seminarRow)
+    .join("");
+
+  const insertAt = index + marker.length;
+  html = `${html.slice(0, insertAt)}\n${rows}${html.slice(insertAt)}`;
+  await writeFile(presentationPath, html, "utf8");
+  console.log(`Synced ${seminars.filter(isManagedRecord).length} managed legacy seminar rows.`);
+}
+
 const seminars = JSON.parse(await readFile(seminarsPath, "utf8"));
+if (process.argv.includes("--sync-managed")) {
+  await syncManagedRows(seminars);
+  process.exit(0);
+}
+
 const id = selectedId();
 const record = id ? seminars.find((item) => item.id === id) : seminars[0];
 if (!record) throw new Error(id ? `Seminar not found: ${id}` : "No seminar records found.");

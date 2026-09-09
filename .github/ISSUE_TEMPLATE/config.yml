@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Submit seminar content
+    url: https://github.com/vie-group/vie-group-content/issues/new?labels=seminar-submission&template=seminar-submission.yml
+    about: Seminar metadata and file uploads are managed in the content repository.
   - name: Direct website admin
     url: https://vie-group.github.io/admin.html
-    about: Use this if you have repository write access and a GitHub token.
+    about: Use this if you have content repository write access and a GitHub token.

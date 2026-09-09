@@ -88,11 +88,18 @@
     return new TextDecoder().decode(bytes);
   }
 
+  function rawFileUrl(path) {
+    const { owner, repo, branch } = config();
+    if (!owner || !repo) return path;
+    return `https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${encodeURIComponent(branch)}/${path}`;
+  }
+
   async function loadJson(path) {
     const { branch, token } = config();
     if (!token) {
-      const response = await fetch(path, { cache: "no-cache" });
-      if (!response.ok) throw new Error(`${path}: ${response.status}`);
+      const url = rawFileUrl(path);
+      const response = await fetch(url, { cache: "no-cache" });
+      if (!response.ok) throw new Error(`${url}: ${response.status}`);
       return response.json();
     }
     const file = await request(`/contents/${encodePath(path)}?ref=${encodeURIComponent(branch)}`);

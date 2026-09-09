@@ -1,4 +1,7 @@
 (function () {
+  let contentSource = {
+    rawBaseUrl: "https://raw.githubusercontent.com/vie-group/vie-group-content/main/"
+  };
   const dataFiles = {
     site: "data/site.json",
     news: "data/news.json",
@@ -18,6 +21,8 @@
   };
 
   const themeKey = "vie-site-theme";
+  const urlParams = new URLSearchParams(window.location.search);
+  const forceLocalContent = urlParams.get("content") === "local";
 
   const monthFormat = new Intl.DateTimeFormat("en", {
     month: "short",
@@ -64,7 +69,20 @@
   function resolveHref(href) {
     if (!href) return "";
     if (/^(https?:|mailto:)/i.test(href)) return href;
+    if (/^\/?assets\//i.test(href)) return contentUrl(href.replace(/^\/+/, ""));
     return href;
+  }
+
+  function contentUrl(path) {
+    const cleanPath = String(path || "").replace(/^\/+/, "");
+    if (forceLocalContent || window.location.protocol === "file:") return cleanPath;
+    if (/^data\//i.test(cleanPath) && contentSource.dataBaseUrl) {
+      return `${contentSource.dataBaseUrl.replace(/\/+$/, "")}/${cleanPath.replace(/^data\//i, "")}`;
+    }
+    if (/^assets\//i.test(cleanPath) && contentSource.assetBaseUrl) {
+      return `${contentSource.assetBaseUrl.replace(/\/+$/, "")}/${cleanPath}`;
+    }
+    return `${contentSource.rawBaseUrl.replace(/\/+$/, "")}/${cleanPath}`;
   }
 
   function renderLinks(links) {
@@ -389,9 +407,29 @@
   }
 
   async function loadJson(path) {
-    const response = await fetch(path, { cache: "no-cache" });
-    if (!response.ok) throw new Error(`${path}: ${response.status}`);
-    return response.json();
+    const candidates = forceLocalContent || window.location.protocol === "file:" ? [path] : [contentUrl(path), path];
+    let lastError = null;
+    for (const candidate of candidates) {
+      try {
+        const response = await fetch(candidate, { cache: "no-cache" });
+        if (!response.ok) throw new Error(`${candidate}: ${response.status}`);
+        return await response.json();
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError || new Error(`Could not load ${path}`);
+  }
+
+  async function loadContentSource() {
+    try {
+      const response = await fetch("content-source.json", { cache: "no-cache" });
+      if (!response.ok) return;
+      const config = await response.json();
+      if (config && config.rawBaseUrl) contentSource = { ...contentSource, ...config };
+    } catch (error) {
+      // Use the built-in default when the config file is unavailable during local preview.
+    }
   }
 
   function applySiteCopy(copy) {
@@ -409,6 +447,7 @@
   async function boot() {
     bindControls();
     try {
+      await loadContentSource();
       const [site, news, team, publications, seminars, activities] = await Promise.all(
         Object.values(dataFiles).map(loadJson)
       );

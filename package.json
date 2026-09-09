@@ -6,13 +6,9 @@
   "scripts": {
     "build:rss": "node scripts/generate-rss.mjs",
     "validate": "node scripts/validate-data.mjs",
+    "sync:content": "node scripts/sync-content-source.mjs",
     "download:wayback": "node scripts/download-wayback-assets.mjs",
     "archive:activity": "node scripts/archive-activity-details.mjs",
-    "archive:activity:download": "node scripts/archive-activity-details.mjs --download",
-    "add:news": "node scripts/update-data.mjs add-news",
-    "add:seminar": "node scripts/update-data.mjs add-seminar",
-    "add:publication": "node scripts/update-data.mjs add-publication",
-    "issue:seminar": "node scripts/issue-form-to-data.mjs seminar",
-    "issue:seminar-delete": "node scripts/delete-seminar-from-issue.mjs delete"
+    "archive:activity:download": "node scripts/archive-activity-details.mjs --download"
   }
 }

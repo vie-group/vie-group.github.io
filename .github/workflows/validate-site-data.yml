@@ -3,7 +3,7 @@ name: Validate Site Data
 on:
   pull_request:
   push:
-    branches: ["main"]
+    branches: ["main", "wayback-20240414-1to1"]
 
 permissions:
   contents: read

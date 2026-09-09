@@ -1,6 +1,6 @@
 (function () {
   var repoOwner = "vie-group";
-  var repoName = "vie-group.github.io";
+  var repoName = "vie-group-content";
   var issueLabel = "seminar-submission";
 
   function $(id) {
@@ -32,7 +32,7 @@
 
   function issueBody(data) {
     var sections = [
-      "### How to submit\n1. Keep the seminar metadata below.\n2. If a URL is already listed, no upload is needed for that item.\n3. Drag local image/PPT/PDF files into the attachment section shown below. GitHub will insert an upload link there.\n4. Click Submit new issue. The workflow will copy GitHub attachments into this repository.\n",
+      "### How to submit\n1. Keep the seminar metadata below.\n2. If a URL is already listed, no upload is needed for that item.\n3. Drag local image/PPT/PDF files into the attachment section shown below. GitHub will insert an upload link there.\n4. Click Submit new issue. The workflow will copy GitHub attachments into the VIE content repository.\n",
       field("Date", data.date),
       field("Speaker", data.speaker),
       field("Title", data.title)

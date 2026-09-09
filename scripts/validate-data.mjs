@@ -29,7 +29,7 @@ function collectLocalLinks(value, links = []) {
     value.forEach((item) => collectLocalLinks(item, links));
   } else if (value && typeof value === "object") {
     Object.values(value).forEach((item) => collectLocalLinks(item, links));
-  } else if (typeof value === "string" && /^(media|assets)\//.test(value)) {
+  } else if (typeof value === "string" && /^media\//.test(value)) {
     links.push(value);
   }
   return links;
@@ -52,6 +52,15 @@ const data = Object.fromEntries(
     })
   )
 );
+const contentSource = JSON.parse(await readFile("content-source.json", "utf8"));
+
+if (contentSource.schemaVersion !== 1) fail("content-source.json schemaVersion must be 1.");
+if (contentSource.repository !== "vie-group/vie-group-content") {
+  fail("content-source.json repository must be vie-group/vie-group-content.");
+}
+if (!/^https:\/\/raw\.githubusercontent\.com\/vie-group\/vie-group-content\/main\/$/i.test(contentSource.rawBaseUrl || "")) {
+  fail("content-source.json rawBaseUrl must point to vie-group/vie-group-content main.");
+}
 
 if (!data["data/site.json"].name || !data["data/site.json"].repository) {
   fail("data/site.json must include name and repository.");
@@ -87,6 +96,9 @@ for (const item of seminars) {
     if (typeof item.source !== "object") fail(`seminar ${item.id} source must be an object.`);
     if (item.source.type && typeof item.source.type !== "string") {
       fail(`seminar ${item.id} source.type must be a string.`);
+    }
+    if (item.source.repository && typeof item.source.repository !== "string") {
+      fail(`seminar ${item.id} source.repository must be a string.`);
     }
     if (item.source.issueNumber && !Number.isInteger(item.source.issueNumber)) {
       fail(`seminar ${item.id} source.issueNumber must be an integer.`);

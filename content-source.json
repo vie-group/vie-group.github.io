@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "repository": "vie-group/vie-group-content",
+  "branch": "main",
+  "rawBaseUrl": "https://raw.githubusercontent.com/vie-group/vie-group-content/main/",
+  "dataBaseUrl": "https://raw.githubusercontent.com/vie-group/vie-group-content/main/data/",
+  "assetBaseUrl": "https://raw.githubusercontent.com/vie-group/vie-group-content/main/"
+}
