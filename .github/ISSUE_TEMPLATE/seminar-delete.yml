@@ -1,0 +1,33 @@
+name: Delete seminar submission
+description: Request deletion of a seminar that you submitted.
+title: "[Delete Seminar] Original issue #"
+labels: ["seminar-delete"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to delete a seminar submitted through a GitHub issue.
+        The workflow will only proceed if this delete issue is opened by the same GitHub user who opened the original seminar submission issue.
+  - type: input
+    id: original_seminar_issue_number
+    attributes:
+      label: Original Seminar Issue Number
+      description: The GitHub issue number used to submit the seminar, for example 1 or #1.
+      placeholder: "#1"
+    validations:
+      required: true
+  - type: input
+    id: seminar_id
+    attributes:
+      label: Seminar ID
+      description: Optional. Leave empty unless the workflow cannot infer it from the original issue.
+      placeholder: "2026-09-04-mopd-multi-teacher-on-policy-distillation-for-capability-integration-in-llm-post"
+    validations:
+      required: false
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+      placeholder: "Wrong file, duplicate submission, wrong date, etc."
+    validations:
+      required: false

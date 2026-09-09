@@ -190,7 +190,27 @@ async function addSeminarFromIssue() {
 
   const id = `${date}-${slugify(title)}`;
   const links = await localizeAttachmentLinks(rawLinks, { date, id });
+  const source =
+    process.env.ISSUE_NUMBER && process.env.ISSUE_AUTHOR
+      ? {
+          type: "github-issue",
+          issueNumber: Number(process.env.ISSUE_NUMBER),
+          issueUrl: process.env.ISSUE_URL || "",
+          author: process.env.ISSUE_AUTHOR
+        }
+      : null;
 
+  const path = "data/seminars.json";
+  const items = JSON.parse(await readFile(path, "utf8"));
+  const existing = items.find((item) => item.id === id);
+  if (existing && process.env.ISSUE_AUTHOR) {
+    if (!existing.source?.author) {
+      throw new Error(`Seminar ${id} already exists and has no GitHub issue source; update it through a maintainer PR.`);
+    }
+    if (existing.source.author !== process.env.ISSUE_AUTHOR) {
+      throw new Error(`Seminar ${id} was submitted by @${existing.source.author}, not @${process.env.ISSUE_AUTHOR}.`);
+    }
+  }
   const record = {
     id,
     date,
@@ -200,9 +220,9 @@ async function addSeminarFromIssue() {
     links,
     tags: splitTags(field(fields, "Tags"))
   };
+  if (existing?.source) record.source = existing.source;
+  else if (source) record.source = source;
 
-  const path = "data/seminars.json";
-  const items = JSON.parse(await readFile(path, "utf8"));
   const next = [record, ...items.filter((item) => item.id !== record.id)].sort((a, b) =>
     String(b.date).localeCompare(String(a.date))
   );

@@ -12,6 +12,7 @@
     "add:news": "node scripts/update-data.mjs add-news",
     "add:seminar": "node scripts/update-data.mjs add-seminar",
     "add:publication": "node scripts/update-data.mjs add-publication",
-    "issue:seminar": "node scripts/issue-form-to-data.mjs seminar"
+    "issue:seminar": "node scripts/issue-form-to-data.mjs seminar",
+    "issue:seminar-delete": "node scripts/delete-seminar-from-issue.mjs delete"
   }
 }

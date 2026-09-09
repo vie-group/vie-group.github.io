@@ -28,6 +28,9 @@ jobs:
         name: Convert issue form to data
         env:
           ISSUE_BODY_PATH: /tmp/seminar-issue.md
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
         run: node scripts/issue-form-to-data.mjs seminar
       - name: Update legacy seminar page
         env:

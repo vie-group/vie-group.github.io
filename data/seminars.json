@@ -9,7 +9,13 @@
       "paper": "https://arxiv.org/pdf/2606.30406",
       "slides": "assets/seminars/2026/2026-09-04-mopd-multi-teacher-on-policy-distillation-for-capability-integration-in-llm-post/slides.zip"
     },
-    "tags": []
+    "tags": [],
+    "source": {
+      "type": "github-issue",
+      "issueNumber": 1,
+      "issueUrl": "https://github.com/vie-group/vie-group.github.io/issues/1",
+      "author": "frank3215"
+    }
   },
   {
     "id": "2024-04-07-zero-shot-adversarial-robustness",

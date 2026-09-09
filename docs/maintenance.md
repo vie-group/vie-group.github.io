@@ -47,6 +47,26 @@
 
 说明：纯 GitHub Pages 不能把站内选择的本地文件直接塞进 GitHub issue 附件；本地文件必须在 GitHub issue 页面拖入一次。这样可以避免要求上传者申请 fine-grained token。
 
+## 同学删除自己上传的 Seminar
+
+如果上传后发现日期、文件或标题有问题，普通同学可以提交删除请求，不需要 GitHub token：
+
+1. 打开 GitHub -> Issues -> New issue。
+2. 选择 `Delete seminar submission` 模板。
+3. 填写 `Original Seminar Issue Number`，例如 `#1`。
+4. `Seminar ID` 可留空；workflow 会优先从原上传 issue 的 Date / Title 推导。
+5. 提交 issue。
+
+`Seminar Delete Issue to Pull Request` workflow 会先检查两个作者：
+
+```text
+原 seminar 上传 issue 的创建者 == 当前删除 issue 的创建者
+```
+
+只有二者一致时，workflow 才会删除 `data/seminars.json` 里的记录、`presentation/index.html` 的旧站行，以及 `assets/seminars/<year>/<seminar-id>/` 下由 workflow 本地化保存的附件，并自动开 PR / merge / close issue。
+
+如果两者不一致，workflow 只会关闭删除请求并留言，不会修改仓库文件。老师或维护者要删除别人提交的记录时，应直接走 GitHub PR 或仓库维护流程。
+
 管理员直写路径保留：
 
 1. 打开 `https://vie-group.github.io/admin.html#seminar`。
@@ -107,7 +127,13 @@ Seminar:
     "slides": "assets/seminars/2024/2024-04-07-paper-title/slides.pptx",
     "image": "assets/seminars/2024/2024-04-07-paper-title/image.png"
   },
-  "tags": ["robustness"]
+  "tags": ["robustness"],
+  "source": {
+    "type": "github-issue",
+    "issueNumber": 1,
+    "issueUrl": "https://github.com/vie-group/vie-group.github.io/issues/1",
+    "author": "github-user"
+  }
 }
 ```
 
