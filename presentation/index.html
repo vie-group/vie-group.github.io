@@ -47,8 +47,16 @@
         p {
             padding: 0
         }
+
+        .content-seminar-status {
+            color: #777;
+            font-family: Calibri, Times, serif;
+            font-size: 12px;
+            margin: 4px 0 10px 0;
+        }
     </style>
     <script src="/static/js/archive-missing-images.js"></script>
+    <script src="/static/js/presentation-content.js" defer></script>
 </head>
 
 <body>
@@ -79,31 +87,9 @@
         <a class="more hidden-xs" href="/upload-seminar">(upload seminar...)</a>
         <font size="5">&nbsp;&nbsp;&nbsp;Group Seminar</font>
         <div class="archive-separator"></div>
-        <table class="proj_content">
-
-                    <tr data-seminar-id="2026-09-04-mopd-multi-teacher-on-policy-distillation-for-capability-integration-in-llm-post">
-                        <td style="width:20%"><span class="archive-missing-image" style="width:160px;min-height:100px">archived image unavailable</span></td>
-                        <td style="width:80%"><p><font size="3"><b>MOPD: Multi-Teacher On-Policy Distillation for Capability Integration in LLM Post-Training</b></font><br/>
-                            <font size="2">Gefei Chen<br/>
-                            </font><i>September 4, 2026</i></p>
-                            <p>
-                                <a href="https://arxiv.org/pdf/2606.30406">PDF</a>&nbsp;&nbsp;
-                                <a href="https://raw.githubusercontent.com/vie-group/vie-group-content/main/assets/seminars/2026/2026-09-04-mopd-multi-teacher-on-policy-distillation-for-capability-integration-in-llm-post/slides.zip">PPT</a>&nbsp;&nbsp;
-                                
-                                
-                            </p>
-                        </td>
-                    </tr>
-                    <tr data-seminar-separator="2026-09-04-mopd-multi-teacher-on-policy-distillation-for-capability-integration-in-llm-post">
-                        <td colspan="2">
-                            <div class="archive-separator"></div>
-                        </td>
-                    </tr>
-
-
-
-
-
+        <div id="content-seminar-status" class="content-seminar-status">Loading current seminar updates from the content repository...</div>
+        <table id="seminar-content-list" class="proj_content">
+                    <tbody id="content-seminar-rows"></tbody>
 
                     <tr>
                         <td style="width:20%"><img

@@ -1,11 +1,12 @@
 # VIE Group Website Maintenance
 
-主站 `vie-group.github.io` 现在是展示与部署层；内容源是 `vie-group/vie-group-content`。
+主站 `vie-group.github.io` 是展示层；内容源是 `vie-group/vie-group-content`。
 
 ```text
 vie-group-content
   data/*.json
   assets/seminars/
+  rss.xml
   issue templates
   content workflows
 
@@ -13,31 +14,19 @@ vie-group.github.io
   legacy HTML/CSS/JS
   media/ legacy archive
   content-source.json
-  sync/deploy workflows
 ```
 
-## 内容同步
+## 内容发布模型
 
-主站通过 `.github/workflows/sync-content.yml` 从 `vie-group-content` 同步：
+主站不再同步或提交内容数据。页面在浏览器中直接读取：
 
 ```text
-vie-group-content/data/*.json -> vie-group.github.io/data/*.json
+https://vie-group.github.io/vie-group-content/data/*.json
+https://vie-group.github.io/vie-group-content/assets/...
+https://vie-group.github.io/vie-group-content/rss.xml
 ```
 
-同步后会重建：
-
-```text
-presentation/index.html
-rss.xml
-```
-
-手动同步路径：
-
-1. 打开 `vie-group.github.io` 的 Actions。
-2. 运行 `Sync Content Repository`。
-3. `content_ref` 默认填 `main`。
-
-如果在 `vie-group-content` 配置 secret `VIE_SITE_SYNC_TOKEN`，content repo push 后会自动触发主站同步。这个 token 需要能在 `vie-group.github.io` 运行 workflow 并写入 contents。
+`presentation/index.html` 保留老站静态列表作为 no-JS fallback；正常访问时会从 content repo 运行时渲染当前 seminar 更新。
 
 ## 老师可视化修改内容
 
@@ -50,7 +39,8 @@ rss.xml
 4. 点击 `Load Data`。
 5. 在 `Visual Editor` 中编辑首页文案、News、Team、Activity、Publications、Seminars。
 6. 点击 `Commit All Website Content`。
-7. 运行主站 `Sync Content Repository`，或依赖 `VIE_SITE_SYNC_TOKEN` 自动触发同步。
+
+内容仓库 Pages 部署完成后，主站会在下次访问时读取最新内容，不需要触发主站 workflow。
 
 ## 老师修改 Publications
 
@@ -73,7 +63,7 @@ https://github.com/vie-group/vie-group-content/edit/main/data/publications.json
 Actions -> Add News Record -> Run workflow
 ```
 
-该 workflow 只更新 `vie-group-content/data/news.json`。主站展示依赖后续同步。
+该 workflow 会更新 `data/news.json` 并重新生成 `rss.xml`。
 
 ## 同学上传组会 PPT 与 Paper
 
@@ -94,14 +84,15 @@ Actions -> Add News Record -> Run workflow
 下载 GitHub issue 附件
 保存到 assets/seminars/<year>/<seminar-id>/
 更新 data/seminars.json
+重新生成 rss.xml
 自动创建并合并 content PR
 关闭原 issue
 ```
 
-主站部署时会把 `assets/seminars/...` 链接解析到：
+主站会把 `assets/seminars/...` 链接解析到：
 
 ```text
-https://raw.githubusercontent.com/vie-group/vie-group-content/main/assets/seminars/...
+https://vie-group.github.io/vie-group-content/assets/seminars/...
 ```
 
 ## 同学删除自己上传的 Seminar
@@ -120,54 +111,17 @@ workflow 会检查：
 原 seminar 上传 issue 的创建者 == 当前删除 issue 的创建者
 ```
 
-一致时才删除 `vie-group-content/data/seminars.json` 记录及对应 `assets/seminars/<year>/<seminar-id>/` 文件，并自动合并 content PR。
+一致时才删除 `vie-group-content/data/seminars.json` 记录及对应 `assets/seminars/<year>/<seminar-id>/` 文件，并重新生成 `rss.xml`。
 
-## 数据格式
+## RSS
 
-Publication:
+RSS 由 content repo 提供：
 
-```json
-{
-  "id": "2024-author-short-title",
-  "type": "conference",
-  "year": 2024,
-  "authors": "A, B, C",
-  "title": "Paper Title",
-  "venue": "CVPR 2024",
-  "note": "Optional pages or location",
-  "links": {
-    "pdf": "assets/publications/2024/paper.pdf",
-    "code": "https://github.com/example/repo",
-    "slide": "assets/publications/2024/slides.pdf"
-  },
-  "tags": ["IQA", "segmentation"]
-}
+```text
+https://vie-group.github.io/vie-group-content/rss.xml
 ```
 
-Seminar:
-
-```json
-{
-  "id": "2024-04-07-paper-title",
-  "date": "2024-04-07",
-  "speaker": "Name",
-  "title": "Seminar Title",
-  "abstract": "Optional short abstract",
-  "links": {
-    "paper": "assets/seminars/2024/2024-04-07-paper-title/paper.pdf",
-    "slides": "assets/seminars/2024/2024-04-07-paper-title/slides.pptx",
-    "image": "assets/seminars/2024/2024-04-07-paper-title/image.png"
-  },
-  "tags": ["robustness"],
-  "source": {
-    "type": "github-issue",
-    "repository": "vie-group/vie-group-content",
-    "issueNumber": 1,
-    "issueUrl": "https://github.com/vie-group/vie-group-content/issues/1",
-    "author": "github-user"
-  }
-}
-```
+主站不再生成或保存 `rss.xml`。
 
 ## Legacy Media
 
@@ -180,23 +134,3 @@ media/code/
 ```
 
 新增材料优先放到 `vie-group-content/assets/`。旧站恢复材料暂不迁移，避免一次性搬运 578MB 历史媒体。
-
-Activity detail 文本归档仍在：
-
-```text
-data/activity-details.json
-data/activity-asset-manifest.json
-```
-
-重新抽取：
-
-```bash
-npm run archive:activity
-```
-
-重新尝试 Wayback 补抓：
-
-```bash
-export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=http://127.0.0.1:7890
-npm run archive:activity:download
-```

@@ -2,7 +2,8 @@
   "schemaVersion": 1,
   "repository": "vie-group/vie-group-content",
   "branch": "main",
-  "rawBaseUrl": "https://raw.githubusercontent.com/vie-group/vie-group-content/main/",
-  "dataBaseUrl": "https://raw.githubusercontent.com/vie-group/vie-group-content/main/data/",
-  "assetBaseUrl": "https://raw.githubusercontent.com/vie-group/vie-group-content/main/"
+  "rawBaseUrl": "https://vie-group.github.io/vie-group-content/",
+  "dataBaseUrl": "https://vie-group.github.io/vie-group-content/data/",
+  "assetBaseUrl": "https://vie-group.github.io/vie-group-content/",
+  "rssUrl": "https://vie-group.github.io/vie-group-content/rss.xml"
 }

@@ -1,6 +1,8 @@
 (function () {
   let contentSource = {
-    rawBaseUrl: "https://raw.githubusercontent.com/vie-group/vie-group-content/main/"
+    rawBaseUrl: "https://vie-group.github.io/vie-group-content/",
+    dataBaseUrl: "https://vie-group.github.io/vie-group-content/data/",
+    assetBaseUrl: "https://vie-group.github.io/vie-group-content/"
   };
   const dataFiles = {
     site: "data/site.json",
@@ -70,7 +72,8 @@
     if (!href) return "";
     if (/^(https?:|mailto:)/i.test(href)) return href;
     if (/^\/?assets\//i.test(href)) return contentUrl(href.replace(/^\/+/, ""));
-    return href;
+    if (/^\/?media\//i.test(href)) return `/${href.replace(/^\/+/, "")}`;
+    return "";
   }
 
   function contentUrl(path) {
@@ -89,8 +92,10 @@
     const row = el("div", "link-row");
     Object.entries(links || {}).forEach(([label, href]) => {
       if (!href) return;
+      const resolved = resolveHref(href);
+      if (!resolved) return;
       const a = el("a", "resource-link", label.toUpperCase());
-      a.href = resolveHref(href);
+      a.href = resolved;
       a.target = "_blank";
       a.rel = "noreferrer";
       row.appendChild(a);

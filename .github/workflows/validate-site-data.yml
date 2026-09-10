@@ -1,4 +1,4 @@
-name: Validate Site Data
+name: Validate Site Shell
 
 on:
   pull_request:
@@ -16,5 +16,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm run build:rss
       - run: npm run validate

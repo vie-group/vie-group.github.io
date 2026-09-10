@@ -4,11 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:rss": "node scripts/generate-rss.mjs",
-    "validate": "node scripts/validate-data.mjs",
-    "sync:content": "node scripts/sync-content-source.mjs",
-    "download:wayback": "node scripts/download-wayback-assets.mjs",
-    "archive:activity": "node scripts/archive-activity-details.mjs",
-    "archive:activity:download": "node scripts/archive-activity-details.mjs --download"
+    "validate": "node scripts/validate-site.mjs"
   }
 }
