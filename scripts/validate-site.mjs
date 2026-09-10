@@ -40,9 +40,27 @@ if ((presentation.match(/<tr\b/gi) || []).length > 0) {
   fail("presentation/index.html must not contain static seminar rows.");
 }
 
+const presentationScript = await readText("static/js/presentation-content.js");
+if (!presentationScript.includes('"/edit-seminar/?id="')) {
+  fail("presentation-content.js must link seminar rows to /edit-seminar/?id=.");
+}
+
 const uploadScript = await readText("static/js/upload-seminar.js");
 if (!uploadScript.includes('var repoName = "vie-group-content";')) {
   fail("upload-seminar.js must open issues in vie-group-content.");
+}
+
+const editPage = await readText("edit-seminar/index.html");
+if (!editPage.includes("/static/js/edit-seminar.js")) {
+  fail("edit-seminar/index.html must load /static/js/edit-seminar.js.");
+}
+
+const editScript = await readText("static/js/edit-seminar.js");
+if (!editScript.includes('var repoName = "vie-group-content";')) {
+  fail("edit-seminar.js must open issues in vie-group-content.");
+}
+if (!editScript.includes('var issueLabel = "seminar-edit";')) {
+  fail("edit-seminar.js must use the seminar-edit issue label.");
 }
 
 for (const file of ["site.json", "news.json", "team.json", "publications.json", "seminars.json", "activities.json"]) {

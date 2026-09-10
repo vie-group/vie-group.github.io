@@ -26,6 +26,7 @@
 }
 
 .legacy-upload input,
+.legacy-upload select,
 .legacy-upload textarea {
   box-sizing: border-box;
   width: 100%;
@@ -34,6 +35,11 @@
   color: #333;
   font: normal 14px Calibri, Arial, sans-serif;
   background: #FFF;
+}
+
+.legacy-upload input[readonly] {
+  color: #555;
+  background: #F3F3F3;
 }
 
 .legacy-upload textarea {
@@ -80,6 +86,11 @@
   color: #555;
   background: #F7F7F7;
   font-size: 13px;
+}
+
+.legacy-upload .upload-attachment-note a {
+  color: #0A73B8;
+  word-break: break-all;
 }
 
 .legacy-upload button {

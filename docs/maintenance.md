@@ -95,6 +95,36 @@ Actions -> Add News Record -> Run workflow
 https://vie-group.github.io/vie-group-content/assets/seminars/...
 ```
 
+## 修改单条 Seminar
+
+推荐从主站进入，不需要 GitHub token：
+
+1. 打开 `https://vie-group.github.io/presentation/`。
+2. 在要修改的 seminar 行点击 `EDIT`；也可以打开 `https://vie-group.github.io/edit-seminar/` 后搜索并选择记录。
+3. 页面会预填该记录当前的日期、报告人、题目、链接、标签和摘要。
+4. 修改成完整的最终状态：
+   - 保留某个 URL/path：不要改它。
+   - 删除某个 URL/path：清空该输入框。
+   - 替换图片、paper 或 slides 文件：在跳转后的 GitHub issue 页面，把新文件拖到对应 `Image Attachment` / `Paper Attachment` / `Slides Attachment` 区域。
+5. 点击 `Submit Edit via GitHub`，确认 GitHub issue 内容后提交。
+
+`vie-group-content` 的 `Seminar Edit Issue to Pull Request` workflow 会把 issue 当作该 seminar 的完整目标记录处理：
+
+```text
+校验提交者身份
+按 Original Seminar ID 定位单条记录
+用新 metadata/links 替换旧记录
+下载 GitHub issue 附件并保存到 assets/seminars/<year>/<seminar-id>/
+清理被替换的旧 content-owned 附件
+重新生成 rss.xml
+自动创建并合并 content PR
+关闭原 issue
+```
+
+`Original Seminar ID` 会保持稳定，即使修改了日期或题目也不会生成新 ID。
+
+这个 edit 流程面向维护者协作，不做“必须是原上传者本人”的限制；但 workflow 只自动处理 `OWNER`、`MEMBER` 或 `COLLABORATOR` 创建的 issue。外部用户提交的 edit issue 会被自动关闭。
+
 ## 同学删除自己上传的 Seminar
 
 删除请求也在 `vie-group-content` 创建：

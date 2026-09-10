@@ -93,6 +93,15 @@
     container.appendChild(text("  "));
   }
 
+  function appendEditLink(container, record) {
+    if (!record.id) return;
+    var link = document.createElement("a");
+    link.href = "/edit-seminar/?id=" + encodeURIComponent(record.id);
+    link.textContent = "EDIT";
+    container.appendChild(link);
+    container.appendChild(text("  "));
+  }
+
   function seminarRow(record) {
     var row = document.createElement("tr");
     row.setAttribute("data-content-seminar-id", record.id || "");
@@ -128,6 +137,7 @@
     appendMaterial(links, "PPT", recordLinks.slides);
     appendMaterial(links, "CODE", recordLinks.code);
     appendMaterial(links, "VIDEO", recordLinks.video);
+    appendEditLink(links, record);
     bodyCell.appendChild(links);
     row.appendChild(bodyCell);
 

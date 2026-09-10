@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Edit Seminar - VIE Group</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styleSummary.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/upload-seminar.css"/>
+    <script src="/static/js/edit-seminar.js" defer></script>
+</head>
+
+<body>
+<div>
+    <header>
+        <div id="logo">
+            <div id = "logo_text">
+                <h1><strong><span style="font-family:huati;font-size:19px; color: #09D4FF">C'e s t &nbsp;  L a</span> <a href="/"><span class="logo_colour">V I E</span></a></strong></h1>
+                <p style="color: #09D4FF;font-family:Microsoft YaHei;margin-left:85pt">Visual Inference&Evaluation</p>
+            </div>
+        </div>
+        <nav>
+            <div id="menu_container">
+                <ul class="sf-menu" id="nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/team">Team</a></li>
+                    <li><a href="/publication">Publication</a></li>
+                    <li class="selected"><a href="/presentation">Seminar</a></li>
+                    <li><a href="/activity">Activity</a></li>
+                    <li><a href="/daily">Daily</a></li>
+                    <li><a href="/upload-seminar">Upload Seminar</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="project_main">
+        <div class="legacy-upload">
+            <div class="in-title border_bottom">
+                <h5 class="tit-ch">Edit Seminar</h5>
+            </div>
+            <p class="upload-note">Choose one published seminar, edit the full desired metadata and links, then open a pre-filled GitHub issue in the VIE content repository.</p>
+
+            <form id="seminar-edit-form">
+                <label>
+                    <span>Find Seminar</span>
+                    <input id="seminar-search" type="text" placeholder="Search date, speaker, title, or seminar id">
+                </label>
+
+                <label>
+                    <span>Seminar Record</span>
+                    <select id="seminar-select" required disabled>
+                        <option value="">Loading seminar records...</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>Original Seminar ID</span>
+                    <input id="seminar-original-id" type="text" readonly required>
+                </label>
+
+                <div class="form-row">
+                    <label>
+                        <span>Date</span>
+                        <input id="seminar-date" type="date" required>
+                    </label>
+                    <label>
+                        <span>Speaker</span>
+                        <input id="seminar-speaker" type="text" required>
+                    </label>
+                </div>
+
+                <label>
+                    <span>Title</span>
+                    <input id="seminar-title" type="text" required>
+                </label>
+
+                <details open>
+                    <summary>Links, tags, and abstract</summary>
+                    <div class="form-row">
+                        <label>
+                            <span>Image URL</span>
+                            <input id="seminar-image-url" type="text" placeholder="https://... or assets/seminars/...">
+                        </label>
+                        <label>
+                            <span>Paper URL</span>
+                            <input id="seminar-paper-url" type="text" placeholder="https://arxiv.org/pdf/... or media/pdf/...">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>
+                            <span>Slides URL</span>
+                            <input id="seminar-slides-url" type="text" placeholder="https://... or assets/seminars/...">
+                        </label>
+                        <label>
+                            <span>Code URL</span>
+                            <input id="seminar-code-url" type="text" placeholder="https://github.com/...">
+                        </label>
+                    </div>
+                    <label>
+                        <span>Video URL</span>
+                        <input id="seminar-video-url" type="text" placeholder="https://...">
+                    </label>
+                    <label>
+                        <span>Tags</span>
+                        <input id="seminar-tags" type="text" placeholder="IQA, diffusion">
+                    </label>
+                    <label>
+                        <span>Abstract</span>
+                        <textarea id="seminar-abstract" rows="5" placeholder="Optional short summary"></textarea>
+                    </label>
+                </details>
+
+                <div id="existing-materials" class="upload-attachment-note">Select a seminar to inspect current material links.</div>
+
+                <div class="upload-attachment-note">
+                    Keep a URL/path to retain it. Clear a URL/path to remove it. On the GitHub issue page, drag replacement image, paper, or slides files into the matching Attachment section; attachments override URL fields and will be copied into vie-group-content/assets/seminars/.
+                </div>
+
+                <div class="upload-actions">
+                    <button id="commit-edit" type="submit" disabled>Submit Edit via GitHub</button>
+                    <span id="edit-status">Loading seminar records...</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer style="background: #FFFFFF">
+        <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备19020148号-1</a>
+    </footer>
+</div>
+</body>
+</html>
