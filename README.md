@@ -16,7 +16,7 @@ Open `http://localhost:4173`.
 - `media/`: recovered files from the old `vie.group` site.
 - `content-source.json`: content repository Pages URL configuration.
 
-The website reads content from `https://vie-group.github.io/vie-group-content/` at runtime. The legacy Seminar page renders current seminar updates in the browser while retaining the recovered old HTML as a no-JS fallback.
+The website reads content from `https://vie-group.github.io/vie-group-content/` at runtime. The legacy Seminar page starts empty and renders the seminar archive in the browser after `seminars.json` loads.
 
 ## Maintenance
 

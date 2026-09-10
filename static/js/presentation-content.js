@@ -48,15 +48,6 @@
     return document.createTextNode(String(value || ""));
   }
 
-  function normalizeText(value) {
-    return String(value || "")
-      .normalize("NFKD")
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
   function makeCell(width) {
     var td = document.createElement("td");
     td.style.width = width;
@@ -155,11 +146,6 @@
     return row;
   }
 
-  function isDynamicRecord(record, staticText) {
-    if (record.source && record.source.type) return true;
-    return record.title && staticText.indexOf(normalizeText(record.title)) === -1;
-  }
-
   async function loadSource() {
     try {
       var response = await fetch("/content-source.json", { cache: "no-cache" });
@@ -179,29 +165,24 @@
 
   function render(records) {
     var body = document.getElementById("content-seminar-rows");
-    var table = document.getElementById("seminar-content-list");
-    if (!body || !table) return;
+    if (!body) return;
 
-    var staticText = normalizeText(table.textContent || "");
-    var dynamicRecords = records
-      .filter(function (record) {
-        return isDynamicRecord(record, staticText);
-      })
+    var renderedRecords = records
       .sort(function (a, b) {
         return String(b.date || "").localeCompare(String(a.date || ""));
       });
 
     while (body.firstChild) body.removeChild(body.firstChild);
-    dynamicRecords.forEach(function (record) {
+    renderedRecords.forEach(function (record) {
       body.appendChild(seminarRow(record));
       body.appendChild(separatorRow(record));
     });
 
     var status = document.getElementById("content-seminar-status");
     if (status) {
-      status.textContent = dynamicRecords.length
-        ? "Loaded current seminar updates from the content repository."
-        : "No new seminar updates in the content repository.";
+      status.textContent = renderedRecords.length
+        ? "Loaded seminar list from the content repository."
+        : "No seminar records are published in the content repository.";
     }
   }
 
@@ -211,7 +192,7 @@
       await loadSource();
       render(await loadSeminars());
     } catch (error) {
-      if (status) status.textContent = "Could not load content repository updates; showing archived fallback list.";
+      if (status) status.textContent = "Could not load seminar records from the content repository.";
     }
   }
 

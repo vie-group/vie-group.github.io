@@ -36,6 +36,9 @@ if (!presentation.includes("/static/js/presentation-content.js")) {
 if (!presentation.includes('id="content-seminar-rows"')) {
   fail("presentation/index.html must include #content-seminar-rows.");
 }
+if ((presentation.match(/<tr\b/gi) || []).length > 0) {
+  fail("presentation/index.html must not contain static seminar rows.");
+}
 
 const uploadScript = await readText("static/js/upload-seminar.js");
 if (!uploadScript.includes('var repoName = "vie-group-content";')) {

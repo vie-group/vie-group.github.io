@@ -26,7 +26,7 @@ https://vie-group.github.io/vie-group-content/assets/...
 https://vie-group.github.io/vie-group-content/rss.xml
 ```
 
-`presentation/index.html` 保留老站静态列表作为 no-JS fallback；正常访问时会从 content repo 运行时渲染当前 seminar 更新。
+`presentation/index.html` 初始不包含静态 seminar 行；正常访问时会从 content repo 运行时渲染完整 seminar archive。
 
 ## 老师可视化修改内容
 
