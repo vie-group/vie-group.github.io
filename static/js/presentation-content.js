@@ -48,6 +48,15 @@
     return document.createTextNode(String(value || ""));
   }
 
+  function normalizeText(value) {
+    return String(value || "")
+      .normalize("NFKD")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   function makeCell(width) {
     var td = document.createElement("td");
     td.style.width = width;
@@ -148,7 +157,7 @@
 
   function isDynamicRecord(record, staticText) {
     if (record.source && record.source.type) return true;
-    return record.title && staticText.indexOf(record.title) === -1;
+    return record.title && staticText.indexOf(normalizeText(record.title)) === -1;
   }
 
   async function loadSource() {
@@ -173,7 +182,7 @@
     var table = document.getElementById("seminar-content-list");
     if (!body || !table) return;
 
-    var staticText = table.textContent || "";
+    var staticText = normalizeText(table.textContent || "");
     var dynamicRecords = records
       .filter(function (record) {
         return isDynamicRecord(record, staticText);
