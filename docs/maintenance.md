@@ -69,13 +69,14 @@ Actions -> Add News Record -> Run workflow
 
 普通同学首选路径不需要 GitHub token：
 
-1. 打开 `https://vie-group.github.io/upload-seminar/`。
-2. 在站内填写日期、报告人、题目。
-3. 如已有材料外链，可填写 Image URL / Paper URL / Slides URL。
-4. 点击 `Submit via GitHub`。
-5. 页面会跳到 `vie-group-content` 中已经填好标题和正文的 GitHub issue。
-6. 如果材料是本地图片/PPT/PDF，在 GitHub issue 页面把文件拖到 `Image Attachment`、`Paper Attachment` 或 `Slides Attachment` 对应位置。
-7. 点击 `Submit new issue`。
+1. 打开 `https://vie-group.github.io/presentation/?manage=1`。
+2. 点击 `(upload seminar...)`。
+3. 在站内填写日期、报告人、题目。
+4. 如已有材料外链，可填写 Image URL / Paper URL / Slides URL。
+5. 点击 `Submit via GitHub`。
+6. 页面会跳到 `vie-group-content` 中已经填好标题和正文的 GitHub issue。
+7. 如果材料是本地图片/PPT/PDF，在 GitHub issue 页面把文件拖到 `Image Attachment`、`Paper Attachment` 或 `Slides Attachment` 对应位置。
+8. 点击 `Submit new issue`。
 
 `vie-group-content` 的 `Seminar Issue to Pull Request` workflow 会：
 
@@ -99,8 +100,8 @@ https://vie-group.github.io/vie-group-content/assets/seminars/...
 
 推荐从主站进入，不需要 GitHub token：
 
-1. 打开 `https://vie-group.github.io/presentation/`。
-2. 在要修改的 seminar 行点击 `EDIT`；也可以打开 `https://vie-group.github.io/edit-seminar/` 后搜索并选择记录。
+1. 打开 `https://vie-group.github.io/presentation/?manage=1`。
+2. 在要修改的 seminar 行点击 `EDIT`；也可以打开 `https://vie-group.github.io/edit-seminar/?manage=1` 后搜索并选择记录。
 3. 页面会预填该记录当前的日期、报告人、题目、链接、标签和摘要。
 4. 修改成完整的最终状态：
    - 保留某个 URL/path：不要改它。
@@ -124,6 +125,8 @@ https://vie-group.github.io/vie-group-content/assets/seminars/...
 `Original Seminar ID` 会保持稳定，即使修改了日期或题目也不会生成新 ID。
 
 这个 edit 流程面向维护者协作，不做“必须是原上传者本人”的限制；但 workflow 只自动处理 `OWNER`、`MEMBER` 或 `COLLABORATOR` 创建的 issue。外部用户提交的 edit issue 会被自动关闭。
+
+普通公开访问 `https://vie-group.github.io/presentation/` 时不会显示 upload/edit 入口。维护入口只在 URL 带 `?manage=1` 时显示；这个 flag 只是页面显示开关，不是安全边界。
 
 ## 同学删除自己上传的 Seminar
 

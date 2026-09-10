@@ -21,8 +21,8 @@ The website reads content from `https://vie-group.github.io/vie-group-content/` 
 ## Maintenance
 
 - Teacher publication editor: `admin.html#publication`
-- Student seminar upload without token: `upload-seminar/` -> `vie-group-content` issue with image/PPT/PDF attachments -> workflow-localized files under `vie-group-content/assets/seminars/`
-- Seminar edit without token: `presentation/` row `EDIT` or `edit-seminar/` -> `vie-group-content` issue with full replacement metadata/links/files
+- Student seminar upload without token: `presentation/?manage=1` -> `(upload seminar...)` -> `vie-group-content` issue with image/PPT/PDF attachments -> workflow-localized files under `vie-group-content/assets/seminars/`
+- Seminar edit without token: `presentation/?manage=1` row `EDIT` or `edit-seminar/?manage=1` -> `vie-group-content` issue with full replacement metadata/links/files
 - Student seminar delete without token: `vie-group-content` issue template `Delete seminar submission` -> same-author ownership check -> content PR
 - Admin direct seminar upload: `admin.html#seminar`
 - RSS feed: `https://vie-group.github.io/vie-group-content/rss.xml`

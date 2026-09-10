@@ -56,6 +56,7 @@
         }
     </style>
     <script src="/static/js/archive-missing-images.js"></script>
+    <script src="/static/js/seminar-manage-links.js" defer></script>
     <script src="/static/js/presentation-content.js" defer></script>
 </head>
 
@@ -78,14 +79,14 @@
                     <li  class="selected"><a href="/presentation">Seminar</a></li>
                     <li><a href="/activity">Activity</a></li>
                     <li><a href="/daily">Daily</a></li>
-                    <li><a href="/upload-seminar">Upload Seminar</a></li>
+                    <li data-seminar-manage style="display: none;"><a href="/upload-seminar">Upload Seminar</a></li>
                 </ul>
             </div>
         </nav>
     </header>
     <div class="project_main"><br/>
-        <a class="more hidden-xs" href="/upload-seminar">(upload seminar...)</a>
-        <a class="more hidden-xs" href="/edit-seminar">(edit seminar...)</a>
+        <a class="more" data-seminar-manage style="display: none;" href="/upload-seminar">(upload seminar...)</a>
+        <a class="more" data-seminar-manage style="display: none;" href="/edit-seminar">(edit seminar...)</a>
         <font size="5">&nbsp;&nbsp;&nbsp;Group Seminar</font>
         <div class="archive-separator"></div>
         <div id="content-seminar-status" class="content-seminar-status">Loading seminar list from the content repository...</div>

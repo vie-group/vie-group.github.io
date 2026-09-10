@@ -5,6 +5,17 @@
     rssUrl: "https://vie-group.github.io/vie-group-content/rss.xml"
   };
   var source = defaultSource;
+  var manageMode = hasManageFlag();
+
+  function hasManageFlag() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      return /^(1|true|yes)$/i.test(params.get("manage") || "") ||
+        /^(1|true|yes)$/i.test(params.get("seminar_manage") || "");
+    } catch (error) {
+      return false;
+    }
+  }
 
   function cleanBase(value) {
     return String(value || "").replace(/\/+$/, "");
@@ -94,9 +105,12 @@
   }
 
   function appendEditLink(container, record) {
-    if (!record.id) return;
+    if (!manageMode || !record.id) return;
+    var params = new URLSearchParams();
+    params.set("id", record.id);
+    params.set("manage", "1");
     var link = document.createElement("a");
-    link.href = "/edit-seminar/?id=" + encodeURIComponent(record.id);
+    link.href = "/edit-seminar/?" + params.toString();
     link.textContent = "EDIT";
     container.appendChild(link);
     container.appendChild(text("  "));

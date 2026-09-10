@@ -18,6 +18,17 @@ async function checkUrl(url) {
 }
 
 const source = await readJson("content-source.json");
+const publicHtmlFiles = [
+  "index.html",
+  "home/index.html",
+  "team/index.html",
+  "publication/index.html",
+  "presentation/index.html",
+  "activity/index.html",
+  "daily/index.html",
+  "upload-seminar/index.html",
+  "edit-seminar/index.html"
+];
 
 if (source.schemaVersion !== 1) fail("content-source.json schemaVersion must be 1.");
 if (source.repository !== "vie-group/vie-group-content") {
@@ -33,6 +44,9 @@ const presentation = await readText("presentation/index.html");
 if (!presentation.includes("/static/js/presentation-content.js")) {
   fail("presentation/index.html must load /static/js/presentation-content.js.");
 }
+if (!presentation.includes("/static/js/seminar-manage-links.js")) {
+  fail("presentation/index.html must load /static/js/seminar-manage-links.js.");
+}
 if (!presentation.includes('id="content-seminar-rows"')) {
   fail("presentation/index.html must include #content-seminar-rows.");
 }
@@ -41,8 +55,31 @@ if ((presentation.match(/<tr\b/gi) || []).length > 0) {
 }
 
 const presentationScript = await readText("static/js/presentation-content.js");
-if (!presentationScript.includes('"/edit-seminar/?id="')) {
-  fail("presentation-content.js must link seminar rows to /edit-seminar/?id=.");
+if (!presentationScript.includes("hasManageFlag()")) {
+  fail("presentation-content.js must gate row edit links behind the manage flag.");
+}
+if (!presentationScript.includes('link.href = "/edit-seminar/?" + params.toString();')) {
+  fail("presentation-content.js must link seminar rows to /edit-seminar/ with query parameters.");
+}
+
+const manageScript = await readText("static/js/seminar-manage-links.js");
+if (!manageScript.includes('var manageParam = "manage";')) {
+  fail("seminar-manage-links.js must use the manage query flag.");
+}
+if (!manageScript.includes("seminar-manage-enabled")) {
+  fail("seminar-manage-links.js must enable hidden seminar management links.");
+}
+
+for (const file of publicHtmlFiles) {
+  const html = await readText(file);
+  if (html.includes('href="/upload-seminar"')) {
+    if (!html.includes("/static/js/seminar-manage-links.js")) {
+      fail(`${file} must load /static/js/seminar-manage-links.js when it links to upload-seminar.`);
+    }
+    if (!html.includes("data-seminar-manage")) {
+      fail(`${file} must hide upload-seminar links behind data-seminar-manage.`);
+    }
+  }
 }
 
 const uploadScript = await readText("static/js/upload-seminar.js");

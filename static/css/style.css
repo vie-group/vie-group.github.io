@@ -613,3 +613,15 @@ ul#nav li a:hover, ul#nav li a:focus, ul#nav li.selected {
 	margin-top: 4px;
 	margin-right: 6px;
 }
+
+[data-seminar-manage] {
+  display: none !important;
+}
+
+body.seminar-manage-enabled li[data-seminar-manage] {
+  display: block !important;
+}
+
+body.seminar-manage-enabled a[data-seminar-manage] {
+  display: inline-block !important;
+}
