@@ -16,11 +16,11 @@ Open `http://localhost:4173`.
 - `media/`: recovered files from the old `vie.group` site.
 - `content-source.json`: content repository Pages URL configuration.
 
-The website reads content from `https://vie-group.github.io/vie-group-content/` at runtime. The legacy Seminar page starts empty and renders the seminar archive in the browser after `seminars.json` loads.
+The website reads content from `https://vie-group.github.io/vie-group-content/` at runtime. The legacy Seminar and Publication pages start empty and render their archives in the browser after the corresponding JSON files load.
 
 ## Maintenance
 
-- Teacher publication editor: `admin.html#publication`
+- Teacher publication editor: `admin.html#publication` or `publication/?manage=1` -> `(edit publication...)`
 - Publication edit without token: `publication/?manage=1` -> `(edit publication...)` or `edit-publication/?manage=1` -> `vie-group-content` issue with full replacement metadata/links/files
 - Student seminar upload without token: `presentation/?manage=1` -> `(upload seminar...)` -> `vie-group-content` issue with image/PPT/PDF attachments -> workflow-localized files under `vie-group-content/assets/seminars/`
 - Seminar edit without token: `presentation/?manage=1` row `EDIT` or `edit-seminar/?manage=1` -> `vie-group-content` issue with full replacement metadata/links/files

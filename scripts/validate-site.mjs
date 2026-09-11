@@ -105,11 +105,28 @@ if (!editScript.includes('var issueLabel = "seminar-edit";')) {
 }
 
 const publicationPage = await readText("publication/index.html");
+if (!publicationPage.includes("/static/js/publication-content.js")) {
+  fail("publication/index.html must load /static/js/publication-content.js.");
+}
+if (!publicationPage.includes('id="content-publication-sections"')) {
+  fail("publication/index.html must include #content-publication-sections.");
+}
+if ((publicationPage.match(/<li class="text"/g) || []).length > 0) {
+  fail("publication/index.html must not contain static publication rows.");
+}
 if (!publicationPage.includes('href="/edit-publication"')) {
   fail("publication/index.html must link to /edit-publication.");
 }
 if (!publicationPage.includes("data-content-manage")) {
   fail("publication/index.html must hide edit-publication behind data-content-manage.");
+}
+
+const publicationContentScript = await readText("static/js/publication-content.js");
+if (!publicationContentScript.includes('fetch(contentUrl("publications.json", "dataBaseUrl")')) {
+  fail("publication-content.js must fetch publications.json from the content repository.");
+}
+if (!publicationContentScript.includes('link.href = "/edit-publication/?" + params.toString();')) {
+  fail("publication-content.js must link publication rows to /edit-publication/ with query parameters.");
 }
 
 const publicationEditPage = await readText("edit-publication/index.html");
