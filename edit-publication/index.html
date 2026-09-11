@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Edit Publication - VIE Group</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styleSummary.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/upload-seminar.css"/>
+    <script src="/static/js/seminar-manage-links.js" defer></script>
+    <script src="/static/js/edit-publication.js" defer></script>
+</head>
+
+<body>
+<div>
+    <header>
+        <div id="logo">
+            <div id = "logo_text">
+                <h1><strong><span style="font-family:huati;font-size:19px; color: #09D4FF">C'e s t &nbsp;  L a</span> <a href="/"><span class="logo_colour">V I E</span></a></strong></h1>
+                <p style="color: #09D4FF;font-family:Microsoft YaHei;margin-left:85pt">Visual Inference&Evaluation</p>
+            </div>
+        </div>
+        <nav>
+            <div id="menu_container">
+                <ul class="sf-menu" id="nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/team">Team</a></li>
+                    <li class="selected"><a href="/publication">Publication</a></li>
+                    <li><a href="/presentation">Seminar</a></li>
+                    <li><a href="/activity">Activity</a></li>
+                    <li><a href="/daily">Daily</a></li>
+                    <li data-seminar-manage style="display: none;"><a href="/upload-seminar">Upload Seminar</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="project_main">
+        <div class="legacy-upload">
+            <div class="in-title border_bottom">
+                <h5 class="tit-ch">Edit Publication</h5>
+            </div>
+            <p class="upload-note">Choose one publication, edit the full desired metadata and links, then open a pre-filled GitHub issue in the VIE content repository.</p>
+
+            <form id="publication-edit-form">
+                <label>
+                    <span>Find Publication</span>
+                    <input id="publication-search" type="text" placeholder="Search year, authors, title, venue, or publication id">
+                </label>
+
+                <label>
+                    <span>Publication Record</span>
+                    <select id="publication-select" required disabled>
+                        <option value="">Loading publication records...</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>Original Publication ID</span>
+                    <input id="publication-original-id" type="text" readonly required>
+                </label>
+
+                <div class="form-row">
+                    <label>
+                        <span>Year</span>
+                        <input id="publication-year" type="number" min="1900" max="2100" required>
+                    </label>
+                    <label>
+                        <span>Type</span>
+                        <select id="publication-type" required>
+                            <option value="conference">conference</option>
+                            <option value="journal">journal</option>
+                            <option value="dataset">dataset</option>
+                        </select>
+                    </label>
+                </div>
+
+                <label>
+                    <span>Authors</span>
+                    <input id="publication-authors" type="text" required>
+                </label>
+
+                <label>
+                    <span>Title</span>
+                    <input id="publication-title" type="text" required>
+                </label>
+
+                <label>
+                    <span>Venue</span>
+                    <input id="publication-venue" type="text" required>
+                </label>
+
+                <details open>
+                    <summary>Links, tags, and note</summary>
+                    <label>
+                        <span>Note</span>
+                        <textarea id="publication-note" rows="4" placeholder="Optional publication note"></textarea>
+                    </label>
+                    <div class="form-row">
+                        <label>
+                            <span>PDF URL</span>
+                            <input id="publication-pdf-url" type="text" placeholder="https://... or media/pdf/...">
+                        </label>
+                        <label>
+                            <span>Slide URL</span>
+                            <input id="publication-slide-url" type="text" placeholder="https://... or assets/publications/...">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>
+                            <span>Poster URL</span>
+                            <input id="publication-poster-url" type="text" placeholder="https://... or assets/publications/...">
+                        </label>
+                        <label>
+                            <span>Code URL</span>
+                            <input id="publication-code-url" type="text" placeholder="https://github.com/...">
+                        </label>
+                    </div>
+                    <label>
+                        <span>Tags</span>
+                        <input id="publication-tags" type="text" placeholder="segmentation, weak supervision">
+                    </label>
+                </details>
+
+                <div id="existing-materials" class="upload-attachment-note">Select a publication to inspect current material links.</div>
+
+                <div class="upload-attachment-note">
+                    Keep a URL/path to retain it. Clear a URL/path to remove it. On the GitHub issue page, drag replacement PDF, slide, poster, or code files into the matching Attachment section; attachments override URL fields and will be copied into vie-group-content/assets/publications/.
+                </div>
+
+                <div class="upload-actions">
+                    <button id="commit-edit" type="submit" disabled>Submit Edit via GitHub</button>
+                    <span id="edit-status">Loading publication records...</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer style="background: #FFFFFF">
+        <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备19020148号-1</a>
+    </footer>
+</div>
+</body>
+</html>

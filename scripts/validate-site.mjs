@@ -27,7 +27,8 @@ const publicHtmlFiles = [
   "activity/index.html",
   "daily/index.html",
   "upload-seminar/index.html",
-  "edit-seminar/index.html"
+  "edit-seminar/index.html",
+  "edit-publication/index.html"
 ];
 
 if (source.schemaVersion !== 1) fail("content-source.json schemaVersion must be 1.");
@@ -69,6 +70,9 @@ if (!manageScript.includes('var manageParam = "manage";')) {
 if (!manageScript.includes("seminar-manage-enabled")) {
   fail("seminar-manage-links.js must enable hidden seminar management links.");
 }
+if (!manageScript.includes("[data-seminar-manage], [data-content-manage]")) {
+  fail("seminar-manage-links.js must reveal generic content management links.");
+}
 
 for (const file of publicHtmlFiles) {
   const html = await readText(file);
@@ -98,6 +102,27 @@ if (!editScript.includes('var repoName = "vie-group-content";')) {
 }
 if (!editScript.includes('var issueLabel = "seminar-edit";')) {
   fail("edit-seminar.js must use the seminar-edit issue label.");
+}
+
+const publicationPage = await readText("publication/index.html");
+if (!publicationPage.includes('href="/edit-publication"')) {
+  fail("publication/index.html must link to /edit-publication.");
+}
+if (!publicationPage.includes("data-content-manage")) {
+  fail("publication/index.html must hide edit-publication behind data-content-manage.");
+}
+
+const publicationEditPage = await readText("edit-publication/index.html");
+if (!publicationEditPage.includes("/static/js/edit-publication.js")) {
+  fail("edit-publication/index.html must load /static/js/edit-publication.js.");
+}
+
+const publicationEditScript = await readText("static/js/edit-publication.js");
+if (!publicationEditScript.includes('var repoName = "vie-group-content";')) {
+  fail("edit-publication.js must open issues in vie-group-content.");
+}
+if (!publicationEditScript.includes('var issueLabel = "publication-edit";')) {
+  fail("edit-publication.js must use the publication-edit issue label.");
 }
 
 for (const file of ["site.json", "news.json", "team.json", "publications.json", "seminars.json", "activities.json"]) {

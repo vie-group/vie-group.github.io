@@ -614,14 +614,24 @@ ul#nav li a:hover, ul#nav li a:focus, ul#nav li.selected {
 	margin-right: 6px;
 }
 
-[data-seminar-manage] {
+[data-seminar-manage],
+[data-content-manage] {
   display: none !important;
 }
 
-body.seminar-manage-enabled li[data-seminar-manage] {
+body.seminar-manage-enabled li[data-seminar-manage],
+body.seminar-manage-enabled li[data-content-manage] {
   display: block !important;
 }
 
-body.seminar-manage-enabled a[data-seminar-manage] {
+body.seminar-manage-enabled a[data-seminar-manage],
+body.seminar-manage-enabled a[data-content-manage] {
   display: inline-block !important;
+}
+
+a.content-manage-link {
+  float: right;
+  margin: 4px 18px 0 0;
+  color: #999;
+  font-size: 12px;
 }

@@ -55,6 +55,34 @@ https://vie-group.github.io/vie-group-content/rss.xml
 https://github.com/vie-group/vie-group-content/edit/main/data/publications.json
 ```
 
+## 修改单条 Publication
+
+推荐从主站进入，不需要 GitHub token：
+
+1. 打开 `https://vie-group.github.io/publication/?manage=1`。
+2. 点击 `(edit publication...)`；也可以直接打开 `https://vie-group.github.io/edit-publication/?manage=1` 后搜索并选择记录。
+3. 页面会预填该记录当前的 year、type、authors、title、venue、note、links 和 tags。
+4. 修改成完整的最终状态：
+   - 保留某个 URL/path：不要改它。
+   - 删除某个 URL/path：清空该输入框。
+   - 替换 PDF、slide、poster 或 code 文件：在跳转后的 GitHub issue 页面，把新文件拖到对应 Attachment 区域。
+5. 点击 `Submit Edit via GitHub`，确认 GitHub issue 内容后提交。
+
+`vie-group-content` 的 `Publication Edit Issue to Pull Request` workflow 会：
+
+```text
+校验提交者身份或仓库写权限
+按 Original Publication ID 定位单条记录
+用新 metadata/links 替换旧记录
+下载 GitHub issue 附件并保存到 assets/publications/<year>/<publication-id>/
+清理被替换的旧 content-owned 附件
+重新生成 rss.xml
+自动创建并合并 content PR
+关闭原 issue
+```
+
+`Original Publication ID` 会保持稳定，即使修改 year、authors 或 title 也不会生成新 ID。
+
 ## 老师单独增加 News
 
 在 `vie-group-content` 运行：

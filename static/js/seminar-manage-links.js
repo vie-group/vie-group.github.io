@@ -9,7 +9,8 @@
     "/activity": true,
     "/daily": true,
     "/upload-seminar": true,
-    "/edit-seminar": true
+    "/edit-seminar": true,
+    "/edit-publication": true
   };
 
   function hasManageFlag() {
@@ -43,7 +44,7 @@
   function applyManageMode() {
     if (!hasManageFlag()) return;
     document.body.classList.add("seminar-manage-enabled");
-    Array.prototype.forEach.call(document.querySelectorAll("[data-seminar-manage]"), function (node) {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-seminar-manage], [data-content-manage]"), function (node) {
       node.style.display = "";
     });
     Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (link) {
