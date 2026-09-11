@@ -41,7 +41,7 @@
             <div class="in-title border_bottom">
                 <h5 class="tit-ch">Edit Publication</h5>
             </div>
-            <p class="upload-note">Choose one publication, edit the full desired metadata and links, then open a pre-filled GitHub issue in the VIE content repository.</p>
+            <p class="upload-note">Most edits only need the core citation fields below. File links and less common fields are collapsed.</p>
 
             <form id="publication-edit-form">
                 <label>
@@ -56,25 +56,12 @@
                     </select>
                 </label>
 
-                <label>
-                    <span>Original Publication ID</span>
-                    <input id="publication-original-id" type="text" readonly required>
-                </label>
+                <input id="publication-original-id" type="hidden">
 
-                <div class="form-row">
-                    <label>
-                        <span>Year</span>
-                        <input id="publication-year" type="number" min="1900" max="2100" required>
-                    </label>
-                    <label>
-                        <span>Type</span>
-                        <select id="publication-type" required>
-                            <option value="conference">conference</option>
-                            <option value="journal">journal</option>
-                            <option value="dataset">dataset</option>
-                        </select>
-                    </label>
-                </div>
+                <label>
+                    <span>Year</span>
+                    <input id="publication-year" type="number" min="1900" max="2100" required>
+                </label>
 
                 <label>
                     <span>Authors</span>
@@ -91,8 +78,20 @@
                     <input id="publication-venue" type="text" required>
                 </label>
 
-                <details open>
-                    <summary>Links, tags, and note</summary>
+                <details class="publication-advanced is-collapsed">
+                    <summary>IDs, links, tags, and other fields</summary>
+                    <label>
+                        <span>Publication ID</span>
+                        <input id="publication-visible-id" type="text" readonly>
+                    </label>
+                    <label>
+                        <span>Type</span>
+                        <select id="publication-type" required>
+                            <option value="conference">conference</option>
+                            <option value="journal">journal</option>
+                            <option value="dataset">dataset</option>
+                        </select>
+                    </label>
                     <label>
                         <span>Note</span>
                         <textarea id="publication-note" rows="4" placeholder="Optional publication note"></textarea>
@@ -121,12 +120,11 @@
                         <span>Tags</span>
                         <input id="publication-tags" type="text" placeholder="segmentation, weak supervision">
                     </label>
+                    <div id="existing-materials" class="upload-attachment-note">Select a publication to inspect current material links.</div>
                 </details>
 
-                <div id="existing-materials" class="upload-attachment-note">Select a publication to inspect current material links.</div>
-
                 <div class="upload-attachment-note">
-                    Keep a URL/path to retain it. Clear a URL/path to remove it. On the GitHub issue page, drag replacement PDF, slide, poster, or code files into the matching Attachment section; attachments override URL fields and will be copied into vie-group-content/assets/publications/.
+                    Link/file fields are preserved as currently filled. Open the folded section only when those fields need changes.
                 </div>
 
                 <div class="upload-actions">

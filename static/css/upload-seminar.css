@@ -59,6 +59,12 @@
   padding-top: 12px;
 }
 
+.legacy-upload .publication-advanced.is-collapsed label,
+.legacy-upload .publication-advanced.is-collapsed .form-row,
+.legacy-upload .publication-advanced.is-collapsed .upload-attachment-note {
+  display: none;
+}
+
 .legacy-upload summary {
   width: fit-content;
   cursor: pointer;

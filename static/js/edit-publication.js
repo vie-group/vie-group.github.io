@@ -121,6 +121,7 @@
   function fillForm(record) {
     if (!record) {
       $("publication-original-id").value = "";
+      $("publication-visible-id").value = "";
       $("publication-year").value = "";
       $("publication-type").value = "conference";
       $("publication-authors").value = "";
@@ -139,6 +140,7 @@
 
     var links = record.links || {};
     $("publication-original-id").value = record.id || "";
+    $("publication-visible-id").value = record.id || "";
     $("publication-year").value = record.year || "";
     $("publication-type").value = record.type || "conference";
     $("publication-authors").value = record.authors || "";
@@ -304,6 +306,20 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    var advanced = document.querySelector(".publication-advanced");
+    if (advanced) {
+      var updateAdvancedVisibility = function () {
+        advanced.classList.toggle("is-collapsed", !advanced.open);
+        Array.prototype.forEach.call(advanced.children, function (child) {
+          if (child.tagName && child.tagName.toLowerCase() === "summary") return;
+          child.style.display = advanced.open ? "" : "none";
+        });
+      };
+      updateAdvancedVisibility();
+      advanced.addEventListener("toggle", function () {
+        updateAdvancedVisibility();
+      });
+    }
     $("publication-edit-form").addEventListener("submit", submit);
     $("publication-select").addEventListener("change", function () {
       fillForm(selectedRecord());
