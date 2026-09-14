@@ -188,7 +188,7 @@ https://vie-group.github.io/vie-group-content/assets/seminars/...
 
 `Original Seminar ID` 会保持稳定，即使修改了日期或题目也不会生成新 ID。
 
-这个 edit 流程面向维护者协作，不做“必须是原上传者本人”的限制；但 workflow 只自动处理 `OWNER`、`MEMBER` 或 `COLLABORATOR` 创建的 issue。外部用户提交的 edit issue 会被自动关闭。
+这个 edit 流程面向组内维护者协作，不做“必须是原上传者本人”的限制；但 workflow 只自动处理 `vie-group` 组织成员创建的 issue。外部用户和外部 collaborator 提交的 edit issue 会被自动关闭。
 
 普通公开访问 `https://vie-group.github.io/presentation/` 时不会显示 upload/edit 入口。维护入口只在 URL 带 `?manage=1` 时显示；这个 flag 只是页面显示开关，不是安全边界。
 
