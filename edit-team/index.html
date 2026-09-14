@@ -7,9 +7,9 @@
     <title>Edit Team - VIE Group</title>
     <link rel="stylesheet" type="text/css" href="/static/css/styleSummary.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/upload-seminar.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/upload-seminar.css?v=team-drag-20260914-2"/>
     <script src="/static/js/seminar-manage-links.js" defer></script>
-    <script src="/static/js/edit-team.js" defer></script>
+    <script src="/static/js/edit-team.js?v=team-drag-20260914-2" defer></script>
 </head>
 
 <body>
@@ -41,7 +41,28 @@
             <div class="in-title border_bottom">
                 <h5 class="tit-ch">Edit Team</h5>
             </div>
-            <p class="upload-note">Select a member to update or choose New team member. Change Target Group to move someone between current members, alumni, and faculty.</p>
+            <p class="upload-note">Select a member, or drag an existing member between columns to prepare a status change. Choose New team member for additions.</p>
+
+            <div class="team-drag-editor" id="team-drag-editor">
+                <div class="team-drag-head">
+                    <strong>Visual Status Board</strong>
+                    <span id="team-drag-status">Loading team records...</span>
+                </div>
+                <div class="team-drag-board" id="team-drag-board">
+                    <div class="team-drop-column" data-team-drop-group="faculty">
+                        <div class="team-drop-title">Faculty <span data-team-count="faculty"></span></div>
+                        <div class="team-drop-list" id="team-drop-faculty"></div>
+                    </div>
+                    <div class="team-drop-column" data-team-drop-group="current">
+                        <div class="team-drop-title">Current Members <span data-team-count="current"></span></div>
+                        <div class="team-drop-list" id="team-drop-current"></div>
+                    </div>
+                    <div class="team-drop-column" data-team-drop-group="alumni">
+                        <div class="team-drop-title">Alumni <span data-team-count="alumni"></span></div>
+                        <div class="team-drop-list" id="team-drop-alumni"></div>
+                    </div>
+                </div>
+            </div>
 
             <form id="team-edit-form">
                 <label>

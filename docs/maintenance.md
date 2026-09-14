@@ -47,19 +47,22 @@ https://vie-group.github.io/vie-group-content/rss.xml
 推荐从主站进入，不需要 GitHub token：
 
 1. 打开 `https://vie-group.github.io/team/?manage=1`。
-2. 修改已有成员：点击该成员旁边的 `[edit]`；批量查找或新增成员：点击 `(edit team...)`。
+2. 修改已有成员：点击该成员旁边的 `[edit]`；批量查找、拖动调整状态或新增成员：点击 `(edit team...)`。
 3. 页面会预填该成员当前字段。
 4. 设置 `Operation`：
    - `update`：修改已有成员。
    - `add`：新增成员，或按姓名替换同组已有成员。
    - `delete`：删除该成员。
-5. 设置 `Target Group`：
+5. 调整成员归属：
+   - 可以在 `Visual Status Board` 中把成员卡片拖到目标列。
+   - 也可以直接设置 `Target Group`。
+6. `Target Group` 含义：
    - `current`：当前学生/成员。
    - `alumni`：校友。
    - `faculty`：教师。
-6. 调整状态时，例如当前学生毕业转 alumni，把 `Target Group` 改为 `alumni`，并填写 `Year`、`Degree`、`Destination`。
-7. 如要替换头像，在跳转后的 GitHub issue 页面，把图片拖到 `Image Attachment` 区域。
-8. 提交 issue。
+7. 调整状态时，例如当前学生毕业转 alumni，把卡片拖到 `Alumni`，并填写 `Year`、`Degree`、`Destination`。
+8. 如要替换头像，在跳转后的 GitHub issue 页面，把图片拖到 `Image Attachment` 区域。
+9. 提交 issue。
 
 `vie-group-content` 的 `Team Edit Issue to Pull Request` workflow 会：
 

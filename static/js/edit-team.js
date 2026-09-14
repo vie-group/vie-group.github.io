@@ -9,6 +9,10 @@
   };
   var source = defaultSource;
   var records = [];
+  var groups = ["faculty", "current", "alumni"];
+  var draggedKey = "";
+  var pendingMove = null;
+  var updateAdvancedVisibility = function () {};
 
   function $(id) {
     return document.getElementById(id);
@@ -68,19 +72,23 @@
   }
 
   function flattenTeam(team) {
-    return ["faculty", "current", "alumni"].flatMap(function (group) {
+    return groups.flatMap(function (group) {
       return (team[group] || []).map(function (person) {
         return { group: group, person: person };
       });
     });
   }
 
-  function selectedRecord() {
-    var key = $("team-select").value;
-    if (key === "__new__") return null;
+  function findRecordByKey(key) {
     return records.find(function (record) {
       return recordKey(record) === key;
     });
+  }
+
+  function selectedRecord() {
+    var key = $("team-select").value;
+    if (key === "__new__") return null;
+    return findRecordByKey(key);
   }
 
   function setFormReady(ready) {
@@ -91,7 +99,133 @@
     while (node.firstChild) node.removeChild(node.firstChild);
   }
 
+  function setDragStatus(message) {
+    var node = $("team-drag-status");
+    if (node) node.textContent = message;
+  }
+
+  function setAdvancedOpen(open) {
+    var advanced = document.querySelector(".team-advanced");
+    if (!advanced) return;
+    advanced.open = open;
+    updateAdvancedVisibility();
+  }
+
+  function groupLabel(group) {
+    if (group === "faculty") return "Faculty";
+    if (group === "current") return "Current Members";
+    if (group === "alumni") return "Alumni";
+    return group;
+  }
+
+  function personMeta(person) {
+    return [person.role || person.degree || "", person.email || person.year || "", person.destination || ""]
+      .filter(Boolean)
+      .join(" | ");
+  }
+
+  function displayGroup(record) {
+    var key = recordKey(record);
+    if (pendingMove && pendingMove.key === key) return pendingMove.targetGroup;
+    return record.group;
+  }
+
+  function renderBoard() {
+    if (!$("team-drag-board")) return;
+    var term = clean($("team-search").value).toLowerCase();
+    var selectedKey = $("team-select").value;
+    var counts = { faculty: 0, current: 0, alumni: 0 };
+    groups.forEach(function (group) {
+      var list = $("team-drop-" + group);
+      var count = document.querySelector('[data-team-count="' + group + '"]');
+      var column = document.querySelector('[data-team-drop-group="' + group + '"]');
+      if (list) clearChildren(list);
+      if (count) count.textContent = "";
+      if (column) column.classList.remove("is-drop-target");
+    });
+
+    records.filter(function (record) {
+      return !term || searchText(record).indexOf(term) !== -1;
+    }).forEach(function (record) {
+      var key = recordKey(record);
+      var group = displayGroup(record);
+      var list = $("team-drop-" + group);
+      if (!list) return;
+      counts[group] += 1;
+
+      var card = document.createElement("div");
+      card.className = "team-drag-card";
+      if (selectedKey === key) card.className += " is-selected";
+      if (pendingMove && pendingMove.key === key) card.className += " is-pending";
+      card.draggable = true;
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("data-team-record-key", key);
+      card.title = record.person.name || "";
+
+      var name = document.createElement("div");
+      name.className = "team-drag-name";
+      name.textContent = record.person.name || "(Unnamed)";
+      card.appendChild(name);
+
+      var meta = document.createElement("div");
+      meta.className = "team-drag-meta";
+      meta.textContent = personMeta(record.person) || record.group;
+      card.appendChild(meta);
+
+      card.addEventListener("click", function () {
+        selectRecordForTarget(record, displayGroup(record));
+      });
+      card.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectRecordForTarget(record, displayGroup(record));
+        }
+      });
+      card.addEventListener("dragstart", function (event) {
+        draggedKey = key;
+        card.className += " is-dragging";
+        if (event.dataTransfer) {
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("text/plain", key);
+        }
+      });
+      card.addEventListener("dragend", function () {
+        draggedKey = "";
+        renderBoard();
+      });
+      list.appendChild(card);
+    });
+
+    groups.forEach(function (group) {
+      var list = $("team-drop-" + group);
+      var count = document.querySelector('[data-team-count="' + group + '"]');
+      if (count) count.textContent = "(" + counts[group] + ")";
+      if (list && counts[group] === 0) {
+        var empty = document.createElement("div");
+        empty.className = "team-drag-empty";
+        empty.textContent = "No records";
+        list.appendChild(empty);
+      }
+    });
+
+    if (pendingMove) {
+      var moved = findRecordByKey(pendingMove.key);
+      setDragStatus(moved ? moved.person.name + ": " + groupLabel(moved.group) + " -> " + groupLabel(pendingMove.targetGroup) : "");
+    } else {
+      setDragStatus(records.length ? "Drag an existing member to another column." : "No team records loaded.");
+    }
+  }
+
+  function setPendingMove(record, targetGroup) {
+    if (record && targetGroup && targetGroup !== record.group) {
+      pendingMove = { key: recordKey(record), targetGroup: targetGroup };
+    } else {
+      pendingMove = null;
+    }
+  }
+
   function fillBlankForNew() {
+    pendingMove = null;
     $("team-operation").value = "add";
     $("team-original-group").value = "";
     $("team-original-name").value = "";
@@ -108,6 +242,7 @@
     $("team-profile-url").value = "";
     setFormReady(true);
     setStatus("Ready to add a new team member.", "ok");
+    renderBoard();
   }
 
   function fillForm(record) {
@@ -115,10 +250,13 @@
       if ($("team-select").value === "__new__") {
         fillBlankForNew();
       } else {
+        pendingMove = null;
         setFormReady(false);
+        renderBoard();
       }
       return;
     }
+    pendingMove = null;
     var person = record.person;
     $("team-operation").value = "update";
     $("team-original-group").value = record.group;
@@ -136,6 +274,44 @@
     $("team-profile-url").value = person.profileUrl || "";
     setFormReady(true);
     setStatus("Ready to create a team edit issue for " + person.name + ".", "ok");
+    renderBoard();
+  }
+
+  function selectRecordForTarget(record, targetGroup) {
+    var key = recordKey(record);
+    renderOptions(key);
+    $("team-operation").value = "update";
+    $("team-target-group").value = targetGroup;
+    setPendingMove(record, targetGroup);
+    if (pendingMove) {
+      setStatus("Ready to move " + record.person.name + " from " + groupLabel(record.group) + " to " + groupLabel(targetGroup) + ".", "ok");
+      if (targetGroup === "alumni" || targetGroup === "faculty") setAdvancedOpen(true);
+    }
+    renderBoard();
+  }
+
+  function syncPendingMoveFromForm() {
+    var record = selectedRecord();
+    if (!record) {
+      pendingMove = null;
+      renderBoard();
+      return;
+    }
+    if ($("team-operation").value === "delete") {
+      pendingMove = null;
+      setStatus("Ready to delete " + record.person.name + ".", "ok");
+      renderBoard();
+      return;
+    }
+    var targetGroup = clean($("team-target-group").value);
+    setPendingMove(record, targetGroup);
+    if (pendingMove) {
+      setStatus("Ready to move " + record.person.name + " from " + groupLabel(record.group) + " to " + groupLabel(targetGroup) + ".", "ok");
+      if (targetGroup === "alumni" || targetGroup === "faculty") setAdvancedOpen(true);
+    } else {
+      setStatus("Ready to create a team edit issue for " + record.person.name + ".", "ok");
+    }
+    renderBoard();
   }
 
   function renderOptions(selectedKey) {
@@ -282,13 +458,14 @@
     } catch (error) {
       $("team-select").innerHTML = '<option value="">Could not load team records</option>';
       setStatus("Could not load team records from the content repository.", "error");
+      setDragStatus("Could not load team records.");
     }
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     var advanced = document.querySelector(".team-advanced");
     if (advanced) {
-      var updateAdvancedVisibility = function () {
+      updateAdvancedVisibility = function () {
         advanced.classList.toggle("is-collapsed", !advanced.open);
         Array.prototype.forEach.call(advanced.children, function (child) {
           if (child.tagName && child.tagName.toLowerCase() === "summary") return;
@@ -303,8 +480,28 @@
       if ($("team-select").value === "__new__") fillBlankForNew();
       else fillForm(selectedRecord());
     });
+    $("team-target-group").addEventListener("change", syncPendingMoveFromForm);
+    $("team-operation").addEventListener("change", syncPendingMoveFromForm);
     $("team-search").addEventListener("input", function () {
       renderOptions($("team-select").value);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-team-drop-group]"), function (column) {
+      column.addEventListener("dragover", function (event) {
+        if (!draggedKey) return;
+        event.preventDefault();
+        column.classList.add("is-drop-target");
+        if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+      });
+      column.addEventListener("dragleave", function () {
+        column.classList.remove("is-drop-target");
+      });
+      column.addEventListener("drop", function (event) {
+        event.preventDefault();
+        column.classList.remove("is-drop-target");
+        var key = event.dataTransfer ? event.dataTransfer.getData("text/plain") : draggedKey;
+        var record = findRecordByKey(key || draggedKey);
+        if (record) selectRecordForTarget(record, column.getAttribute("data-team-drop-group"));
+      });
     });
     boot();
   });

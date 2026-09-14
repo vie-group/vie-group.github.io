@@ -21,7 +21,7 @@ The website reads content from `https://vie-group.github.io/vie-group-content/` 
 ## Maintenance
 
 - Teacher publication editor: `admin.html#publication` or `publication/?manage=1` -> `(edit publication...)`
-- Team editor without token: `team/?manage=1` -> `(edit team...)` or row `[edit]` -> `vie-group-content` issue for add/update/delete/move
+- Team editor without token: `team/?manage=1` -> `(edit team...)` or row `[edit]` -> visual drag/edit form -> `vie-group-content` issue for add/update/delete/move
 - Publication edit without token: `publication/?manage=1` -> `(edit publication...)` or `edit-publication/?manage=1` -> `vie-group-content` issue with full replacement metadata/links/files
 - Student seminar upload without token: `presentation/?manage=1` -> `(upload seminar...)` -> `vie-group-content` issue with image/PPT/PDF attachments -> workflow-localized files under `vie-group-content/assets/seminars/`
 - Seminar edit without token: `presentation/?manage=1` row `EDIT` or `edit-seminar/?manage=1` -> `vie-group-content` issue with full replacement metadata/links/files

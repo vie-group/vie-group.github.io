@@ -12,6 +12,117 @@
   max-width: 760px;
 }
 
+.legacy-upload .team-drag-editor {
+  max-width: 980px;
+  margin: 16px 0 24px;
+  border: 1px solid #C8C8C8;
+  background: #F8F8F8;
+}
+
+.legacy-upload .team-drag-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #D6D6D6;
+  padding: 8px 10px;
+  color: #333;
+  background: #EFEFEF;
+  font-size: 14px;
+}
+
+.legacy-upload .team-drag-head span {
+  color: #666;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.legacy-upload .team-drag-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.legacy-upload .team-drop-column {
+  min-height: 220px;
+  border: 1px solid #D0D0D0;
+  background: #FFF;
+}
+
+.legacy-upload .team-drop-column.is-drop-target {
+  outline: 2px solid #777;
+  outline-offset: -3px;
+  background: #FAFAFA;
+}
+
+.legacy-upload .team-drop-title {
+  border-bottom: 1px solid #DDD;
+  padding: 7px 8px;
+  color: #333;
+  background: #F2F2F2;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.legacy-upload .team-drop-title span {
+  color: #777;
+  font-weight: normal;
+}
+
+.legacy-upload .team-drop-list {
+  min-height: 170px;
+  padding: 8px;
+}
+
+.legacy-upload .team-drag-empty {
+  color: #888;
+  font-size: 12px;
+}
+
+.legacy-upload .team-drag-card {
+  margin: 0 0 7px;
+  border: 1px solid #BDBDBD;
+  padding: 7px 8px;
+  color: #333;
+  background: #FFF;
+  cursor: move;
+}
+
+.legacy-upload .team-drag-card:hover,
+.legacy-upload .team-drag-card:focus {
+  border-color: #777;
+  background: #F7F7F7;
+}
+
+.legacy-upload .team-drag-card.is-selected {
+  border-color: #666;
+  box-shadow: inset 3px 0 0 #666;
+}
+
+.legacy-upload .team-drag-card.is-pending {
+  background: #FFFBEA;
+}
+
+.legacy-upload .team-drag-name {
+  overflow: hidden;
+  color: #222;
+  font-size: 13px;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legacy-upload .team-drag-meta {
+  overflow: hidden;
+  margin-top: 2px;
+  color: #666;
+  font-size: 12px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .legacy-upload label {
   display: block;
   margin: 0 0 16px;
@@ -116,16 +227,19 @@
   opacity: 0.6;
 }
 
-.legacy-upload #upload-status {
+.legacy-upload #upload-status,
+.legacy-upload #team-edit-status {
   color: #666;
   font-size: 13px;
 }
 
-.legacy-upload #upload-status.error {
+.legacy-upload #upload-status.error,
+.legacy-upload #team-edit-status.error {
   color: #B00020;
 }
 
-.legacy-upload #upload-status.ok {
+.legacy-upload #upload-status.ok,
+.legacy-upload #team-edit-status.ok {
   color: #087A38;
 }
 
@@ -133,5 +247,9 @@
   .legacy-upload .form-row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  .legacy-upload .team-drag-board {
+    grid-template-columns: 1fr;
   }
 }
