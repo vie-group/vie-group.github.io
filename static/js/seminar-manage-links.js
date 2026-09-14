@@ -10,7 +10,8 @@
     "/daily": true,
     "/upload-seminar": true,
     "/edit-seminar": true,
-    "/edit-publication": true
+    "/edit-publication": true,
+    "/edit-team": true
   };
 
   function hasManageFlag() {

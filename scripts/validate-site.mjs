@@ -13,7 +13,7 @@ async function readJson(path) {
 }
 
 async function checkUrl(url) {
-  const response = await fetch(url, { method: "HEAD", redirect: "follow" });
+  const response = await fetch(url, { method: "HEAD", redirect: "follow", signal: AbortSignal.timeout(15000) });
   if (!response.ok) fail(`${url} returned ${response.status}.`);
 }
 
@@ -28,7 +28,8 @@ const publicHtmlFiles = [
   "daily/index.html",
   "upload-seminar/index.html",
   "edit-seminar/index.html",
-  "edit-publication/index.html"
+  "edit-publication/index.html",
+  "edit-team/index.html"
 ];
 
 if (source.schemaVersion !== 1) fail("content-source.json schemaVersion must be 1.");
@@ -73,6 +74,9 @@ if (!manageScript.includes("seminar-manage-enabled")) {
 if (!manageScript.includes("[data-seminar-manage], [data-content-manage]")) {
   fail("seminar-manage-links.js must reveal generic content management links.");
 }
+if (!manageScript.includes('"/edit-team": true')) {
+  fail("seminar-manage-links.js must preserve manage=1 on edit-team links.");
+}
 
 for (const file of publicHtmlFiles) {
   const html = await readText(file);
@@ -102,6 +106,44 @@ if (!editScript.includes('var repoName = "vie-group-content";')) {
 }
 if (!editScript.includes('var issueLabel = "seminar-edit";')) {
   fail("edit-seminar.js must use the seminar-edit issue label.");
+}
+
+const teamPage = await readText("team/index.html");
+if (!teamPage.includes("/static/js/team-content.js")) {
+  fail("team/index.html must load /static/js/team-content.js.");
+}
+if (!teamPage.includes('id="content-team-sections"')) {
+  fail("team/index.html must include #content-team-sections.");
+}
+if ((teamPage.match(/<td\b[^>]*text-align\s*:\s*center/gi) || []).length > 0) {
+  fail("team/index.html must not contain static team member cells.");
+}
+if (!teamPage.includes('href="/edit-team"')) {
+  fail("team/index.html must link to /edit-team.");
+}
+if (!teamPage.includes("data-content-manage")) {
+  fail("team/index.html must hide edit-team behind data-content-manage.");
+}
+
+const teamContentScript = await readText("static/js/team-content.js");
+if (!teamContentScript.includes('fetch(contentUrl("team.json", "dataBaseUrl")')) {
+  fail("team-content.js must fetch team.json from the content repository.");
+}
+if (!teamContentScript.includes('link.href = "/edit-team/?" + params.toString();')) {
+  fail("team-content.js must link team rows to /edit-team/ with query parameters.");
+}
+
+const teamEditPage = await readText("edit-team/index.html");
+if (!teamEditPage.includes("/static/js/edit-team.js")) {
+  fail("edit-team/index.html must load /static/js/edit-team.js.");
+}
+
+const teamEditScript = await readText("static/js/edit-team.js");
+if (!teamEditScript.includes('var repoName = "vie-group-content";')) {
+  fail("edit-team.js must open issues in vie-group-content.");
+}
+if (!teamEditScript.includes('var issueLabel = "team-edit";')) {
+  fail("edit-team.js must use the team-edit issue label.");
 }
 
 const publicationPage = await readText("publication/index.html");

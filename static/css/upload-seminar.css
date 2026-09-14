@@ -61,7 +61,10 @@
 
 .legacy-upload .publication-advanced.is-collapsed label,
 .legacy-upload .publication-advanced.is-collapsed .form-row,
-.legacy-upload .publication-advanced.is-collapsed .upload-attachment-note {
+.legacy-upload .publication-advanced.is-collapsed .upload-attachment-note,
+.legacy-upload .team-advanced.is-collapsed label,
+.legacy-upload .team-advanced.is-collapsed .form-row,
+.legacy-upload .team-advanced.is-collapsed .upload-attachment-note {
   display: none;
 }
 

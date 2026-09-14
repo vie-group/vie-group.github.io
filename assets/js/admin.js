@@ -499,9 +499,9 @@
 
   function renderTeamEditor(root) {
     const { block } = visualBlock("Team", "Faculty, current students, and alumni shown on the Team section.");
-    renderPeopleGroup(block, "faculty", "Faculty", ["name", "role", "affiliation", "address", "email"]);
-    renderPeopleGroup(block, "current", "Current Members", ["name", "role", "email"]);
-    renderPeopleGroup(block, "alumni", "Alumni", ["name", "year", "degree", "destination"]);
+    renderPeopleGroup(block, "faculty", "Faculty", ["name", "role", "affiliation", "address", "email", "image", "profileUrl"]);
+    renderPeopleGroup(block, "current", "Current Members", ["name", "role", "email", "image", "profileUrl"]);
+    renderPeopleGroup(block, "alumni", "Alumni", ["name", "year", "degree", "destination", "email", "image", "profileUrl"]);
     root.appendChild(block);
   }
 
@@ -697,9 +697,9 @@
 
   function cleanTeam() {
     return {
-      faculty: cleanTeamGroup(state.team.faculty, ["name", "role", "affiliation", "address", "email"]),
-      current: cleanTeamGroup(state.team.current, ["name", "role", "email"]),
-      alumni: cleanTeamGroup(state.team.alumni, ["name", "year", "degree", "destination"])
+      faculty: cleanTeamGroup(state.team.faculty, ["name", "role", "affiliation", "address", "email", "image", "profileUrl"]),
+      current: cleanTeamGroup(state.team.current, ["name", "role", "email", "image", "profileUrl"]),
+      alumni: cleanTeamGroup(state.team.alumni, ["name", "year", "degree", "destination", "email", "image", "profileUrl"])
     };
   }
 

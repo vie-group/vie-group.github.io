@@ -26,7 +26,7 @@ https://vie-group.github.io/vie-group-content/assets/...
 https://vie-group.github.io/vie-group-content/rss.xml
 ```
 
-`presentation/index.html` 初始不包含静态 seminar 行；`publication/index.html` 初始不包含静态 publication 行。正常访问时，它们会从 content repo 运行时渲染完整 archive。
+`team/index.html` 初始不包含静态人员列表；`presentation/index.html` 初始不包含静态 seminar 行；`publication/index.html` 初始不包含静态 publication 行。正常访问时，它们会从 content repo 运行时渲染完整 archive。
 
 ## 老师可视化修改内容
 
@@ -41,6 +41,39 @@ https://vie-group.github.io/vie-group-content/rss.xml
 6. 点击 `Commit All Website Content`。
 
 内容仓库 Pages 部署完成后，主站会在下次访问时读取最新内容，不需要触发主站 workflow。
+
+## 新增、修改或移动 Team 成员
+
+推荐从主站进入，不需要 GitHub token：
+
+1. 打开 `https://vie-group.github.io/team/?manage=1`。
+2. 修改已有成员：点击该成员旁边的 `[edit]`；批量查找或新增成员：点击 `(edit team...)`。
+3. 页面会预填该成员当前字段。
+4. 设置 `Operation`：
+   - `update`：修改已有成员。
+   - `add`：新增成员，或按姓名替换同组已有成员。
+   - `delete`：删除该成员。
+5. 设置 `Target Group`：
+   - `current`：当前学生/成员。
+   - `alumni`：校友。
+   - `faculty`：教师。
+6. 调整状态时，例如当前学生毕业转 alumni，把 `Target Group` 改为 `alumni`，并填写 `Year`、`Degree`、`Destination`。
+7. 如要替换头像，在跳转后的 GitHub issue 页面，把图片拖到 `Image Attachment` 区域。
+8. 提交 issue。
+
+`vie-group-content` 的 `Team Edit Issue to Pull Request` workflow 会：
+
+```text
+校验提交者身份或仓库写权限
+按 Original Group + Original Name 定位成员
+新增、更新、移动或删除 data/team.json 中的一条人员记录
+下载 GitHub issue 头像附件并保存到 assets/team/<person-name>/
+清理被替换的旧 content-owned 头像
+自动创建并合并 content PR
+关闭原 issue
+```
+
+普通公开访问 `https://vie-group.github.io/team/` 时不会显示 edit 入口。维护入口只在 URL 带 `?manage=1` 时显示；这个 flag 只是页面显示开关，不是安全边界。
 
 ## 老师修改 Publications
 

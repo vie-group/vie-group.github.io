@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Edit Team - VIE Group</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styleSummary.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/upload-seminar.css"/>
+    <script src="/static/js/seminar-manage-links.js" defer></script>
+    <script src="/static/js/edit-team.js" defer></script>
+</head>
+
+<body>
+<div>
+    <header>
+        <div id="logo">
+            <div id = "logo_text">
+                <h1><strong><span style="font-family:huati;font-size:19px; color: #09D4FF">C'e s t &nbsp;  L a</span> <a href="/"><span class="logo_colour">V I E</span></a></strong></h1>
+                <p style="color: #09D4FF;font-family:Microsoft YaHei;margin-left:85pt">Visual Inference&Evaluation</p>
+            </div>
+        </div>
+        <nav>
+            <div id="menu_container">
+                <ul class="sf-menu" id="nav">
+                    <li><a href="/home">Home</a></li>
+                    <li class="selected"><a href="/team">Team</a></li>
+                    <li><a href="/publication">Publication</a></li>
+                    <li><a href="/presentation">Seminar</a></li>
+                    <li><a href="/activity">Activity</a></li>
+                    <li><a href="/daily">Daily</a></li>
+                    <li data-seminar-manage style="display: none;"><a href="/upload-seminar">Upload Seminar</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="project_main">
+        <div class="legacy-upload">
+            <div class="in-title border_bottom">
+                <h5 class="tit-ch">Edit Team</h5>
+            </div>
+            <p class="upload-note">Select a member to update or choose New team member. Change Target Group to move someone between current members, alumni, and faculty.</p>
+
+            <form id="team-edit-form">
+                <label>
+                    <span>Find Person</span>
+                    <input id="team-search" type="text" placeholder="Search name, role, email, year, destination">
+                </label>
+
+                <label>
+                    <span>Team Record</span>
+                    <select id="team-select" required disabled>
+                        <option value="">Loading team records...</option>
+                    </select>
+                </label>
+
+                <div class="form-row">
+                    <label>
+                        <span>Operation</span>
+                        <select id="team-operation" required>
+                            <option value="update">update</option>
+                            <option value="add">add</option>
+                            <option value="delete">delete</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span>Target Group</span>
+                        <select id="team-target-group" required>
+                            <option value="current">current</option>
+                            <option value="alumni">alumni</option>
+                            <option value="faculty">faculty</option>
+                        </select>
+                    </label>
+                </div>
+
+                <input id="team-original-group" type="hidden">
+                <input id="team-original-name" type="hidden">
+
+                <label>
+                    <span>Name</span>
+                    <input id="team-name" type="text" required>
+                </label>
+
+                <div class="form-row">
+                    <label>
+                        <span>Role</span>
+                        <input id="team-role" type="text" placeholder="Ph.D. Student / Master Student / Undergraduate Student">
+                    </label>
+                    <label>
+                        <span>Email</span>
+                        <input id="team-email" type="text" placeholder="name at pku.edu.cn">
+                    </label>
+                </div>
+
+                <details class="team-advanced is-collapsed">
+                    <summary>Faculty, alumni, image, and profile fields</summary>
+                    <label>
+                        <span>Affiliation</span>
+                        <input id="team-affiliation" type="text">
+                    </label>
+                    <label>
+                        <span>Address</span>
+                        <input id="team-address" type="text">
+                    </label>
+                    <div class="form-row">
+                        <label>
+                            <span>Year</span>
+                            <input id="team-year" type="text" placeholder="2026">
+                        </label>
+                        <label>
+                            <span>Degree</span>
+                            <input id="team-degree" type="text" placeholder="PhD / MS / BS">
+                        </label>
+                    </div>
+                    <label>
+                        <span>Destination</span>
+                        <input id="team-destination" type="text">
+                    </label>
+                    <label>
+                        <span>Image URL</span>
+                        <input id="team-image-url" type="text" placeholder="media/image/person.jpg">
+                    </label>
+                    <label>
+                        <span>Profile URL</span>
+                        <input id="team-profile-url" type="text" placeholder="media/page/person.html or https://...">
+                    </label>
+                </details>
+
+                <div class="upload-attachment-note">
+                    Existing values are preserved as currently filled. On the GitHub issue page, drag a portrait into Image Attachment when replacing the image.
+                </div>
+
+                <div class="upload-actions">
+                    <button id="commit-team-edit" type="submit" disabled>Submit Team Edit via GitHub</button>
+                    <span id="team-edit-status">Loading team records...</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer style="background: #FFFFFF">
+        <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备19020148号-1</a>
+    </footer>
+</div>
+</body>
+</html>
