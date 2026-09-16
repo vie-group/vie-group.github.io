@@ -26,7 +26,7 @@
 }
 
 .legacy-upload .team-drag-editor {
-  order: 30;
+  order: 20;
   max-width: 980px;
   margin: 18px 0 24px;
   border: 1px solid #C8C8C8;
@@ -34,7 +34,7 @@
 }
 
 .legacy-upload #team-edit-form {
-  order: 20;
+  order: 30;
 }
 
 .legacy-upload .team-drag-head {
