@@ -47,29 +47,27 @@ https://vie-group.github.io/vie-group-content/rss.xml
 推荐从主站进入，不需要 GitHub token：
 
 1. 打开 `https://vie-group.github.io/team/?manage=1`。
-2. 修改已有成员：点击该成员旁边的 `[edit]`；批量查找、拖动调整状态或新增成员：点击 `(edit team...)`。
-3. 页面会预填该成员当前字段。
-4. 设置 `Operation`：
+2. 点击 `(edit team...)` 后先选择 `Add Person` 或 `Edit Existing People`；点击单个成员旁边的 `[edit]` 会直接进入编辑模式。
+3. 新增成员：选择 `Add Person`，填写新增成员表单。
+4. 修改已有成员：选择 `Edit Existing People`，搜索并选择成员，或在 `Visual Status Board` 中勾选多个成员。
+5. 批量调整归属：设置 `Batch Target Group` 和共用字段后点击 `Stage Selected Move`；也可以选中多个卡片后拖动其中一张到目标列。
+6. 单人详细编辑时设置 `Operation`：
    - `update`：修改已有成员。
-   - `add`：新增成员，或按姓名替换同组已有成员。
    - `delete`：删除该成员。
-5. 调整成员归属：
-   - 可以在 `Visual Status Board` 中把成员卡片拖到目标列。
-   - 也可以直接设置 `Target Group`。
-6. `Target Group` 含义：
+7. `Target Group` 含义：
    - `current`：当前学生/成员。
    - `alumni`：校友。
    - `faculty`：教师。
-7. 调整状态时，例如当前学生毕业转 alumni，把卡片拖到 `Alumni`，并填写 `Year`、`Degree`、`Destination`。
-8. 如要替换头像，在跳转后的 GitHub issue 页面，把图片拖到 `Image Attachment` 区域。
-9. 提交 issue。
+8. 调整状态时，例如当前学生毕业转 alumni，把卡片移动到 `Alumni`，并填写 `Year`、`Degree`、`Destination`。
+9. 如要替换头像，在跳转后的 GitHub issue 页面，把图片拖到 `Image Attachment` 区域；批量状态调整不处理头像替换。
+10. 提交 issue。
 
 `vie-group-content` 的 `Team Edit Issue to Pull Request` workflow 会：
 
 ```text
-校验提交者身份或仓库写权限
+校验提交者是否为 vie-group 组织成员
 按 Original Group + Original Name 定位成员
-新增、更新、移动或删除 data/team.json 中的一条人员记录
+新增、更新、移动或删除 data/team.json 中的一条或多条人员记录
 下载 GitHub issue 头像附件并保存到 assets/team/<person-name>/
 清理被替换的旧 content-owned 头像
 自动创建并合并 content PR

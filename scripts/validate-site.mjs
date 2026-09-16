@@ -140,6 +140,9 @@ if (!teamEditPage.includes("/static/js/edit-team.js")) {
 if (!teamEditPage.includes('id="team-drag-board"')) {
   fail("edit-team/index.html must include #team-drag-board for visual status editing.");
 }
+if (!teamEditPage.includes('id="team-mode-prompt"')) {
+  fail("edit-team/index.html must prompt for add/edit team mode.");
+}
 
 const teamEditScript = await readText("static/js/edit-team.js");
 if (!teamEditScript.includes('var repoName = "vie-group-content";')) {
@@ -150,6 +153,9 @@ if (!teamEditScript.includes('var issueLabel = "team-edit";')) {
 }
 if (!teamEditScript.includes("selectRecordForTarget") || !teamEditScript.includes("data-team-drop-group")) {
   fail("edit-team.js must support drag-based team status editing.");
+}
+if (!teamEditScript.includes("Batch Changes") || !teamEditScript.includes("pendingChanges")) {
+  fail("edit-team.js must support batch team status edits.");
 }
 
 const publicationPage = await readText("publication/index.html");

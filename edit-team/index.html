@@ -7,9 +7,9 @@
     <title>Edit Team - VIE Group</title>
     <link rel="stylesheet" type="text/css" href="/static/css/styleSummary.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/upload-seminar.css?v=team-drag-20260914-2"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/upload-seminar.css?v=team-batch-20260916-2"/>
     <script src="/static/js/seminar-manage-links.js" defer></script>
-    <script src="/static/js/edit-team.js?v=team-drag-20260914-2" defer></script>
+    <script src="/static/js/edit-team.js?v=team-batch-20260916-2" defer></script>
 </head>
 
 <body>
@@ -41,12 +41,50 @@
             <div class="in-title border_bottom">
                 <h5 class="tit-ch">Edit Team</h5>
             </div>
-            <p class="upload-note">Select a member, or drag an existing member between columns to prepare a status change. Choose New team member for additions.</p>
+            <p class="upload-note">Choose whether you are adding a new person or editing existing team records.</p>
 
-            <div class="team-drag-editor" id="team-drag-editor">
+            <div class="team-mode-prompt" id="team-mode-prompt">
+                <button id="team-mode-add" type="button">Add Person</button>
+                <button id="team-mode-edit" type="button">Edit Existing People</button>
+            </div>
+
+            <div class="team-drag-editor" id="team-drag-editor" data-team-edit-only style="display: none;">
                 <div class="team-drag-head">
                     <strong>Visual Status Board</strong>
                     <span id="team-drag-status">Loading team records...</span>
+                </div>
+                <div class="team-batch-tools">
+                    <div class="form-row">
+                        <label>
+                            <span>Batch Target Group</span>
+                            <select id="team-batch-target-group">
+                                <option value="current">current</option>
+                                <option value="alumni">alumni</option>
+                                <option value="faculty">faculty</option>
+                            </select>
+                        </label>
+                        <label>
+                            <span>Batch Year</span>
+                            <input id="team-batch-year" type="text" placeholder="2026">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>
+                            <span>Batch Degree / Role</span>
+                            <input id="team-batch-degree" type="text" placeholder="PhD / MS / BS, or role for current/faculty">
+                        </label>
+                        <label>
+                            <span>Batch Destination / Affiliation</span>
+                            <input id="team-batch-destination" type="text" placeholder="Destination for alumni, affiliation for faculty">
+                        </label>
+                    </div>
+                    <div class="team-batch-actions">
+                        <button id="team-apply-selected" type="button">Stage Selected Move</button>
+                        <button id="team-clear-selection" type="button">Clear Selection</button>
+                        <button id="team-clear-staged" type="button">Clear Staged Changes</button>
+                        <span id="team-batch-status">No staged changes.</span>
+                    </div>
+                    <div class="team-batch-list" id="team-batch-list"></div>
                 </div>
                 <div class="team-drag-board" id="team-drag-board">
                     <div class="team-drop-column" data-team-drop-group="faculty">
@@ -64,13 +102,13 @@
                 </div>
             </div>
 
-            <form id="team-edit-form">
-                <label>
+            <form id="team-edit-form" novalidate style="display: none;">
+                <label data-team-edit-only>
                     <span>Find Person</span>
                     <input id="team-search" type="text" placeholder="Search name, role, email, year, destination">
                 </label>
 
-                <label>
+                <label data-team-edit-only>
                     <span>Team Record</span>
                     <select id="team-select" required disabled>
                         <option value="">Loading team records...</option>
@@ -78,7 +116,7 @@
                 </label>
 
                 <div class="form-row">
-                    <label>
+                    <label data-team-edit-only>
                         <span>Operation</span>
                         <select id="team-operation" required>
                             <option value="update">update</option>

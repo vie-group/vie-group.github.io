@@ -12,6 +12,16 @@
   max-width: 760px;
 }
 
+.legacy-upload .team-mode-prompt {
+  display: flex;
+  gap: 10px;
+  margin: 16px 0 22px;
+}
+
+.legacy-upload .team-mode-prompt button {
+  min-width: 150px;
+}
+
 .legacy-upload .team-drag-editor {
   max-width: 980px;
   margin: 16px 0 24px;
@@ -35,6 +45,50 @@
   color: #666;
   font-size: 12px;
   font-weight: normal;
+}
+
+.legacy-upload .team-batch-tools {
+  border-bottom: 1px solid #D6D6D6;
+  padding: 10px;
+  background: #FBFBFB;
+}
+
+.legacy-upload .team-batch-tools label {
+  margin-bottom: 10px;
+}
+
+.legacy-upload .team-batch-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.legacy-upload .team-batch-actions span {
+  color: #666;
+  font-size: 12px;
+}
+
+.legacy-upload .team-batch-list {
+  margin-top: 10px;
+  color: #555;
+  font-size: 12px;
+}
+
+.legacy-upload .team-batch-item {
+  margin: 0 0 4px;
+  border-left: 3px solid #CCC;
+  padding: 4px 7px;
+  background: #FFF;
+}
+
+.legacy-upload .team-batch-item button {
+  float: right;
+  margin-left: 8px;
+  padding: 2px 7px;
+  color: #333;
+  background: #EEE;
+  font-size: 12px;
 }
 
 .legacy-upload .team-drag-board {
@@ -98,6 +152,12 @@
 .legacy-upload .team-drag-card.is-selected {
   border-color: #666;
   box-shadow: inset 3px 0 0 #666;
+}
+
+.legacy-upload .team-drag-check {
+  float: right;
+  width: auto;
+  margin: 2px 0 4px 8px;
 }
 
 .legacy-upload .team-drag-card.is-pending {
@@ -247,6 +307,12 @@
   .legacy-upload .form-row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  .legacy-upload .team-mode-prompt,
+  .legacy-upload .team-batch-actions {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .legacy-upload .team-drag-board {

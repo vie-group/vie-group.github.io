@@ -10,8 +10,10 @@
   var source = defaultSource;
   var records = [];
   var groups = ["faculty", "current", "alumni"];
+  var mode = "";
   var draggedKey = "";
-  var pendingMove = null;
+  var selectedKeys = {};
+  var pendingChanges = {};
   var updateAdvancedVisibility = function () {};
 
   function $(id) {
@@ -40,6 +42,16 @@
     if (!node) return;
     node.textContent = message;
     node.className = tone || "";
+  }
+
+  function setDragStatus(message) {
+    var node = $("team-drag-status");
+    if (node) node.textContent = message;
+  }
+
+  function setBatchStatus(message) {
+    var node = $("team-batch-status");
+    if (node) node.textContent = message;
   }
 
   function isValidLink(value) {
@@ -87,8 +99,7 @@
 
   function selectedRecord() {
     var key = $("team-select").value;
-    if (key === "__new__") return null;
-    return findRecordByKey(key);
+    return key ? findRecordByKey(key) : null;
   }
 
   function setFormReady(ready) {
@@ -97,18 +108,6 @@
 
   function clearChildren(node) {
     while (node.firstChild) node.removeChild(node.firstChild);
-  }
-
-  function setDragStatus(message) {
-    var node = $("team-drag-status");
-    if (node) node.textContent = message;
-  }
-
-  function setAdvancedOpen(open) {
-    var advanced = document.querySelector(".team-advanced");
-    if (!advanced) return;
-    advanced.open = open;
-    updateAdvancedVisibility();
   }
 
   function groupLabel(group) {
@@ -124,16 +123,137 @@
       .join(" | ");
   }
 
+  function setAdvancedOpen(open) {
+    var advanced = document.querySelector(".team-advanced");
+    if (!advanced) return;
+    advanced.open = open;
+    updateAdvancedVisibility();
+  }
+
+  function showNodes(selector, visible) {
+    Array.prototype.forEach.call(document.querySelectorAll(selector), function (node) {
+      node.style.display = visible ? "" : "none";
+    });
+  }
+
+  function setMode(nextMode) {
+    mode = nextMode;
+    $("team-edit-form").style.display = mode ? "" : "none";
+    showNodes("[data-team-edit-only]", mode === "edit");
+    if ($("team-drag-editor")) $("team-drag-editor").style.display = mode === "edit" ? "" : "none";
+    $("team-select").disabled = mode !== "edit";
+    $("team-mode-add").className = mode === "add" ? "is-active" : "";
+    $("team-mode-edit").className = mode === "edit" ? "is-active" : "";
+
+    if (mode === "add") {
+      selectedKeys = {};
+      pendingChanges = {};
+      fillBlankForNew();
+      setBatchStatus("No staged changes.");
+      renderBoard();
+      renderPendingList();
+      return;
+    }
+
+    if (mode === "edit") {
+      $("team-operation").value = "update";
+      renderOptions($("team-select").value);
+      setStatus($("team-select").value ? "Ready to edit the selected team member." : "Choose a team member to edit, or select people on the board.", "");
+      renderBoard();
+      renderPendingList();
+    }
+  }
+
   function displayGroup(record) {
-    var key = recordKey(record);
-    if (pendingMove && pendingMove.key === key) return pendingMove.targetGroup;
-    return record.group;
+    var change = pendingChanges[recordKey(record)];
+    return change ? change.tg : record.group;
+  }
+
+  function selectedKeyList() {
+    return Object.keys(selectedKeys).filter(function (key) {
+      return selectedKeys[key] && findRecordByKey(key);
+    });
+  }
+
+  function setSelected(key, selected) {
+    if (!key) return;
+    if (selected) selectedKeys[key] = true;
+    else delete selectedKeys[key];
+  }
+
+  function clearSelection() {
+    selectedKeys = {};
+    renderBoard();
+    setBatchStatus(Object.keys(pendingChanges).length ? Object.keys(pendingChanges).length + " staged change(s)." : "No staged changes.");
+  }
+
+  function compactChange(record, targetGroup) {
+    var change = {
+      op: "update",
+      og: record.group,
+      on: record.person.name || "",
+      tg: targetGroup,
+      n: record.person.name || ""
+    };
+    var batchDegree = clean($("team-batch-degree").value);
+    var batchDestination = clean($("team-batch-destination").value);
+    if (targetGroup === "alumni") {
+      if (clean($("team-batch-year").value)) change.y = clean($("team-batch-year").value);
+      if (batchDegree) change.deg = batchDegree;
+      if (batchDestination) change.dst = batchDestination;
+    } else if (targetGroup === "current") {
+      if (batchDegree) change.r = batchDegree;
+    } else if (targetGroup === "faculty") {
+      if (batchDegree) change.r = batchDegree;
+      if (batchDestination) change.af = batchDestination;
+    }
+    return change;
+  }
+
+  function stageMove(keys, targetGroup) {
+    var changed = 0;
+    keys.forEach(function (key) {
+      var record = findRecordByKey(key);
+      if (!record || record.group === targetGroup) return;
+      pendingChanges[key] = compactChange(record, targetGroup);
+      changed += 1;
+    });
+    if (changed > 0 && (targetGroup === "alumni" || targetGroup === "faculty")) setAdvancedOpen(true);
+    renderBoard();
+    renderPendingList();
+    setBatchStatus(Object.keys(pendingChanges).length + " staged change(s).");
+  }
+
+  function renderPendingList() {
+    var list = $("team-batch-list");
+    if (!list) return;
+    clearChildren(list);
+    var keys = Object.keys(pendingChanges);
+    if (!keys.length) return;
+    keys.forEach(function (key) {
+      var record = findRecordByKey(key);
+      var change = pendingChanges[key];
+      if (!record || !change) return;
+      var item = document.createElement("div");
+      item.className = "team-batch-item";
+      var remove = document.createElement("button");
+      remove.type = "button";
+      remove.textContent = "remove";
+      remove.addEventListener("click", function () {
+        delete pendingChanges[key];
+        renderBoard();
+        renderPendingList();
+        setBatchStatus(Object.keys(pendingChanges).length ? Object.keys(pendingChanges).length + " staged change(s)." : "No staged changes.");
+      });
+      item.appendChild(remove);
+      item.appendChild(document.createTextNode((record.person.name || key) + ": " + groupLabel(record.group) + " -> " + groupLabel(change.tg)));
+      list.appendChild(item);
+    });
   }
 
   function renderBoard() {
     if (!$("team-drag-board")) return;
     var term = clean($("team-search").value).toLowerCase();
-    var selectedKey = $("team-select").value;
     var counts = { faculty: 0, current: 0, alumni: 0 };
     groups.forEach(function (group) {
       var list = $("team-drop-" + group);
@@ -155,12 +275,28 @@
 
       var card = document.createElement("div");
       card.className = "team-drag-card";
-      if (selectedKey === key) card.className += " is-selected";
-      if (pendingMove && pendingMove.key === key) card.className += " is-pending";
+      if (selectedKeys[key]) card.className += " is-selected";
+      if (pendingChanges[key]) card.className += " is-pending";
       card.draggable = true;
       card.setAttribute("tabindex", "0");
       card.setAttribute("data-team-record-key", key);
       card.title = record.person.name || "";
+
+      var checkbox = document.createElement("input");
+      checkbox.className = "team-drag-check";
+      checkbox.type = "checkbox";
+      checkbox.checked = !!selectedKeys[key];
+      checkbox.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+      checkbox.addEventListener("change", function () {
+        setSelected(key, checkbox.checked);
+        $("team-select").value = key;
+        fillForm(record);
+        renderBoard();
+        setBatchStatus(selectedKeyList().length + " selected; " + Object.keys(pendingChanges).length + " staged change(s).");
+      });
+      card.appendChild(checkbox);
 
       var name = document.createElement("div");
       name.className = "team-drag-name";
@@ -173,17 +309,23 @@
       card.appendChild(meta);
 
       card.addEventListener("click", function () {
-        selectRecordForTarget(record, displayGroup(record));
+        setSelected(key, !selectedKeys[key]);
+        $("team-select").value = key;
+        fillForm(record);
+        renderBoard();
+        setBatchStatus(selectedKeyList().length + " selected; " + Object.keys(pendingChanges).length + " staged change(s).");
       });
       card.addEventListener("keydown", function (event) {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          selectRecordForTarget(record, displayGroup(record));
+          setSelected(key, !selectedKeys[key]);
+          $("team-select").value = key;
+          fillForm(record);
+          renderBoard();
         }
       });
       card.addEventListener("dragstart", function (event) {
         draggedKey = key;
-        card.className += " is-dragging";
         if (event.dataTransfer) {
           event.dataTransfer.effectAllowed = "move";
           event.dataTransfer.setData("text/plain", key);
@@ -208,24 +350,10 @@
       }
     });
 
-    if (pendingMove) {
-      var moved = findRecordByKey(pendingMove.key);
-      setDragStatus(moved ? moved.person.name + ": " + groupLabel(moved.group) + " -> " + groupLabel(pendingMove.targetGroup) : "");
-    } else {
-      setDragStatus(records.length ? "Drag an existing member to another column." : "No team records loaded.");
-    }
-  }
-
-  function setPendingMove(record, targetGroup) {
-    if (record && targetGroup && targetGroup !== record.group) {
-      pendingMove = { key: recordKey(record), targetGroup: targetGroup };
-    } else {
-      pendingMove = null;
-    }
+    setDragStatus(records.length ? "Select multiple cards, then drag one selected card or stage the selected move." : "No team records loaded.");
   }
 
   function fillBlankForNew() {
-    pendingMove = null;
     $("team-operation").value = "add";
     $("team-original-group").value = "";
     $("team-original-name").value = "";
@@ -242,21 +370,13 @@
     $("team-profile-url").value = "";
     setFormReady(true);
     setStatus("Ready to add a new team member.", "ok");
-    renderBoard();
   }
 
   function fillForm(record) {
     if (!record) {
-      if ($("team-select").value === "__new__") {
-        fillBlankForNew();
-      } else {
-        pendingMove = null;
-        setFormReady(false);
-        renderBoard();
-      }
+      setFormReady(false);
       return;
     }
-    pendingMove = null;
     var person = record.person;
     $("team-operation").value = "update";
     $("team-original-group").value = record.group;
@@ -274,44 +394,30 @@
     $("team-profile-url").value = person.profileUrl || "";
     setFormReady(true);
     setStatus("Ready to create a team edit issue for " + person.name + ".", "ok");
-    renderBoard();
   }
 
   function selectRecordForTarget(record, targetGroup) {
     var key = recordKey(record);
-    renderOptions(key);
-    $("team-operation").value = "update";
-    $("team-target-group").value = targetGroup;
-    setPendingMove(record, targetGroup);
-    if (pendingMove) {
-      setStatus("Ready to move " + record.person.name + " from " + groupLabel(record.group) + " to " + groupLabel(targetGroup) + ".", "ok");
-      if (targetGroup === "alumni" || targetGroup === "faculty") setAdvancedOpen(true);
-    }
-    renderBoard();
+    var keys = selectedKeys[key] ? selectedKeyList() : [key];
+    stageMove(keys, targetGroup);
+    $("team-select").value = key;
+    fillForm(record);
   }
 
-  function syncPendingMoveFromForm() {
+  function syncSingleStatusFromForm() {
     var record = selectedRecord();
-    if (!record) {
-      pendingMove = null;
-      renderBoard();
-      return;
-    }
+    if (!record) return;
     if ($("team-operation").value === "delete") {
-      pendingMove = null;
       setStatus("Ready to delete " + record.person.name + ".", "ok");
-      renderBoard();
       return;
     }
     var targetGroup = clean($("team-target-group").value);
-    setPendingMove(record, targetGroup);
-    if (pendingMove) {
-      setStatus("Ready to move " + record.person.name + " from " + groupLabel(record.group) + " to " + groupLabel(targetGroup) + ".", "ok");
+    if (targetGroup && targetGroup !== record.group) {
       if (targetGroup === "alumni" || targetGroup === "faculty") setAdvancedOpen(true);
+      setStatus("Ready to move " + record.person.name + " from " + groupLabel(record.group) + " to " + groupLabel(targetGroup) + ".", "ok");
     } else {
       setStatus("Ready to create a team edit issue for " + record.person.name + ".", "ok");
     }
-    renderBoard();
   }
 
   function renderOptions(selectedKey) {
@@ -327,11 +433,6 @@
     placeholder.textContent = matches.length ? "Select a team member..." : "No matching team records";
     select.appendChild(placeholder);
 
-    var add = document.createElement("option");
-    add.value = "__new__";
-    add.textContent = "New team member";
-    select.appendChild(add);
-
     matches.forEach(function (record) {
       var option = document.createElement("option");
       option.value = recordKey(record);
@@ -342,10 +443,12 @@
     select.disabled = false;
     if (selectedKey && Array.prototype.some.call(select.options, function (option) { return option.value === selectedKey; })) {
       select.value = selectedKey;
+      fillForm(selectedRecord());
     } else {
       select.value = "";
+      setFormReady(false);
     }
-    fillForm(selectedRecord());
+    renderBoard();
   }
 
   async function loadSource() {
@@ -405,17 +508,46 @@
     ].join("\n");
   }
 
-  function buildIssueUrl(data) {
+  function batchIssueBody(changes) {
+    return [
+      "### How to edit\nThis issue was generated by the visual team batch editor.\n",
+      field("Operation", "batch"),
+      field("Batch Changes", JSON.stringify(changes)),
+      field("Edit Note", "Generated from https://www.vie.group/edit-team/.")
+    ].join("\n");
+  }
+
+  function buildIssueUrl(data, changes) {
     var params = new URLSearchParams();
-    params.set("title", "[Edit Team] " + (data.name || data.originalName || "team member"));
-    params.set("body", issueBody(data));
+    if (changes && changes.length) {
+      params.set("title", "[Edit Team] Batch update " + changes.length + " members");
+      params.set("body", batchIssueBody(changes));
+    } else {
+      params.set("title", "[Edit Team] " + (data.name || data.originalName || "team member"));
+      params.set("body", issueBody(data));
+    }
     params.set("labels", issueLabel);
     return "https://github.com/" + repoOwner + "/" + repoName + "/issues/new?" + params.toString();
   }
 
   function submit(event) {
     event.preventDefault();
+    if (mode === "edit" && Object.keys(pendingChanges).length > 0) {
+      var changes = Object.keys(pendingChanges).map(function (key) {
+        return pendingChanges[key];
+      });
+      var batchUrl = buildIssueUrl(null, changes);
+      if (batchUrl.length > 16000) {
+        setStatus("The generated batch issue is too long. Submit fewer staged changes at once.", "error");
+        return;
+      }
+      setStatus("Opening GitHub batch team edit issue...", "ok");
+      window.location.href = batchUrl;
+      return;
+    }
+
     var data = formData();
+    if (mode === "add") data.operation = "add";
     if (!/^(add|update|delete)$/.test(data.operation)) {
       setStatus("Operation must be add, update, or delete.", "error");
       return;
@@ -450,10 +582,13 @@
       records = flattenTeam(await loadTeam());
       var requestedKey = requestedGroup && requestedName ? requestedGroup + "::" + requestedName : "";
       renderOptions(requestedKey);
-      if (requestedKey && !$("team-select").value) {
-        setStatus("Team member not found: " + requestedName, "error");
-      } else if (!requestedKey) {
-        setStatus("Choose a team member to edit, or choose New team member.", "");
+      if (requestedKey) {
+        setMode("edit");
+        if (!$("team-select").value) setStatus("Team member not found: " + requestedName, "error");
+      } else {
+        $("team-edit-form").style.display = "none";
+        $("team-drag-editor").style.display = "none";
+        setDragStatus("Team records loaded.");
       }
     } catch (error) {
       $("team-select").innerHTML = '<option value="">Could not load team records</option>';
@@ -475,15 +610,37 @@
       updateAdvancedVisibility();
       advanced.addEventListener("toggle", updateAdvancedVisibility);
     }
+
+    $("team-mode-add").addEventListener("click", function () { setMode("add"); });
+    $("team-mode-edit").addEventListener("click", function () { setMode("edit"); });
     $("team-edit-form").addEventListener("submit", submit);
     $("team-select").addEventListener("change", function () {
-      if ($("team-select").value === "__new__") fillBlankForNew();
-      else fillForm(selectedRecord());
+      var record = selectedRecord();
+      if (record) {
+        setSelected(recordKey(record), true);
+        fillForm(record);
+        renderBoard();
+      }
     });
-    $("team-target-group").addEventListener("change", syncPendingMoveFromForm);
-    $("team-operation").addEventListener("change", syncPendingMoveFromForm);
+    $("team-target-group").addEventListener("change", syncSingleStatusFromForm);
+    $("team-operation").addEventListener("change", syncSingleStatusFromForm);
     $("team-search").addEventListener("input", function () {
       renderOptions($("team-select").value);
+    });
+    $("team-apply-selected").addEventListener("click", function () {
+      var keys = selectedKeyList();
+      if (!keys.length) {
+        setBatchStatus("Select at least one member first.");
+        return;
+      }
+      stageMove(keys, clean($("team-batch-target-group").value));
+    });
+    $("team-clear-selection").addEventListener("click", clearSelection);
+    $("team-clear-staged").addEventListener("click", function () {
+      pendingChanges = {};
+      renderBoard();
+      renderPendingList();
+      setBatchStatus("No staged changes.");
     });
     Array.prototype.forEach.call(document.querySelectorAll("[data-team-drop-group]"), function (column) {
       column.addEventListener("dragover", function (event) {
