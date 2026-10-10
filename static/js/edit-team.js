@@ -15,6 +15,11 @@
   var selectedKeys = {};
   var pendingChanges = {};
   var updateAdvancedVisibility = function () {};
+  var roleOptions = {
+    current: ["Ph.D. Student", "Master Student", "Undergraduate Student"],
+    faculty: ["Associate Professor", "Assistant Professor", "Professor", "Principal Investigator", "Research Scientist", "Postdoctoral Researcher"],
+    alumni: ["PhD", "MS", "BS"]
+  };
 
   function $(id) {
     return document.getElementById(id);
@@ -115,6 +120,46 @@
     if (group === "current") return "Current Members";
     if (group === "alumni") return "Alumni";
     return group;
+  }
+
+  function fillSelectOptions(select, options, selectedValue, placeholder) {
+    if (!select) return;
+    var value = clean(selectedValue);
+    clearChildren(select);
+    if (placeholder) {
+      var placeholderOption = document.createElement("option");
+      placeholderOption.value = "";
+      placeholderOption.textContent = placeholder;
+      select.appendChild(placeholderOption);
+    }
+    options.forEach(function (optionValue) {
+      var option = document.createElement("option");
+      option.value = optionValue;
+      option.textContent = optionValue;
+      select.appendChild(option);
+    });
+    if (value && options.indexOf(value) < 0) {
+      var custom = document.createElement("option");
+      custom.value = value;
+      custom.textContent = value;
+      select.appendChild(custom);
+    }
+    select.value = value || "";
+  }
+
+  function updateRoleSelect(selectedValue) {
+    var group = clean($("team-target-group").value) || "current";
+    var role = clean(selectedValue);
+    if (!role && group === "current") role = "Master Student";
+    if ($("team-role-label")) $("team-role-label").textContent = group === "alumni" ? "Degree" : "Role";
+    fillSelectOptions($("team-role"), roleOptions[group] || roleOptions.current, role, group === "alumni" ? "Select degree..." : "Select role...");
+  }
+
+  function updateBatchDegreeSelect(selectedValue) {
+    var group = clean($("team-batch-target-group").value) || "current";
+    var label = group === "alumni" ? "Select degree..." : "Select role...";
+    if ($("team-batch-degree-label")) $("team-batch-degree-label").textContent = group === "alumni" ? "Batch Degree" : "Batch Role";
+    fillSelectOptions($("team-batch-degree"), roleOptions[group] || roleOptions.current, selectedValue, label);
   }
 
   function personMeta(person) {
@@ -359,7 +404,7 @@
     $("team-original-name").value = "";
     $("team-target-group").value = "current";
     $("team-name").value = "";
-    $("team-role").value = "Master Student";
+    updateRoleSelect("Master Student");
     $("team-email").value = "";
     $("team-affiliation").value = "";
     $("team-address").value = "";
@@ -383,7 +428,7 @@
     $("team-original-name").value = person.name || "";
     $("team-target-group").value = record.group;
     $("team-name").value = person.name || "";
-    $("team-role").value = person.role || "";
+    updateRoleSelect(person.role || person.degree || "");
     $("team-email").value = person.email || "";
     $("team-affiliation").value = person.affiliation || "";
     $("team-address").value = person.address || "";
@@ -406,6 +451,7 @@
 
   function syncSingleStatusFromForm() {
     var record = selectedRecord();
+    updateRoleSelect($("team-role").value);
     if (!record) return;
     if ($("team-operation").value === "delete") {
       setStatus("Ready to delete " + record.person.name + ".", "ok");
@@ -468,18 +514,21 @@
   }
 
   function formData() {
+    var targetGroup = clean($("team-target-group").value);
+    var selectedRole = clean($("team-role").value);
+    var degree = clean($("team-degree").value);
     return {
       operation: clean($("team-operation").value),
       originalGroup: clean($("team-original-group").value),
       originalName: clean($("team-original-name").value),
-      targetGroup: clean($("team-target-group").value),
+      targetGroup: targetGroup,
       name: clean($("team-name").value),
-      role: clean($("team-role").value),
+      role: targetGroup === "alumni" ? "" : selectedRole,
       email: clean($("team-email").value),
       affiliation: clean($("team-affiliation").value),
       address: clean($("team-address").value),
       year: clean($("team-year").value),
-      degree: clean($("team-degree").value),
+      degree: targetGroup === "alumni" ? (selectedRole || degree) : degree,
       destination: clean($("team-destination").value),
       imageUrl: clean($("team-image-url").value),
       profileUrl: clean($("team-profile-url").value)
@@ -622,7 +671,16 @@
         renderBoard();
       }
     });
-    $("team-target-group").addEventListener("change", syncSingleStatusFromForm);
+    $("team-target-group").addEventListener("change", function () {
+      updateRoleSelect("");
+      syncSingleStatusFromForm();
+    });
+    $("team-batch-target-group").addEventListener("change", function () {
+      updateBatchDegreeSelect("");
+    });
+    $("team-role").addEventListener("change", function () {
+      if (clean($("team-target-group").value) === "alumni") $("team-degree").value = clean($("team-role").value);
+    });
     $("team-operation").addEventListener("change", syncSingleStatusFromForm);
     $("team-search").addEventListener("input", function () {
       renderOptions($("team-select").value);
@@ -661,5 +719,7 @@
       });
     });
     boot();
+    updateRoleSelect("Master Student");
+    updateBatchDegreeSelect("");
   });
 })();

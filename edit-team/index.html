@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/upload-seminar.css?v=team-board-top-20260916"/>
     <script src="/static/js/seminar-manage-links.js" defer></script>
-    <script src="/static/js/edit-team.js?v=team-batch-20260916-2" defer></script>
+    <script src="/static/js/edit-team.js?v=team-role-select-20261010" defer></script>
 </head>
 
 <body>
@@ -70,8 +70,8 @@
                     </div>
                     <div class="form-row">
                         <label>
-                            <span>Batch Degree / Role</span>
-                            <input id="team-batch-degree" type="text" placeholder="PhD / MS / BS, or role for current/faculty">
+                            <span id="team-batch-degree-label">Batch Role</span>
+                            <select id="team-batch-degree"></select>
                         </label>
                         <label>
                             <span>Batch Destination / Affiliation</span>
@@ -144,8 +144,8 @@
 
                 <div class="form-row">
                     <label>
-                        <span>Role</span>
-                        <input id="team-role" type="text" placeholder="Ph.D. Student / Master Student / Undergraduate Student">
+                        <span id="team-role-label">Role</span>
+                        <select id="team-role"></select>
                     </label>
                     <label>
                         <span>Email</span>
