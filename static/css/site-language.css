@@ -1,11 +1,18 @@
 .vie-language-toggle {
-  float: right;
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 20;
   display: inline-flex;
   align-items: center;
-  margin: 7px 2px 0 10px;
   border: 1px solid #C9C9C9;
   background: #F6F6F6;
   font-family: Calibri, Arial, sans-serif;
+  white-space: nowrap;
+}
+
+header {
+  position: relative;
 }
 
 .vie-language-toggle button {
@@ -53,8 +60,7 @@ html[data-vie-lang="zh"] .content-publication-status {
 
 @media (max-width: 980px) {
   .vie-language-toggle {
-    float: left;
-    clear: both;
-    margin: 4px 0 0 0;
+    top: 10px;
+    right: 10px;
   }
 }

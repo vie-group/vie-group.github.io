@@ -165,12 +165,9 @@
       var saved = window.localStorage && window.localStorage.getItem(storageKey);
       if (saved === "en" || saved === "zh") return saved;
     } catch (error) {
-      // Fall back to the browser language.
+      // Keep the default language deterministic.
     }
-    var languages = navigator.languages || [navigator.language || ""];
-    return languages.some(function (language) {
-      return /^zh\b/i.test(language);
-    }) ? "zh" : "en";
+    return "en";
   }
 
   function trimText(value) {
@@ -308,8 +305,8 @@
 
   function injectToggle() {
     if (document.querySelector(".vie-language-toggle")) return;
-    var menu = document.getElementById("menu_container") || document.querySelector("nav");
-    if (!menu) return;
+    var host = document.querySelector("header") || document.getElementById("menu_container") || document.querySelector("nav");
+    if (!host) return;
     var wrap = document.createElement("div");
     wrap.className = "vie-language-toggle";
     wrap.setAttribute("role", "group");
@@ -329,7 +326,7 @@
 
     wrap.appendChild(en);
     wrap.appendChild(cn);
-    menu.appendChild(wrap);
+    host.appendChild(wrap);
   }
 
   function boot() {
