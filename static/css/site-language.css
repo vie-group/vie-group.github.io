@@ -1,0 +1,60 @@
+.vie-language-toggle {
+  float: right;
+  display: inline-flex;
+  align-items: center;
+  margin: 7px 2px 0 10px;
+  border: 1px solid #C9C9C9;
+  background: #F6F6F6;
+  font-family: Calibri, Arial, sans-serif;
+}
+
+.vie-language-toggle button {
+  min-width: 34px;
+  border: 0;
+  border-left: 1px solid #D7D7D7;
+  padding: 5px 8px;
+  color: #444;
+  background: transparent;
+  font: bold 12px Calibri, Arial, sans-serif;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.vie-language-toggle button:first-child {
+  border-left: 0;
+}
+
+.vie-language-toggle button:hover,
+.vie-language-toggle button:focus {
+  background: #FFF;
+}
+
+.vie-language-toggle button:focus-visible {
+  outline: 2px solid #09D4FF;
+  outline-offset: 2px;
+}
+
+.vie-language-toggle button.is-active {
+  color: #FFF;
+  background: #333;
+}
+
+html[data-vie-lang="zh"] body {
+  font-family: Calibri, "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+}
+
+html[data-vie-lang="zh"] .tit-ch,
+html[data-vie-lang="zh"] .legacy-upload,
+html[data-vie-lang="zh"] .content-team-status,
+html[data-vie-lang="zh"] .content-seminar-status,
+html[data-vie-lang="zh"] .content-publication-status {
+  font-family: Calibri, "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+}
+
+@media (max-width: 980px) {
+  .vie-language-toggle {
+    float: left;
+    clear: both;
+    margin: 4px 0 0 0;
+  }
+}
