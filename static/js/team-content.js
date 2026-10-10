@@ -63,12 +63,14 @@
     img.src = resolveHref(person.image);
     img.width = 140;
     img.height = 160;
+    img.setAttribute("style", "display:block;margin:0 auto 6px auto");
     img.onerror = function () {
       if (window.archiveMissingImage) window.archiveMissingImage(img);
     };
     if (!person.profileUrl) return img;
     var link = document.createElement("a");
     link.href = resolveHref(person.profileUrl);
+    link.setAttribute("style", "display:block");
     link.appendChild(img);
     return link;
   }
@@ -99,12 +101,12 @@
         row = document.createElement("tr");
       }
       var cell = document.createElement("td");
-      cell.setAttribute("style", "width:175px;height:170px;text-align:center");
+      cell.setAttribute("style", "width:175px;height:210px;text-align:center;vertical-align:top;padding:6px 0 14px 0");
       cell.setAttribute("data-team-member-name", person.name || "");
       cell.setAttribute("data-team-member-group", group);
       cell.appendChild(personImage(person));
       var div = document.createElement("div");
-      div.setAttribute("style", "text-align:center; width:175px");
+      div.setAttribute("style", "text-align:center;width:165px;margin:0 auto;line-height:1.25;word-break:break-word");
       var strong = document.createElement("strong");
       strong.appendChild(text(person.name));
       div.appendChild(strong);
@@ -131,6 +133,11 @@
       cell.appendChild(div);
       row.appendChild(cell);
     });
+    while (row.children.length && row.children.length < 5) {
+      var spacer = document.createElement("td");
+      spacer.setAttribute("style", "width:175px;height:210px");
+      row.appendChild(spacer);
+    }
     if (row.children.length) tbody.appendChild(row);
     table.appendChild(tbody);
     return table;
