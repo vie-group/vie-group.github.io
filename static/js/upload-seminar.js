@@ -27,7 +27,9 @@
   }
 
   function field(label, value, placeholder) {
-    return "### " + label + "\n" + (clean(value) || clean(placeholder)) + "\n";
+    var body = clean(value);
+    if (!body && placeholder) body = "<!-- " + clean(placeholder) + " -->";
+    return "### " + label + "\n" + body + "\n";
   }
 
   function issueBody(data) {

@@ -61,7 +61,7 @@
   }
 
   function attachmentField(label, text) {
-    return "### " + label + "\n" + text + "\n";
+    return "### " + label + "\n<!-- " + clean(text) + " -->\n";
   }
 
   function recordLabel(record) {

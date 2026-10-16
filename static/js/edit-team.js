@@ -42,6 +42,15 @@
     return base + "/" + cleanPath;
   }
 
+  function issueUrlValue(path) {
+    var value = clean(path);
+    if (!value) return "";
+    if (/^(https?:|mailto:)/i.test(value)) return value;
+    if (/^\/?assets\//i.test(value)) return value.replace(/^\/+/, "");
+    if (/^\/?(media|static)\//i.test(value)) return "https://vie-group.github.io/" + value.replace(/^\/+/, "");
+    return value;
+  }
+
   function setStatus(message, tone) {
     var node = $("team-edit-status");
     if (!node) return;
@@ -69,7 +78,7 @@
   }
 
   function attachmentField(label, text) {
-    return "### " + label + "\n" + text + "\n";
+    return "### " + label + "\n<!-- " + clean(text) + " -->\n";
   }
 
   function recordKey(record) {
@@ -435,8 +444,8 @@
     $("team-year").value = person.year || "";
     $("team-degree").value = person.degree || "";
     $("team-destination").value = person.destination || "";
-    $("team-image-url").value = person.image || "";
-    $("team-profile-url").value = person.profileUrl || "";
+    $("team-image-url").value = issueUrlValue(person.image);
+    $("team-profile-url").value = issueUrlValue(person.profileUrl);
     setFormReady(true);
     setStatus("Ready to create a team edit issue for " + person.name + ".", "ok");
   }
